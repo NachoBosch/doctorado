@@ -4,7 +4,11 @@ from jmetal.operator.mutation import IntegerPolynomialMutation
 from jmetal.operator.crossover import PMXCrossover
 from jmetal.operator.selection import BestSolutionSelection
 from jmetal.util.termination_criterion import StoppingByEvaluations
+
 from jmetal.util.observer import ProgressBarObserver
+from jmetal.util.solution import get_non_dominated_solutions
+from jmetal.lab.visualization import Plot
+
 import matplotlib.pyplot as plt
 import seaborn as sns
 sns.set()
@@ -59,3 +63,9 @@ plt.xlabel("Generación")
 plt.ylabel("Suma")
 plt.title("Suma de enteros")
 plt.show()
+
+# Pareto front
+# Esto sirve en problemas del tipo continuos
+# front = get_non_dominated_solutions(algoritmo_ga.get_result())
+# plot_front = Plot('Aproximación Pareto front')
+# plot_front.plot(front,label='SubsetSum',format='png')
