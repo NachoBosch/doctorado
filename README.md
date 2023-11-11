@@ -20,8 +20,10 @@ Hay ejemplo de problemas de optimización combinatorios y continuos.
 
 2. **Mutation:**
 
-    *   
-    *   
+    *   *BitFlipMutation* mutación diseñada para problemas de optimización combinatoria (representación binaria) que invierte aleatoriamente los bits. Para etso se usa una probabilidad con la cual será invertido cada bit. Sirve para explorar otras regiones del espacio de búsqueda introduciendo cambios locales en las soluciones.
+
+    *   *IntegerPolynomialMutation* diseñado para problemas de optimización con variables enteras, realiza mutaciones en las variables enteras de una solución mediante mutación polinómica, que implica agregar un valor aleatorio determinado por una distribución polinómica, a cada variable entera en la solución, así con cambios pequeños pero aleatorios en las variables enteras se introduce variabilidad en las soluciones al realizar.
+
     *   
 
 3. **Selection**
