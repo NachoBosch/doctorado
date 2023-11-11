@@ -24,6 +24,6 @@ Hay ejemplo de problemas de optimización combinatorios y continuos.
 
     *   *IntegerPolynomialMutation* diseñado para problemas de optimización con variables enteras, realiza mutaciones en las variables enteras de una solución mediante mutación polinómica, que implica agregar un valor aleatorio determinado por una distribución polinómica, a cada variable entera en la solución, así con cambios pequeños pero aleatorios en las variables enteras se introduce variabilidad en las soluciones al realizar.
 
-    *   
+    *   *PolynomialMutation*
 
 3. **Selection**
