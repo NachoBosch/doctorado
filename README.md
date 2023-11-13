@@ -1,6 +1,6 @@
 # Doctorado
-Este repositorio contiene todo lo relacionado a inteligencia computacional aplicada a la investigación de enfermedad de Hungtington
 
+Este repositorio contiene todo lo relacionado a inteligencia computacional aplicada a la investigación de enfermedad de Hungtington
 
 ## jMetalPy
 
@@ -22,8 +22,12 @@ Hay ejemplo de problemas de optimización combinatorios y continuos.
 
     *   *BitFlipMutation* mutación diseñada para problemas de optimización combinatoria (representación binaria) que invierte aleatoriamente los bits. Para etso se usa una probabilidad con la cual será invertido cada bit. Sirve para explorar otras regiones del espacio de búsqueda introduciendo cambios locales en las soluciones.
 
-    *   *IntegerPolynomialMutation* diseñado para problemas de optimización con variables enteras, realiza mutaciones en las variables enteras de una solución mediante mutación polinómica, que implica agregar un valor aleatorio determinado por una distribución polinómica, a cada variable entera en la solución, así con cambios pequeños pero aleatorios en las variables enteras se introduce variabilidad en las soluciones al realizar.
+    *   *IntegerPolynomialMutation* diseñado para problemas de optimización con variables enteras, realiza mutaciones en las variables enteras de una solución mediante mutación polinómica, que implica agregar un valor aleatorio siguiendo una distribución polinómica, a cada variable entera en la solución, así con cambios pequeños pero aleatorios en las variables enteras se introduce variabilidad en las soluciones al realizar.
 
-    *   *PolynomialMutation*
+    *   *PolynomialMutation* utilizado en problemas de optimización continua, realiza mutaciones en las variables continuas de una solución del tipo polinómica. Esta implica agregar un valor aleatorio, siguiendo una distribución polinómica, a cada variable continua en la solución. Este proceso introduce variabilidad en las soluciones al realizar cambios pequeños pero aleatorios en las variables continuas.
 
 3. **Selection**
+
+    *   *BestSolutionSelection* elige la mejor solución de entre un conjunto de soluciones implementando la selección por elitismo, lo que significa que seleccionará la mejor solución sin realizar competicion entre las mismas. La mejor solución se determina generalmente comparando los valores de fitness dependiendo del tipo de problema (maximización o minimización).
+
+    *   *BinaryTournamentSelection* este a diferencia de BestSolutionSelection, realiza una competición directa entre dos soluciones y selecciona la mejor de entre ellas. En un torneo binario, se eligen aleatoriamente dos soluciones de la población actual, y la solución con mejor fitness (max o min) se selecciona como la ganadora del torneo y forma parte de la siguiente generación.
