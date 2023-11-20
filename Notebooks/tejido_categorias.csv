@@ -1,0 +1,405 @@
+,name,tissue
+0,GSM86787.cel,caudate nucleus
+1,GSM86788.cel,caudate nucleus
+2,GSM86789.cel,caudate nucleus
+3,GSM86790.cel,caudate nucleus
+4,GSM86791.cel,caudate nucleus
+5,GSM86792.cel,caudate nucleus
+6,GSM86793.cel,caudate nucleus
+7,GSM86794.cel,caudate nucleus
+8,GSM86795.cel,caudate nucleus
+9,GSM86796.cel,frontal cortex
+10,GSM86797.cel,caudate nucleus
+11,GSM86798.cel,caudate nucleus
+12,GSM86799.cel,caudate nucleus
+13,GSM86800.cel,caudate nucleus
+14,GSM86801.cel,caudate nucleus
+15,GSM86802.cel,caudate nucleus
+16,GSM86803.cel,caudate nucleus
+17,GSM86804.cel,caudate nucleus
+18,GSM86805.cel,frontal cortex
+19,GSM86806.cel,frontal cortex
+20,GSM86807.cel,caudate nucleus
+21,GSM86808.cel,caudate nucleus
+22,GSM86809.cel,frontal cortex
+23,GSM86810.cel,frontal cortex
+24,GSM86811.cel,caudate nucleus
+25,GSM86812.cel,frontal cortex
+26,GSM86813.cel,caudate nucleus
+27,GSM86814.cel,caudate nucleus
+28,GSM86815.cel,frontal cortex
+29,GSM86816.cel,caudate nucleus
+30,GSM86817.cel,caudate nucleus
+31,GSM86818.cel,caudate nucleus
+32,GSM86819.cel,caudate nucleus
+33,GSM86820.cel,caudate nucleus
+34,GSM86821.cel,caudate nucleus
+35,GSM86822.cel,caudate nucleus
+36,GSM86823.cel,caudate nucleus
+37,GSM86824.cel,caudate nucleus
+38,GSM86825.cel,frontal cortex
+39,GSM86826.cel,caudate nucleus
+40,GSM86827.cel,caudate nucleus
+41,GSM86828.cel,caudate nucleus
+42,GSM86829.cel,caudate nucleus
+43,GSM86830.cel,caudate nucleus
+44,GSM86831.cel,caudate nucleus
+45,GSM86832.cel,caudate nucleus
+46,GSM86833.cel,caudate nucleus
+47,GSM86834.cel,caudate nucleus
+48,GSM86835.cel,caudate nucleus
+49,GSM86836.cel,caudate nucleus
+50,GSM86837.cel,caudate nucleus
+51,GSM86838.cel,caudate nucleus
+52,GSM86839.cel,caudate nucleus
+53,GSM86840.cel,caudate nucleus
+54,GSM86841.cel,caudate nucleus
+55,GSM86842.cel,caudate nucleus
+56,GSM86843.cel,caudate nucleus
+57,GSM86844.cel,caudate nucleus
+58,GSM86845.cel,caudate nucleus
+59,GSM86846.cel,caudate nucleus
+60,GSM86847.cel,caudate nucleus
+61,GSM86848.cel,caudate nucleus
+62,GSM86849.cel,caudate nucleus
+63,GSM86850.cel,caudate nucleus
+64,GSM86851.cel,frontal cortex
+65,GSM86852.cel,caudate nucleus
+66,GSM86853.cel,caudate nucleus
+67,GSM86854.cel,frontal cortex
+68,GSM86855.cel,caudate nucleus
+69,GSM86856.cel,caudate nucleus
+70,GSM86857.cel,caudate nucleus
+71,GSM86858.cel,caudate nucleus
+72,GSM86859.cel,caudate nucleus
+73,GSM86860.cel,caudate nucleus
+74,GSM86861.cel,caudate nucleus
+75,GSM86862.cel,caudate nucleus
+76,GSM86863.cel,caudate nucleus
+77,GSM86864.cel,caudate nucleus
+78,GSM86865.cel,caudate nucleus
+79,GSM86866.cel,caudate nucleus
+80,GSM86867.cel,caudate nucleus
+81,GSM86868.CEL,caudate nucleus
+82,GSM86869.cel,caudate nucleus
+83,GSM86870.cel,caudate nucleus
+84,GSM86871.cel,caudate nucleus
+85,GSM86872.cel,caudate nucleus
+86,GSM86873.cel,caudate nucleus
+87,GSM86874.CEL,caudate nucleus
+88,GSM86875.cel,caudate nucleus
+89,GSM86876.cel,caudate nucleus
+90,GSM86877.cel,caudate nucleus
+91,GSM86878.cel,caudate nucleus
+92,GSM86879.cel,caudate nucleus
+93,GSM86880.cel,caudate nucleus
+94,GSM86881.CEL,caudate nucleus
+95,GSM86882.cel,caudate nucleus
+96,GSM86883.cel,caudate nucleus
+97,GSM86884.cel,caudate nucleus
+98,GSM86885.cel,caudate nucleus
+99,GSM86886.cel,caudate nucleus
+100,GSM86887.cel,caudate nucleus
+101,GSM86888.cel,caudate nucleus
+102,GSM86889.cel,caudate nucleus
+103,GSM86890.cel,caudate nucleus
+104,GSM86891.cel,caudate nucleus
+105,GSM86892.cel,caudate nucleus
+106,GSM86893.cel,caudate nucleus
+107,GSM86894.cel,caudate nucleus
+108,GSM86895.cel,caudate nucleus
+109,GSM86896.cel,caudate nucleus
+110,GSM86897.cel,caudate nucleus
+111,GSM86898.cel,caudate nucleus
+112,GSM86899.CEL,caudate nucleus
+113,GSM86900.cel,caudate nucleus
+114,GSM86901.cel,caudate nucleus
+115,GSM86902.cel,caudate nucleus
+116,GSM86903.cel,caudate nucleus
+117,GSM86904.cel,caudate nucleus
+118,GSM86905.cel,caudate nucleus
+119,GSM86906.cel,caudate nucleus
+120,GSM86907.cel,caudate nucleus
+121,GSM86908.cel,caudate nucleus
+122,GSM86909.cel,caudate nucleus
+123,GSM86910.cel,caudate nucleus
+124,GSM86911.cel,caudate nucleus
+125,GSM86912.cel,caudate nucleus
+126,GSM86913.cel,caudate nucleus
+127,GSM86914.cel,caudate nucleus
+128,GSM86915.cel,caudate nucleus
+129,GSM86916.cel,caudate nucleus
+130,GSM86917.cel,caudate nucleus
+131,GSM86918.cel,caudate nucleus
+132,GSM86919.cel,caudate nucleus
+133,GSM86920.cel,caudate nucleus
+134,GSM86921.cel,caudate nucleus
+135,GSM86922.cel,caudate nucleus
+136,GSM86923.cel,caudate nucleus
+137,GSM86924.cel,caudate nucleus
+138,GSM86925.cel,caudate nucleus
+139,GSM86926.cel,caudate nucleus
+140,GSM86927.cel,frontal cortex
+141,GSM86928.cel,frontal cortex
+142,GSM86929.cel,frontal cortex
+143,GSM86930.cel,frontal cortex
+144,GSM86931.cel,frontal cortex
+145,GSM86932.cel,frontal cortex
+146,GSM86933.cel,frontal cortex
+147,GSM86934.cel,frontal cortex
+148,GSM86935.cel,frontal cortex
+149,GSM86936.cel,frontal cortex
+150,GSM86937.cel,frontal cortex
+151,GSM86938.cel,frontal cortex
+152,GSM86939.cel,frontal cortex
+153,GSM86940.cel,frontal cortex
+154,GSM86941.cel,frontal cortex
+155,GSM86942.cel,frontal cortex
+156,GSM86943.cel,frontal cortex
+157,GSM86944.cel,frontal cortex
+158,GSM86945.cel,frontal cortex
+159,GSM86946.cel,frontal cortex
+160,GSM86947.cel,frontal cortex
+161,GSM86948.cel,frontal cortex
+162,GSM86949.cel,frontal cortex
+163,GSM86950.cel,frontal cortex
+164,GSM86951.cel,frontal cortex
+165,GSM86952.cel,frontal cortex
+166,GSM86953.cel,frontal cortex
+167,GSM86954.cel,frontal cortex
+168,GSM86955.cel,frontal cortex
+169,GSM86956.cel,frontal cortex
+170,GSM86957.cel,frontal cortex
+171,GSM86958.cel,frontal cortex
+172,GSM86959.cel,frontal cortex
+173,GSM86960.cel,frontal cortex
+174,GSM86961.cel,frontal cortex
+175,GSM86962.cel,frontal cortex
+176,GSM86963.cel,frontal cortex
+177,GSM86964.cel,frontal cortex
+178,GSM86965.cel,frontal cortex
+179,GSM86966.cel,frontal cortex
+180,GSM86967.cel,frontal cortex
+181,GSM86968.cel,frontal cortex
+182,GSM86969.cel,frontal cortex
+183,GSM86970.cel,frontal cortex
+184,GSM86971.cel,frontal cortex
+185,GSM86972.cel,frontal cortex
+186,GSM86973.cel,frontal cortex
+187,GSM86974.cel,frontal cortex
+188,GSM86975.cel,frontal cortex
+189,GSM86976.cel,frontal cortex
+190,GSM86977.cel,frontal cortex
+191,GSM86978.cel,frontal cortex
+192,GSM86979.cel,frontal cortex
+193,GSM86980.cel,frontal cortex
+194,GSM86981.cel,frontal cortex
+195,GSM86982.cel,frontal cortex
+196,GSM86983.cel,frontal cortex
+197,GSM86984.cel,frontal cortex
+198,GSM86985.cel,frontal cortex
+199,GSM86986.cel,frontal cortex
+200,GSM86987.cel,frontal cortex
+201,GSM86988.cel,frontal cortex
+202,GSM86989.cel,frontal cortex
+203,GSM86990.cel,frontal cortex
+204,GSM86991.cel,frontal cortex
+205,GSM86992.cel,frontal cortex
+206,GSM86993.cel,frontal cortex
+207,GSM86994.cel,frontal cortex
+208,GSM86995.cel,frontal cortex
+209,GSM86996.cel,frontal cortex
+210,GSM86997.cel,frontal cortex
+211,GSM86998.cel,frontal cortex
+212,GSM86999.cel,frontal cortex
+213,GSM87000.cel,frontal cortex
+214,GSM87001.cel,frontal cortex
+215,GSM87002.cel,frontal cortex
+216,GSM87003.cel,frontal cortex
+217,GSM87004.cel,frontal cortex
+218,GSM87005.cel,frontal cortex
+219,GSM87006.cel,frontal cortex
+220,GSM87007.cel,frontal cortex
+221,GSM87008.cel,frontal cortex
+222,GSM87009.cel,frontal cortex
+223,GSM87010.cel,frontal cortex
+224,GSM87011.cel,frontal cortex
+225,GSM87012.cel,frontal cortex
+226,GSM87013.cel,frontal cortex
+227,GSM87014.cel,frontal cortex
+228,GSM87015.cel,frontal cortex
+229,GSM87016.cel,frontal cortex
+230,GSM87017.cel,frontal cortex
+231,GSM87018.cel,frontal cortex
+232,GSM87019.cel,frontal cortex
+233,GSM87020.cel,frontal cortex
+234,GSM87021.cel,frontal cortex
+235,GSM87022.cel,frontal cortex
+236,GSM87023.cel,frontal cortex
+237,GSM87024.cel,frontal cortex
+238,GSM87025.cel,frontal cortex
+239,GSM87026.cel,frontal cortex
+240,GSM87027.cel,frontal cortex
+241,GSM87028.cel,frontal cortex
+242,GSM87029.cel,frontal cortex
+243,GSM87030.cel,frontal cortex
+244,GSM87031.cel,frontal cortex
+245,GSM87032.cel,frontal cortex
+246,GSM87033.cel,frontal cortex
+247,GSM87034.cel,frontal cortex
+248,GSM87035.cel,frontal cortex
+249,GSM87036.cel,frontal cortex
+250,GSM87037.cel,frontal cortex
+251,GSM87038.cel,frontal cortex
+252,GSM87039.cel,frontal cortex
+253,GSM87040.cel,frontal cortex
+254,GSM87041.cel,frontal cortex
+255,GSM87042.cel,frontal cortex
+256,GSM87043.cel,frontal cortex
+257,GSM87044.cel,frontal cortex
+258,GSM87045.cel,frontal cortex
+259,GSM87046.cel,frontal cortex
+260,GSM87047.cel,frontal cortex
+261,GSM87048.cel,frontal cortex
+262,GSM87049.cel,frontal cortex
+263,GSM87050.cel,frontal cortex
+264,GSM87051.CEL,frontal cortex
+265,GSM87052.cel,frontal cortex
+266,GSM87053.cel,frontal cortex
+267,GSM87054.cel,frontal cortex
+268,GSM87055.cel,frontal cortex
+269,GSM87056.cel,frontal cortex
+270,GSM87057.cel,frontal cortex
+271,GSM87058.cel,cerebellum
+272,GSM87059.cel,cerebellum
+273,GSM87060.cel,cerebellum
+274,GSM87061.cel,cerebellum
+275,GSM87062.cel,cerebellum
+276,GSM87063.cel,cerebellum
+277,GSM87064.cel,cerebellum
+278,GSM87065.cel,cerebellum
+279,GSM87066.cel,cerebellum
+280,GSM87067.cel,cerebellum
+281,GSM87068.cel,cerebellum
+282,GSM87069.cel,cerebellum
+283,GSM87070.cel,cerebellum
+284,GSM87071.cel,cerebellum
+285,GSM87072.cel,cerebellum
+286,GSM87073.cel,cerebellum
+287,GSM87074.cel,cerebellum
+288,GSM87075.cel,cerebellum
+289,GSM87076.cel,cerebellum
+290,GSM87077.CEL,cerebellum
+291,GSM87078.cel,cerebellum
+292,GSM87079.cel,cerebellum
+293,GSM87080.cel,cerebellum
+294,GSM87081.cel,cerebellum
+295,GSM87082.cel,cerebellum
+296,GSM87083.cel,cerebellum
+297,GSM87084.cel,cerebellum
+298,GSM87085.cel,cerebellum
+299,GSM87086.cel,cerebellum
+300,GSM87087.cel,cerebellum
+301,GSM87088.cel,cerebellum
+302,GSM87089.cel,cerebellum
+303,GSM87090.CEL,cerebellum
+304,GSM87091.cel,cerebellum
+305,GSM87092.cel,cerebellum
+306,GSM87093.cel,cerebellum
+307,GSM87094.cel,cerebellum
+308,GSM87095.cel,cerebellum
+309,GSM87096.cel,cerebellum
+310,GSM87097.cel,cerebellum
+311,GSM87098.cel,cerebellum
+312,GSM87099.cel,cerebellum
+313,GSM87100.cel,cerebellum
+314,GSM87101.cel,cerebellum
+315,GSM87102.cel,cerebellum
+316,GSM87103.cel,cerebellum
+317,GSM87104.cel,cerebellum
+318,GSM87105.cel,cerebellum
+319,GSM87106.cel,cerebellum
+320,GSM87107.cel,cerebellum
+321,GSM87108.cel,cerebellum
+322,GSM87109.cel,cerebellum
+323,GSM87110.cel,cerebellum
+324,GSM87111.cel,cerebellum
+325,GSM87112.cel,cerebellum
+326,GSM87113.CEL,cerebellum
+327,GSM87114.cel,cerebellum
+328,GSM87115.cel,cerebellum
+329,GSM87116.cel,cerebellum
+330,GSM87117.cel,cerebellum
+331,GSM87118.cel,cerebellum
+332,GSM87119.cel,cerebellum
+333,GSM87120.cel,cerebellum
+334,GSM87121.cel,cerebellum
+335,GSM87122.cel,cerebellum
+336,GSM87123.cel,cerebellum
+337,GSM87124.cel,cerebellum
+338,GSM87125.cel,cerebellum
+339,GSM87126.cel,cerebellum
+340,GSM87127.cel,cerebellum
+341,GSM87128.cel,cerebellum
+342,GSM87129.cel,cerebellum
+343,GSM87130.cel,cerebellum
+344,GSM87131.cel,cerebellum
+345,GSM87132.cel,cerebellum
+346,GSM87133.cel,cerebellum
+347,GSM87134.cel,cerebellum
+348,GSM87135.cel,cerebellum
+349,GSM87136.cel,cerebellum
+350,GSM87137.cel,cerebellum
+351,GSM87138.cel,cerebellum
+352,GSM87139.cel,cerebellum
+353,GSM87140.cel,cerebellum
+354,GSM87141.cel,cerebellum
+355,GSM87142.cel,cerebellum
+356,GSM87143.cel,cerebellum
+357,GSM87144.cel,cerebellum
+358,GSM87145.cel,cerebellum
+359,GSM87146.cel,cerebellum
+360,GSM87147.cel,cerebellum
+361,GSM87148.cel,cerebellum
+362,GSM87149.cel,cerebellum
+363,GSM87150.cel,cerebellum
+364,GSM87151.cel,cerebellum
+365,GSM87152.cel,cerebellum
+366,GSM87153.cel,cerebellum
+367,GSM87154.cel,cerebellum
+368,GSM87155.cel,cerebellum
+369,GSM87156.cel,cerebellum
+370,GSM87157.cel,cerebellum
+371,GSM87158.cel,cerebellum
+372,GSM87159.cel,cerebellum
+373,GSM87160.cel,cerebellum
+374,GSM87161.cel,cerebellum
+375,GSM87162.cel,cerebellum
+376,GSM87163.cel,cerebellum
+377,GSM87164.cel,cerebellum
+378,GSM87165.cel,cerebellum
+379,GSM87166.cel,cerebellum
+380,GSM87167.cel,cerebellum
+381,GSM87168.cel,cerebellum
+382,GSM87169.cel,cerebellum
+383,GSM87170.cel,cerebellum
+384,GSM87171.cel,cerebellum
+385,GSM87172.CEL,cerebellum
+386,GSM87173.cel,cerebellum
+387,GSM87174.cel,cerebellum
+388,GSM87175.cel,cerebellum
+389,GSM87176.cel,cerebellum
+390,GSM87177.cel,cerebellum
+391,GSM87178.cel,cerebellum
+392,GSM87179.cel,cerebellum
+393,GSM87180.cel,cerebellum
+394,GSM87181.cel,cerebellum
+395,GSM87182.cel,cerebellum
+396,GSM87183.cel,cerebellum
+397,GSM87184.cel,cerebellum
+398,GSM87185.cel,cerebellum
+399,GSM87186.cel,cerebellum
+400,GSM87187.cel,cerebellum
+401,GSM87188.cel,cerebellum
+402,GSM87189.cel,cerebellum
+403,GSM87190.cel,cerebellum
