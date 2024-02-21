@@ -40,41 +40,44 @@ algoritmo_ga = GeneticAlgorithm(problema,
                             mutation=BitFlipMutation(0.1), # probabilidad de mutación del 0.1 para cada bit, de que sea invertido en cada generación (0->1, 1->0)
                             crossover=CXCrossover(0.1), # probabilidad de cruce del 0.9. de que para cada par de soluciones en la población se realice el cruce y así generar una nueva solución en cada generación
                             selection=BestSolutionSelection(),
-                            termination_criterion=StoppingByEvaluations(max_evaluations=50)
+                            termination_criterion=StoppingByEvaluations(max_evaluations=100)
                             )
 
-#corremos el algoritmo
-# algoritmo_ga.run()
+# corremos el algoritmo
+algoritmo_ga.run()
 
-#obtenemos las soluciones a las que llegó el algoritmo
-# soluciones_ga = algoritmo_ga.get_result()
+# obtenemos las soluciones a las que llegó el algoritmo
+soluciones_ga = algoritmo_ga.get_result()
 # mejor_solucion = soluciones_ga[0] 
 
-# print(f"Type: {type(soluciones_ga)}")
-# print(f"Soluciones Genetic Algorithm: {soluciones_ga.variables}\n")
-# print(f"Mejor solución: {soluciones_ga.objectives}\n")
+print(f"Type: {type(soluciones_ga)}")
+print(f"Soluciones Genetic Algorithm: {soluciones_ga.variables}\n")
+print(f"Cantidad de bits 1: {sum(1 for item in soluciones_ga.variables for valor in item if valor)}")
+print(f"Mejor solución: {soluciones_ga.objectives}\n")
 # print(f"Cadena de bits: {len(mejor_solucion.variables)} | {mejor_solucion.variables}")
 
 
-evolucion = []
-mejor_solucion = 0 
-for generacion in range(100):
-    algoritmo_ga.run()
-    soluciones = algoritmo_ga.get_result()
-    mejor_solucion_generacion = soluciones.objectives[0]
+# evolucion = []
+# mejor_solucion = 0 
+# for generacion in range(100):
+#     algoritmo_ga.run()
+#     soluciones = algoritmo_ga.get_result()
+#     mejor_solucion_generacion = soluciones.objectives[0]
 
-    evolucion.append(mejor_solucion_generacion)
+#     evolucion.append(mejor_solucion_generacion)
 
-    if mejor_solucion_generacion <= min(evolucion):
-        mejor_solucion = mejor_solucion_generacion
+#     if mejor_solucion_generacion <= min(evolucion):
+#         mejor_solucion = mejor_solucion_generacion
 
-print(f"Mejor solución encontrada: {mejor_solucion}")
+# print(f"Mejor solución encontrada: {mejor_solucion}")
 
-plt.plot(x=[i for i in range(100)],y= evolucion,c='green')
-plt.xlabel("Generación")
-plt.ylabel("Suma")
-plt.title("Suma de bits en One Max")
-plt.show()
+# x=[i for i in range(100)]
+# y= evolucion
+# plt.plot(x,y,c='green')
+# plt.xlabel("Generación")
+# plt.ylabel("Suma")
+# plt.title("Suma de bits en One Max")
+# plt.show()
 
 
 

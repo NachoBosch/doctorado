@@ -13,7 +13,7 @@ problema.observable.register(observer=pbar)
 
 #definimos el algoritmo
 algoritmo_ga = GeneticAlgorithm(problema,
-                            population_size=100,
+                            population_size=100, #Esto debería ser la cantidad de ciudades
                             offspring_population_size=20,
                             mutation=BitFlipMutation(1.0 / problema.number_of_variables), # probabilidad de mutación del 0.1 para cada bit, de que sea invertido en cada generación (0->1, 1->0)
                             crossover=CXCrossover(0.5), # probabilidad de cruce del 0.9. de que para cada par de soluciones en la población se realice el cruce y así generar una nueva solución en cada generación
