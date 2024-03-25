@@ -32,6 +32,7 @@ class FeatureSelectionProblem():
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)
+    print(f"Accuracy: {acc}")
 
     solution.objectives[0] = acc
     solution.constraints = []
@@ -72,11 +73,11 @@ algorithm = NSGAII(
     offspring_population_size=100,
     mutation=BitFlipMutation(probability=1.0 / problem.number_of_variables),
     crossover=CXCrossover(probability=1.0),
-    termination_criterion=StoppingByEvaluations(max_evaluations=2000)
+    termination_criterion=StoppingByEvaluations(max_evaluations=500)
 )
 
 algorithm.run()
 
 #RESULTS
-soluciones_ls = algoritmo.get_result()
+soluciones_ls = algorithm.get_result()
 print(f"NSGAII: {soluciones_ls}")
