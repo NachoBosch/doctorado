@@ -5,8 +5,8 @@ import numpy as np
 
 # from jmetal.core.problem import BinaryProblem
 from jmetal.core.solution import BinarySolution
-# from jmetal.algorithm.singleobjective import GeneticAlgorithm
-from jmetal.algorithm.multiobjective import NSGAII
+from jmetal.algorithm.singleobjective import GeneticAlgorithm
+# from jmetal.algorithm.multiobjective import NSGAII
 from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover
 from jmetal.util.termination_criterion import StoppingByEvaluations
 
@@ -67,7 +67,7 @@ y = df_hd.Grade
 problem = FeatureSelectionProblem(X,y)
 
 #ALGORITHM
-algorithm = NSGAII(
+algorithm = GeneticAlgorithm(
     problem=problem,
     population_size=100,
     offspring_population_size=100,
@@ -80,4 +80,4 @@ algorithm.run()
 
 #RESULTS
 soluciones_ls = algorithm.get_result()
-print(f"NSGAII: {soluciones_ls}")
+print(f"Genetic Algorithm: {soluciones_ls}")
