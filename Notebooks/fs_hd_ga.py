@@ -9,6 +9,7 @@ from jmetal.algorithm.singleobjective import GeneticAlgorithm
 # from jmetal.algorithm.multiobjective import NSGAII
 from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover
 from jmetal.util.termination_criterion import StoppingByEvaluations
+from jmetal.operator.selection import BestSolutionSelection
 
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
@@ -25,7 +26,7 @@ class FeatureSelectionProblem():
 
   def evaluate(self, solution):
     selected_features = np.flatnonzero(solution.variables)
-    X_selected = self.X.iloc[:, selected_features]
+    X_selected = self.X[:, selected_features]
     Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y)
 
     model = DecisionTreeClassifier()
@@ -62,8 +63,9 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '4':'HD_4'})
 
 #PRE-SETS
-X = df_hd.drop(columns=['Samples','Grade'])
-y = df_hd.Grade
+X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+y = df_hd.Grade.to_numpy()
+
 problem = FeatureSelectionProblem(X,y)
 
 #ALGORITHM
@@ -71,8 +73,9 @@ algorithm = GeneticAlgorithm(
     problem=problem,
     population_size=100,
     offspring_population_size=100,
-    mutation=BitFlipMutation(probability=1.0 / problem.number_of_variables),
-    crossover=CXCrossover(probability=1.0),
+    mutation=BitFlipMutation(0.1),
+    crossover=CXCrossover(0.5),
+    selection=BestSolutionSelection(),
     termination_criterion=StoppingByEvaluations(max_evaluations=500)
 )
 
