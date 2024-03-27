@@ -76,7 +76,7 @@ algorithm = GeneticAlgorithm(
     mutation=BitFlipMutation(0.1),
     crossover=CXCrossover(0.1),
     selection=BestSolutionSelection(),
-    termination_criterion=StoppingByEvaluations(max_evaluations=100)
+    termination_criterion=StoppingByEvaluations(max_evaluations=50)
 )
 
 algorithm.run()
