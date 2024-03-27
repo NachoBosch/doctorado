@@ -45,7 +45,7 @@ class FeatureSelectionProblem():
         number_of_constraints = self.number_of_constraints
     )
     # new_variables = [list(np.random.randint(0, 2, size=1).tolist()[0] for _ in range(self.number_of_variables))]
-    new_variables = [np.random.randint(0, 2, size=1)[0] for _ in range(self.number_of_variables)]
+    new_variables = [np.random.randint(0, 2, size=1).tolist() for _ in range(self.number_of_variables)]
     new_solution.variables = new_variables
     return new_solution
 
