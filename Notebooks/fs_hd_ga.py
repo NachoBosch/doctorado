@@ -63,8 +63,8 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '4':'HD_4'})
 
 #PRE-SETS
-X = df_hd.drop(columns=['Samples','Grade']).to_list()
-y = df_hd.Grade.to_list()
+X = df_hd.drop(columns=['Samples','Grade'])
+y = df_hd.Grade
 
 problem = FeatureSelectionProblem(X,y)
 
