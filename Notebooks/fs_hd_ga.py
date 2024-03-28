@@ -32,8 +32,8 @@ class FeatureSelectionProblem():
     X_selected = self.X[:, selected_features]
     Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y)
 
-    # model = DecisionTreeClassifier()
-    model = AdaBoostClassifier(n_estimators=100)
+    model = DecisionTreeClassifier()
+    # model = AdaBoostClassifier(n_estimators=100)
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)
