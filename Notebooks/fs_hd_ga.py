@@ -1,6 +1,6 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 import numpy as np
 
 # from jmetal.core.problem import BinaryProblem
@@ -11,9 +11,12 @@ from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMuta
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.operator.selection import BestSolutionSelection
 
+
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import AdaBoostClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import LabelEncoder
 
 #PROBLEM
 class FeatureSelectionProblem():
@@ -26,10 +29,11 @@ class FeatureSelectionProblem():
 
   def evaluate(self, solution):
     selected_features = np.flatnonzero(solution.variables)
-    X_selected = self.X.iloc[:, selected_features]
+    X_selected = self.X[:, selected_features]
     Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y)
 
-    model = DecisionTreeClassifier()
+    # model = DecisionTreeClassifier()
+    model = AdaBoostClassifier(n_estimators=100)
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)
@@ -63,8 +67,10 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '4':'HD_4'})
 
 #PRE-SETS
-X = df_hd.drop(columns=['Samples','Grade'])
-y = df_hd.Grade
+encoder = LabelEncoder()
+X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+y = encoder.fit_transform(df_hd.Grade.to_numpy())
+# print(f"Target encoded: {y}")
 
 problem = FeatureSelectionProblem(X,y)
 
