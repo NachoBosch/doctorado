@@ -37,7 +37,6 @@ class FeatureSelectionProblem():
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)
-    print(f"Accuracy: {acc}")
 
     solution.objectives[0] = acc
     solution.constraints = []
@@ -70,7 +69,6 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
 encoder = LabelEncoder()
 X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
-# print(f"Target encoded: {y}")
 
 problem = FeatureSelectionProblem(X,y)
 
@@ -89,4 +87,7 @@ algorithm.run()
 
 #RESULTS
 soluciones_ls = algorithm.get_result()
-print(f"Genetic Algorithm: {soluciones_ls}")
+with open('resultados.txt','w') as f:
+  f.write(f"Target encoded: {y}\n")
+  f.write(f"Solucion: {soluciones_ls}")
+
