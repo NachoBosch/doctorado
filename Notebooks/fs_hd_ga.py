@@ -87,7 +87,12 @@ algorithm.run()
 
 #RESULTS
 soluciones_ls = algorithm.get_result()
-with open('resultados.txt','w') as f:
-  f.write(f"Target encoded: {y}\n")
-  f.write(f"Solucion: {soluciones_ls}")
+objectives = soluciones_ls.objectives
+variables = soluciones_ls.variables
 
+with open('resultados.txt','w') as f:
+  # f.write(f"Target encoded: {y}\n")
+  f.write(f"Solucion objectives: {objectives}\n")
+  f.write(f"Solucion variables: {variables}\n")
+  f.write(f"Solucion variables type: {type(variables)}\n")
+  f.write(f"Solucion variables amount: {len(variables)}\n")
