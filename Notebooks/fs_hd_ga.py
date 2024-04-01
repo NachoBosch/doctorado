@@ -76,12 +76,12 @@ problem = FeatureSelectionProblem(X,y)
 # ALGORITHM
 algorithm = GeneticAlgorithm(
     problem=problem,
-    population_size=10,
-    offspring_population_size=2,
+    population_size=100,
+    offspring_population_size=50,
     mutation=BitFlipMutation(0.1),
     crossover=CXCrossover(0.1),
     selection=BestSolutionSelection(),
-    termination_criterion=StoppingByEvaluations(max_evaluations=50)
+    termination_criterion=StoppingByEvaluations(max_evaluations=500)
 )
 
 algorithm.run()
