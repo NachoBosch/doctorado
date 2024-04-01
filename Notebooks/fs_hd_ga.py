@@ -69,10 +69,11 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
 encoder = LabelEncoder()
 X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
+clases = list(df_hd.columns[1:-1])
 
 problem = FeatureSelectionProblem(X,y)
 
-#ALGORITHM
+# ALGORITHM
 algorithm = GeneticAlgorithm(
     problem=problem,
     population_size=10,
@@ -85,14 +86,19 @@ algorithm = GeneticAlgorithm(
 
 algorithm.run()
 
-#RESULTS
+# #RESULTS
 soluciones_ls = algorithm.get_result()
 objectives = soluciones_ls.objectives
 variables = soluciones_ls.variables
 
-with open('resultados.txt','w') as f:
-  # f.write(f"Target encoded: {y}\n")
+var_squeezed = np.squeeze(variables)
+genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
+
+with open('resultados_1.txt','w') as f:
+  f.write(f"Name: {algorithm.get_name()}\n")
   f.write(f"Solucion objectives: {objectives}\n")
   f.write(f"Solucion variables: {variables}\n")
   f.write(f"Solucion variables type: {type(variables)}\n")
   f.write(f"Solucion variables amount: {len(variables)}\n")
+  f.write(f"Selected genes: {genes_selected}\n")
+  f.write(f"Selected genes amount: {len(genes_selected)}\n")
