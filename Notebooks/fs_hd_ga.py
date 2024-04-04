@@ -56,7 +56,7 @@ class FeatureSelectionProblem():
     return "FeatureSelectionProblem"
   
 #DATA
-df_hd = pd.read_csv('../Data/HD_dataset_full.csv')
+df_hd = pd.read_csv('~/code/doctorado/Data/HD_dataset_full.csv')
 df_hd.rename(columns={'Unnamed: 0':'Samples'},inplace=True)
 df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '0':'HD_0',
@@ -66,7 +66,7 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '4':'HD_4'})
 
 #DEGs 
-degs = pd.read_csv('../Data/genes_seleccionados_ebays.csv')
+degs = pd.read_csv('~/code/doctorado/Data/genes_seleccionados_ebays.csv')
 degs = degs['Gene'].to_list()
 df_hd = df_hd[degs+['Samples','Grade']]
 
@@ -99,7 +99,7 @@ variables = soluciones_ls.variables
 var_squeezed = np.squeeze(variables)
 genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
 
-with open('~/code/doctorado/Notebooks/resultados_1.txt','w') as f:
+with open('~/code/doctorado/Notebooks/resultados_2.txt','w') as f:
   f.write(f"Name: {algorithm.get_name()}\n")
   f.write(f"Solucion objectives: {objectives}\n")
   f.write(f"Solucion variables: {variables}\n")
