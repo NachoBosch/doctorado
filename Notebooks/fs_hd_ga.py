@@ -56,7 +56,7 @@ class FeatureSelectionProblem():
     return "FeatureSelectionProblem"
   
 #DATA
-df_hd = pd.read_csv('../Data/HD_dataset_full.csv')
+df_hd = pd.read_csv('~/code/doctorado/Data/HD_dataset_full.csv')
 df_hd.rename(columns={'Unnamed: 0':'Samples'},inplace=True)
 df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '0':'HD_0',
@@ -65,29 +65,45 @@ df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
                                      '3':'HD_3',
                                      '4':'HD_4'})
 
+#DEGs 
+degs = pd.read_csv('~/code/doctorado/Data/genes_seleccionados_ebays.csv')
+degs = degs['Gene'].to_list()
+df_hd = df_hd[degs+['Samples','Grade']]
+
 #PRE-SETS
 encoder = LabelEncoder()
 X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
+clases = list(df_hd.columns[:-2])
 
 problem = FeatureSelectionProblem(X,y)
 
-#ALGORITHM
+# # ALGORITHM
 algorithm = GeneticAlgorithm(
     problem=problem,
-    population_size=10,
-    offspring_population_size=2,
+    population_size=100,
+    offspring_population_size=50,
     mutation=BitFlipMutation(0.1),
     crossover=CXCrossover(0.1),
     selection=BestSolutionSelection(),
-    termination_criterion=StoppingByEvaluations(max_evaluations=50)
+    termination_criterion=StoppingByEvaluations(max_evaluations=500)
 )
 
 algorithm.run()
 
-#RESULTS
+# # #RESULTS
 soluciones_ls = algorithm.get_result()
-with open('resultados.txt','w') as f:
-  f.write(f"Target encoded: {y}\n")
-  f.write(f"Solucion: {soluciones_ls}")
+objectives = soluciones_ls.objectives
+variables = soluciones_ls.variables
 
+var_squeezed = np.squeeze(variables)
+genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
+
+with open('~/code/doctorado/Notebooks/resultados_2.txt','w') as f:
+  f.write(f"Name: {algorithm.get_name()}\n")
+  f.write(f"Solucion objectives: {objectives}\n")
+  f.write(f"Solucion variables: {variables}\n")
+  f.write(f"Solucion variables type: {type(variables)}\n")
+  f.write(f"Solucion variables amount: {len(variables)}\n")
+  f.write(f"Selected genes: {genes_selected}\n")
+  f.write(f"Selected genes amount: {len(genes_selected)}\n")

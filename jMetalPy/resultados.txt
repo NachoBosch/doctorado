@@ -1,0 +1,5 @@
+Name: Genetic algorithm
+Solucion objectives: [-66.0]
+Solucion variables: [[True, False, False, False, False, True, False, True, True, False, True, False, False, True, False, True, False, True, True, False, True, True, True, True, True, False, True, True, False, True, False, False, False, False, True, False, True, True, True, True, False, True, False, True, False, True, True, False, False, True, True, False, True, True, False, True, True, False, True, True, True, False, False, True, True, True, True, False, True, True, True, False, False, True, True, False, False, True, True, False, True, True, False, True, True, False, True, False, False, True, True, True, True, False, False, True, True, False, True, False]]
+Solucion variables type: <class 'list'>
+Solucion variables amount: 1
