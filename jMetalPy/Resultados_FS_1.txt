@@ -1,0 +1,7 @@
+Name: Genetic algorithm
+Solucion objectives: [-0.764950495049505]
+Solucion variables: [[0], [1], [0], [False], [0], [0], [0], [1], [False], [False], [False], [0], [False], [0], [0], [False], [False], [False], [0], [1], [False], [1], [False], [1], [0], [0], [0], [False], [False], [0], [1], [0], [0], [0], [1], [0], [1], [False], [0], [1], [0], [0], [False], [False], [False], [0], [1], [1], [False], [0], [0], [False], [1], [0], [False], [False], [0], [False], [0], [0], [0], [0], [1], [1], [1], [0], [False], [0], [False], [0], [False], [False], [0], [0], [False], [0], [0], [1], [1], [0], [False], [0], [False], [False], [1], [1], [0], [0], [0], [0], [0], [0], [1], [0], [0], [False], [False], [0], [0], [0]]
+Solucion variables type: <class 'list'>
+Solucion variables amount: 100
+Selected genes: ['ENSG00000056736', 'ENSG00000171208', 'ENSG00000157087', 'ENSG00000175471', 'ENSG00000130477', 'ENSG00000197006', 'ENSG00000106610', 'ENSG00000198142', 'ENSG00000158195', 'ENSG00000140443', 'ENSG00000091879', 'ENSG00000119547', 'ENSG00000213853', 'ENSG00000169282', 'ENSG00000100330', 'ENSG00000184986', 'ENSG00000176142', 'ENSG00000158528', 'ENSG00000147421', 'ENSG00000134294']
+Selected genes amount: 20

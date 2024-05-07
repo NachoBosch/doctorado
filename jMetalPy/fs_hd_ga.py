@@ -3,20 +3,24 @@ import pandas as pd
 # import seaborn as sns
 import numpy as np
 
-# from jmetal.core.problem import BinaryProblem
+
+import sys
+sys.path.insert(1, 'D:/Doctorado/doctorado/jMetalPy/jmetal')
+
 from jmetal.core.solution import BinarySolution
 from jmetal.algorithm.singleobjective import GeneticAlgorithm
-# from jmetal.algorithm.multiobjective import NSGAII
-from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover
+from jmetal.algorithm.multiobjective import NSGAII
+from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover, SPXCrossover
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.operator.selection import BestSolutionSelection
 
 
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import AdaBoostClassifier,RandomForestClassifier
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
+from sklearn.feature_selection import SelectKBest, f_classif
 
 #PROBLEM
 class FeatureSelectionProblem():
@@ -30,15 +34,20 @@ class FeatureSelectionProblem():
   def evaluate(self, solution):
     selected_features = np.flatnonzero(solution.variables)
     X_selected = self.X[:, selected_features]
-    Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y)
 
-    model = DecisionTreeClassifier()
-    # model = AdaBoostClassifier(n_estimators=100)
+    Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y, stratify=self.y)
+
+    model = RandomForestClassifier()
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)
 
-    solution.objectives[0] = acc
+    num_variables = len(selected_features)
+    alfa = 0.7
+    beta = 1 - alfa
+    fitness = 1.0 - (num_variables/self.X.shape[1]) # Primera parte de la función agregativa
+    fitness = (alfa * fitness) + (beta * acc)
+    solution.objectives[0] = -fitness
     solution.constraints = []
 
   def create_solution(self):
@@ -47,8 +56,10 @@ class FeatureSelectionProblem():
         number_of_objectives = self.number_of_objectives,
         number_of_constraints = self.number_of_constraints
     )
-    # new_variables = [list(np.random.randint(0, 2, size=1).tolist()[0] for _ in range(self.number_of_variables))]
+    
     new_variables = [np.random.randint(0, 2, size=1).tolist() for _ in range(self.number_of_variables)]
+    # new_variables = list(np.random.randint(0, 2, size=self.number_of_variables))
+    print(new_variables)
     new_solution.variables = new_variables
     return new_solution
 
@@ -56,19 +67,7 @@ class FeatureSelectionProblem():
     return "FeatureSelectionProblem"
   
 #DATA
-df_hd = pd.read_csv('~/code/doctorado/Data/HD_dataset_full.csv')
-df_hd.rename(columns={'Unnamed: 0':'Samples'},inplace=True)
-df_hd['Grade'] = df_hd['Grade'].map({'-':'Control',
-                                     '0':'HD_0',
-                                     '1':'HD_1',
-                                     '2':'HD_2',
-                                     '3':'HD_3',
-                                     '4':'HD_4'})
-
-#DEGs 
-degs = pd.read_csv('~/code/doctorado/Data/genes_seleccionados_ebays.csv')
-degs = degs['Gene'].to_list()
-df_hd = df_hd[degs+['Samples','Grade']]
+df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
 
 #PRE-SETS
 encoder = LabelEncoder()
@@ -76,17 +75,27 @@ X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
 
-problem = FeatureSelectionProblem(X,y)
+#PRE-FILTER
+kbest = SelectKBest(score_func=f_classif, k=100)
+X_select = kbest.fit_transform(X, y)
+print("Columnas seleccionadas KBest:", len(kbest.get_support(indices=True)))
+selected_features = [clases[i] for i in kbest.get_support(indices=True)]
+# print(f"Features seleccionadas KBest: {selected_features}")
+
+#PROBLEM
+problem = FeatureSelectionProblem(X_select,y)
+pobl = 150
+off_pobl = int(pobl*0.75)
 
 # # ALGORITHM
 algorithm = GeneticAlgorithm(
     problem=problem,
-    population_size=100,
-    offspring_population_size=50,
-    mutation=BitFlipMutation(0.1),
-    crossover=CXCrossover(0.1),
+    population_size=pobl,
+    offspring_population_size=off_pobl,
+    mutation=BitFlipMutation(0.01),
+    crossover=SPXCrossover(0.9),
     selection=BestSolutionSelection(),
-    termination_criterion=StoppingByEvaluations(max_evaluations=500)
+    termination_criterion=StoppingByEvaluations(max_evaluations=1200)
 )
 
 algorithm.run()
@@ -99,7 +108,7 @@ variables = soluciones_ls.variables
 var_squeezed = np.squeeze(variables)
 genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
 
-with open('~/code/doctorado/Notebooks/resultados_2.txt','w') as f:
+with open('Resultados_FS_2.txt','w') as f:
   f.write(f"Name: {algorithm.get_name()}\n")
   f.write(f"Solucion objectives: {objectives}\n")
   f.write(f"Solucion variables: {variables}\n")
