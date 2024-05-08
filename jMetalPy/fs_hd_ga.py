@@ -59,7 +59,7 @@ class FeatureSelectionProblem():
     
     new_variables = [np.random.randint(0, 2, size=1).tolist() for _ in range(self.number_of_variables)]
     # new_variables = list(np.random.randint(0, 2, size=self.number_of_variables))
-    print(new_variables)
+    # print(new_variables)
     new_solution.variables = new_variables
     return new_solution
 
@@ -83,13 +83,13 @@ clases = list(df_hd.columns[:-2])
 # print(f"Features seleccionadas KBest: {selected_features}")
 
 #PROBLEM
-alfa = 0.6
+alfa = 0.9
 problem = FeatureSelectionProblem(X,y,alfa)
 
 #PARAMETERS
 pobl = 150
 off_pobl = int(pobl*0.75)
-evals = 7500
+evals = 15000
 mut_p = 0.01
 cross_p = 0.9
 
@@ -120,7 +120,7 @@ variables = soluciones_ls.variables
 var_squeezed = np.squeeze(variables)
 genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
 
-with open('Resultados_func_agregativa/Experimento3/Resultados_FS_3.txt','w') as f:
+with open('Resultados_func_agregativa/Experimento4/Resultados_FS_4.txt','w') as f:
   f.write(f"Name: {algorithm.get_name()}\n")
   f.write(f"Solucion objectives: {objectives}\n")
   f.write(f"Solucion variables: {variables}\n")
