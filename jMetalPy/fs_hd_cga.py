@@ -8,7 +8,7 @@ import sys
 sys.path.insert(1, 'D:/Doctorado/doctorado/jMetalPy/jmetal')
 
 from jmetal.core.solution import BinarySolution
-from jmetal.algorithm.singleobjective import GeneticAlgorithm
+from jmetal.algorithm.singleobjective import CellularGeneticAlgorithm
 from jmetal.algorithm.multiobjective import NSGAII
 from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover, SPXCrossover
 from jmetal.util.termination_criterion import StoppingByEvaluations
@@ -58,8 +58,6 @@ class FeatureSelectionProblem():
     )
     
     new_variables = [np.random.randint(0, 2, size=1).tolist() for _ in range(self.number_of_variables)]
-    # new_variables = np.random.randint(0, 2, size=self.number_of_variables).tolist()
-    # new_variables = list(np.random.randint(0, 2, size=self.number_of_variables))
     # print(new_variables)
     new_solution.variables = new_variables
     return new_solution
@@ -76,13 +74,6 @@ X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
 
-#PRE-FILTER
-# kbest = SelectKBest(score_func=f_classif, k=100)
-# X = kbest.fit_transform(X, y)
-# print("Columnas seleccionadas KBest:", len(kbest.get_support(indices=True)))
-# selected_features = [clases[i] for i in kbest.get_support(indices=True)]
-# print(f"Features seleccionadas KBest: {selected_features}")
-
 #PROBLEM
 alfa = 0.9
 problem = FeatureSelectionProblem(X,y,alfa)
@@ -90,7 +81,8 @@ problem = FeatureSelectionProblem(X,y,alfa)
 #PARAMETERS
 pobl = 400
 off_pobl = int(pobl*0.75)
-evals = 1500
+#mating_size = int(pobl*0.25)
+evals = 7500
 mut_p = 0.01
 cross_p = 0.9
 
@@ -101,10 +93,11 @@ selection = BestSolutionSelection()
 criterion = StoppingByEvaluations(max_evaluations=evals)
 
 # # ALGORITHM
-algorithm = GeneticAlgorithm(
+algorithm = CellularGeneticAlgorithm(
     problem=problem,
     population_size=pobl,
     offspring_population_size=off_pobl,
+    #mating_pool_size = mating_size,
     mutation=mut,
     crossover=cross,
     selection=selection,
@@ -121,7 +114,7 @@ variables = soluciones_ls.variables
 var_squeezed = np.squeeze(variables)
 genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
 
-with open('Resultados_func_agregativa/Experimento5/Resultados_FS_3.txt','w') as f:
+with open('Resultados_CGA/Resultados_func_agregativa/Experimento1/Resultados_FS_3.txt','w') as f:
   f.write(f"Name: {algorithm.get_name()}\n")
   f.write(f"Solucion objectives: {objectives}\n")
   f.write(f"Solucion variables: {variables}\n")
