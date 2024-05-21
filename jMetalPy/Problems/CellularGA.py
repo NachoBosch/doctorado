@@ -53,7 +53,7 @@ class FeatureSelectionCGA():
         new_solution.variables = [np.random.randint(0, 2) for _ in range(self.number_of_variables)]
         new_solution.objectives = [0 for _ in range(self.number_of_objectives)]
         new_solution.constraints = [0 for _ in range(self.number_of_constraints)]
-        print(new_solution.variables)
+        # print(new_solution.variables)
     
         return new_solution
 

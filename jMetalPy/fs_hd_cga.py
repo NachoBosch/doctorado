@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from Problems import CellularGA
-from Algorithms.CGA import CellularGeneticAlgorithm
+from Algorithms.CGA2 import CellularGeneticAlgorithm
 from Core import crossover, mutation, selection
 
 from sklearn.preprocessing import LabelEncoder
@@ -21,7 +21,7 @@ clases = list(df_hd.columns[:-2])
 #PARAMETERS
 params = {'pobl': 100,
         'off_pobl': 100,
-        'evals' : 10,
+        'evals' : 50,
         'mut_p' :0.01,
         'cross_p': 0.9,
         'alfa':0.9,
@@ -44,12 +44,13 @@ algorithm = CellularGeneticAlgorithm(
     max_evaluations = params['evals'],
     mutation = mut,
     crossover = cross,
-    selection = selection
+    selection = selection,
+    neighborhood_size = 10
 )
 
 algorithm.run()
 
 # RESULTS
 experiment = 'Experimento1'
-test = str(3)
+test = str(2)
 Results.results(algorithm,experiment,test,clases,params)
