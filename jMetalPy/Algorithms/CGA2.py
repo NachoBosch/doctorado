@@ -119,6 +119,12 @@ class CellularGeneticAlgorithm():
     
     def plot_fitness(self):
         plt.figure()
+        plt.plot(self.best_fitness_per_epoch)
+        plt.xlabel("Epoch")
+        plt.ylabel("Fitness")
+        plt.title("Fitness progress")
+        plt.show()
+
 
     def get_name(self) -> str:
         return "Cellular Genetic Algorithm"

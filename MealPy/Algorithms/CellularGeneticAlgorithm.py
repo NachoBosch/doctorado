@@ -2,11 +2,11 @@ import numpy as np
 from mealpy.optimizer import Optimizer
 
 class CellularGA(Optimizer):
-    def __init__(self, epoch: int = 10000,
-                 pop_size: int = 100,
+    def __init__(self, epoch: int = 10,
+                 pop_size: int = 8,
                  pc: float = 0.95,
                  pm: float = 0.025,
-                 grid_shape = (10, 10),
+                 grid_shape = (2, 4),
                  selection = "tournament",
                  k_way = 0.2,
                  crossover = "one_point",
@@ -23,6 +23,7 @@ class CellularGA(Optimizer):
         self.k_way = k_way
         self.crossover = crossover
         self.mutation = mutation
+        self.pop = 0
 
     def create_grid(self):
         assert self.pop_size == self.grid_shape[0] * self.grid_shape[1], "Population size must match grid shape."
@@ -34,25 +35,50 @@ class CellularGA(Optimizer):
         neighbors = [(row-1, col), (row+1, col), (row, col-1), (row, col+1)]
         neighbors = [(r % self.grid_shape[0], c % self.grid_shape[1]) for r, c in neighbors]
         return [self.grid[r, c] for r, c in neighbors]
+    
+    def get_index_kway_tournament_selection(self, pop: [] = None, list_fitness: [] = None, k_way: float = 0.2, output: int = 2, reverse: bool = False) -> []:
+        if 0 < k_way < 1:
+            k_way = int(k_way * len(pop))
+        k_way = max(2, k_way)  # Asegurarse de que k_way sea al menos 2
+        list_id = np.random.choice(range(len(pop)), k_way, replace=False)
+        list_parents = [[idx, list_fitness[pop[idx]]] for idx in list_id]
+        print("List parents",len(list_parents))
+        if self.problem.minmax == "min":
+            list_parents = sorted(list_parents, key=lambda agent: agent[1])
+        else:
+            list_parents = sorted(list_parents, key=lambda agent: agent[1], reverse=True)
+        if reverse:
+            return [parent[0] for parent in list_parents[-output:]]
+        return [parent[0] for parent in list_parents[:output]]
 
     def selection_process__(self, idx, list_fitness):
         neighbors = self.get_neighbors(idx)
+        print(f"Neighbors: {len(neighbors)}")
+        print(f"Pop size: {self.pop_size}")
         if len(neighbors) < 2:
-            print("Not enough neighbors for selection. Using random selection.")
-            id_c1, id_c2 = self.generator.choice(range(self.pop_size), 2, replace=False)
+            print("Not enough neighbors for selection. Instead random selection.")
+            id_c1, id_c2 = np.random.choice(range(self.pop_size), 2, replace=False)
+            print("NP RANDOM CHOICE")
         else:
             id_c1, id_c2 = self.get_index_kway_tournament_selection(neighbors, list_fitness, k_way=self.k_way, output=2)
+            print("TOURNAMENT SELECTION")
+        print(f"Selection in index {idx}: Parents {id_c1} and {id_c2}")
+        print("Return: ",len(self.pop[id_c1].solution))
         return self.pop[id_c1].solution, self.pop[id_c2].solution
 
     def crossover_process__(self, dad, mom):
-        cut = self.generator.integers(1, self.problem.n_dims-1)
+        print(f"Dad: {len(dad)}")
+        cut = np.random.randint(1, self.pop_size-1)
         w1 = np.concatenate([dad[:cut], mom[cut:]])
         w2 = np.concatenate([mom[:cut], dad[cut:]])
+        print(f"Crossover: cut at {cut}, child1 {len(w1)}, child2 {len(w2)}")
         return w1, w2
 
     def mutation_process__(self, child):
-        idx = self.generator.integers(0, self.problem.n_dims)
-        child[idx] = self.generator.uniform(self.problem.lb[idx], self.problem.ub[idx])
+        idx = np.random.randint(0, self.pop_size)
+        old_value = child[idx] 
+        child[idx] = 1 - child[idx]
+        print(f"Mutation: index {idx}, from {old_value} to {child[idx]}")
         return child
 
     def survivor_process__(self, pop, pop_child, list_fitness):
@@ -61,19 +87,23 @@ class CellularGA(Optimizer):
             neighbors = self.get_neighbors(idx)
             if len(neighbors) < 1:
                 print("Not enough neighbors for selection. Using random selection.")
-                id_child = self.generator.choice(range(self.pop_size))
+                id_child = np.random.choice(range(self.pop_size))
             else:
-                id_child = self.get_index_kway_tournament_selection(neighbors, list_fitness, k_way=max(2, 0.1*len(neighbors)), output=1, reverse=True)[0]
-            pop_new.append(self.get_better_agent(pop_child[idx], pop[id_child], self.problem.minmax))
+                id_child = self.get_index_kway_tournament_selection(neighbors, list_fitness, k_way=0.1, output=1, reverse=True)[0]
+            better_agent = self.get_better_agent(pop_child[idx], pop[id_child], self.problem.minmax)
+            pop_new.append(better_agent)
+            print(f"Survivor selection at index {idx}: Selected {id_child}, New agent fitness: {better_agent.target.fitness}")
         return pop_new
     
     def evolve(self, epoch):
         list_fitness = np.array([agent.target.fitness for agent in self.pop])
-        # print("List fitness", list_fitness)
+        print("List fitness", len(list_fitness))
         pop_new = []
         for i in range(self.pop_size):
+            print(f"Evolving individual {i}")
             child1, child2 = self.selection_process__(i, list_fitness)
-            if self.generator.random() < self.pc:
+            print(f"SELECTED CHILD1: {len(child1)}")
+            if np.random.random() < self.pc:
                 child1, child2 = self.crossover_process__(child1, child2)
 
             child1 = self.mutation_process__(child1)
@@ -96,16 +126,3 @@ class CellularGA(Optimizer):
 
         self.pop = self.survivor_process__(self.pop, pop_new, list_fitness)
 
-    def get_index_kway_tournament_selection(self, pop: [] = None, list_fitness: [] = None, k_way: float = 0.2, output: int = 2, reverse: bool = False) -> []:
-        if 0 < k_way < 1:
-            k_way = int(k_way * len(pop))
-        k_way = max(2, k_way)  # Asegurarse de que k_way sea al menos 2
-        list_id = self.generator.choice(range(len(pop)), k_way, replace=False)
-        list_parents = [[idx, list_fitness[pop[idx]]] for idx in list_id]
-        if self.problem.minmax == "min":
-            list_parents = sorted(list_parents, key=lambda agent: agent[1])
-        else:
-            list_parents = sorted(list_parents, key=lambda agent: agent[1], reverse=True)
-        if reverse:
-            return [parent[0] for parent in list_parents[-output:]]
-        return [parent[0] for parent in list_parents[:output]]

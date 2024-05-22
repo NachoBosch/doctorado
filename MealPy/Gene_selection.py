@@ -86,7 +86,12 @@ problem_dict = {
 # optimizer = ALO.OriginalALO(epoch=100, pop_size=50)
 # optimizer = GA.SingleGA(epoch=1000, pop_size=150, pc=0.9, pm=0.1, selection = "roulette", crossover = "uniform", mutation = "swap")
 #optimizer = GeneticAlgorithm.BaseGA(epoch=10, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
-optimizer = CellularGeneticAlgorithm.CellularGA(epoch=10, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
+optimizer = CellularGeneticAlgorithm.CellularGA(epoch=10, 
+                                                pop_size=8, 
+                                                pc=0.9, 
+                                                pm=0.01,
+                                                grid_shape = (2, 4), 
+                                                selection = "tournament", crossover = "one_point", mutation = "flip")
 g_best = optimizer.solve(problem_dict)
 
 
@@ -99,4 +104,4 @@ print(f"Mejor valor de aptitud: {g_best.target.fitness}")
 
 #GRAPHS
 prueba = 'CGA'
-graph_result(optimizer,prueba)
+# graph_result(optimizer,prueba)

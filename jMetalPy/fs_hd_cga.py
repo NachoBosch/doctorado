@@ -21,7 +21,7 @@ clases = list(df_hd.columns[:-2])
 #PARAMETERS
 params = {'pobl': 100,
         'off_pobl': 100,
-        'evals' : 50,
+        'evals' : 20,
         'mut_p' :0.01,
         'cross_p': 0.9,
         'alfa':0.9,
@@ -52,5 +52,7 @@ algorithm.run()
 
 # RESULTS
 experiment = 'Experimento1'
-test = str(2)
+test = str(4)
 Results.results(algorithm,experiment,test,clases,params)
+
+algorithm.plot_fitness()
