@@ -34,15 +34,11 @@ class BinaryTournamentSelection():
 
     def dominance_test(self,vector1, vector2) -> int:
         result = 0
-        # for i in range(len(vector1)):
-            # print("Vector1",vector1)
-            # print("Vector2",vector2)
         if vector1 != vector2:
             if vector1 < vector2:
                 result = -1
             if vector1 > vector2:
                 result = 1
-        # print("Compare solutions: ",result)
         return result
 
     def get_name(self) -> str:

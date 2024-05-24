@@ -1,4 +1,5 @@
-
+import random
+import matplotlib.pyplot as plt
 
 class CellularGeneticAlgorithm():
     def __init__(
@@ -6,10 +7,11 @@ class CellularGeneticAlgorithm():
             problem,
             population_size: int,
             offspring_population_size: int,
-            max_evaluations:int,
+            max_evaluations: int,
             mutation,
             crossover,
-            selection):
+            selection,
+            neighborhood_size:int):
         
         self.problem = problem
         self.population_size = population_size
@@ -19,101 +21,79 @@ class CellularGeneticAlgorithm():
         self.selection_operator = selection
         self.max_evaluations = max_evaluations
         self.evaluations = 0
-
-        self.cell_structure = None
-        self.mating_pool_size = (
-            self.offspring_population_size
-            * self.crossover_operator.get_number_of_parents()
-            // self.crossover_operator.get_number_of_children()
-        )
-
-        if self.mating_pool_size < self.crossover_operator.get_number_of_children():
-            self.mating_pool_size = self.crossover_operator.get_number_of_children()
-
+        self.neighborhood_size = neighborhood_size
+        self.best_fitness_per_epoch = []
+        self.epochs = self.max_evaluations//self.population_size 
 
     def run(self):
         print("EVOLVE")
         self.population = self.create_initial_solutions()
-        self.evaluate(self.population)
-        self.initialize_cell_structure()
-        i = 0
-        print(f"Progress: {self.evaluations}/{self.max_evaluations}, Fitness: {self.get_result().objectives[0]}\n")
+        self.fitness_values = self.evaluate(self.population)
+        self.best_fitness_per_epoch.append(self.get_result().objectives[0])
+
         while not self.stopping_condition_is_met():
-            print(f"Progress: {self.evaluations}/{self.max_evaluations}, Fitness: {self.get_result().objectives[0]}\n")   
-            offspring_population = self.reproduction(self.selection(self.population))
-            self.evaluate(offspring_population)
-            self.update_cell_structure(offspring_population)
-            self.population = self.replacement(self.population, offspring_population)
-            i+=1
+
+            for i in range(len(self.population)):
+                neighborhood = self.select_neighborhood(i)
+                parent1 = self.tournament_selection(neighborhood)
+                parent2 = self.tournament_selection(neighborhood)
+                offspring = self.reproduction(parent1,parent2)
+                fitness_offspring = self.problem.evaluate(offspring)
+                if fitness_offspring.objectives[0] < self.fitness_values[i].objectives[0]:
+                    self.population[i] = offspring
+                    self.fitness_values[i] = fitness_offspring
+            self.evaluations += 1
+            self.best_fitness_per_epoch.append(self.get_result().objectives[0])
+            
+            print(f"Epochs: {self.evaluations}/{self.epochs}, Fitness: {self.get_result().objectives[0]}\n")
 
     def create_initial_solutions(self) -> []:
         print("Create initial solution")
         print("Pop size:", self.population_size)
         return [self.problem.create_solution() for _ in range(self.population_size)]
 
-    def initialize_cell_structure(self):
-        self.cell_structure = [0] * self.population_size
-
     def evaluate(self, population):
-        print("Evaluate algorithm population",len(population))
-        # evaluate = []
+        print("Evaluate algorithm population", len(population))
+        fitness_values = []
         for solution in population:
-            # evaluate.append(self.problem.evaluate(solution))
-            self.problem.evaluate(solution)
-        self.evaluations+=1
-        #print(len(evaluate))
-        #return evaluate
+            eval_solution = self.problem.evaluate(solution)
+            fitness_values.append(eval_solution)
+        self.evaluations += 1
+        return fitness_values
 
     def stopping_condition_is_met(self) -> bool:
-        return self.evaluations >= self.max_evaluations
+        return self.evaluations >= self.epochs
 
-    def selection(self, population:[]):
-        mating_population = []
+    def select_neighborhood(self, i):
+        neighbors = []
+        x,y = i//self.neighborhood_size, i%self.neighborhood_size
+        neighbor_index = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
+        for nx, ny in neighbor_index:
+            if 0<=nx<self.neighborhood_size and 0<=ny<self.neighborhood_size:
+                neighbors.append(nx*self.neighborhood_size+ny)
+        return neighbors
 
-        for _ in range(self.mating_pool_size):
-            solution = self.selection_operator.execute(population)
-            mating_population.append(solution)
-        print("Mating population for reproduction:",len(mating_population))
-        return mating_population
+    def tournament_selection(self, neighborhood):
+        vecinos = [self.population[i] for i in neighborhood]
+        selected = self.selection_operator.execute(vecinos)
+        return selected
 
-    def reproduction(self, mating_population: []) -> []:
-        number_of_parents_to_combine = self.crossover_operator.get_number_of_parents()
-
-        if len(mating_population) < number_of_parents_to_combine:
-            raise ValueError("Insufficient individuals in mating population for reproduction")
-
-        offspring_population = []
-        for i in range(0, len(mating_population), number_of_parents_to_combine):
-            parents = []
-            for j in range(number_of_parents_to_combine):
-                index = i + j
-
-                if index < len(mating_population):
-                    parents.append(mating_population[index])
-            if len(parents) == number_of_parents_to_combine:
-                offspring = self.crossover_operator.execute(parents)
-                for solution in offspring:
-                    self.mutation_operator.execute(solution)
-                    offspring_population.append(solution)
-                    if len(offspring_population) >= self.offspring_population_size:
-                        break
-        return offspring_population
-
-    def update_cell_structure(self, population: []):
-        population_size = len(population)
-        for i, solution in enumerate(population):
-            neighbors = [population[j] for j in range(population_size) if j != i]
-            avg_fitness = sum(neighbor.objectives[0] for neighbor in neighbors) / len(neighbors)
-            self.cell_structure[i] = avg_fitness
+    def reproduction(self, parent1, parent2):
+        offspring = self.crossover_operator.execute([parent1, parent2])
+        self.mutation_operator.execute(offspring[0])
+        return offspring[0]
     
-    def replacement(self, population, offspring_population):
-        combined_population = population + offspring_population
-        combined_population.sort(key=lambda sol: sol.objectives[0])
-        return combined_population[:self.population_size]
-
     def get_result(self):
         self.population.sort(key=lambda s: s.objectives[0])
         return self.population[0]
+    
+    def plot_fitness(self):
+        plt.figure()
+        plt.plot(self.best_fitness_per_epoch)
+        plt.xlabel("Epoch")
+        plt.ylabel("Fitness")
+        plt.title("Fitness progress")
+        plt.show()
 
     def get_name(self) -> str:
         return "Cellular Genetic Algorithm"
