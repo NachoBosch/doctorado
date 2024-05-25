@@ -8,7 +8,7 @@ import pandas as pd
 import numpy as np
 
 
-class FeatureSelectionCGA():
+class FeatureSelectionLS():
     def __init__(self,X,y,alfa):
         self.X = X
         self.y = y
@@ -25,17 +25,15 @@ class FeatureSelectionCGA():
             solution.objectives[0] = 0
             return solution
         X_selected = self.X[:, selected_features]
-        # Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y, stratify=self.y)
         model = NeuralNet.train_nn(X_selected, self.y)
         y_pred = np.argmax(model.predict(X_selected,verbose=0),axis=1)
         acc = accuracy_score(self.y, y_pred)
 
         num_variables = len(selected_features)
         beta = 1 - self.alfa
-        fitness = 1.0 - (num_variables/self.X.shape[1]) # Primera parte de la función agregativa
+        fitness = 1.0 - (num_variables/self.X.shape[1])
         fitness = (self.alfa * fitness) + (beta * acc)
-        # print(solution.objectives)
-        solution.objectives[0] = 1-fitness
+        solution.objectives[0] = 1 - fitness
         solution.constraints = []
         self.GenesSelected.append(num_variables)
         self.FitnessValues.append(fitness)
@@ -50,8 +48,7 @@ class FeatureSelectionCGA():
         new_solution.variables = [np.random.randint(0, 2) for _ in range(self.number_of_variables)]
         new_solution.objectives = [0 for _ in range(self.number_of_objectives)]
         new_solution.constraints = [0 for _ in range(self.number_of_constraints)]
-        # print(new_solution.variables)
         return new_solution
 
     def get_name(self):
-        return "FeatureSelectionCGA"
+        return "FeatureSelectionLS"

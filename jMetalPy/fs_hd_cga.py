@@ -5,7 +5,7 @@ from Problems import CellularGA
 from Algorithms.CGA import CellularGeneticAlgorithm
 from Core import crossover, mutation, selection
 
-from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import LabelEncoder,MinMaxScaler
 
 from Results import Results
 
@@ -14,7 +14,9 @@ df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
 
 #PRE-SETS
 encoder = LabelEncoder()
+scaler = MinMaxScaler()
 X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+X = scaler.fit_transform(X)
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
 
@@ -24,7 +26,7 @@ params = {'pobl': 100,
         'evals' : 10000,
         'mut_p' :0.1,
         'cross_p': 0.8,
-        'alfa':0.3,
+        'alfa':0.9,
         'encoder':encoder
         }
 
@@ -47,12 +49,11 @@ algorithm = CellularGeneticAlgorithm(
     selection = selection,
     neighborhood_size = 10
 )
-
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento1'
-test = str(9)
+experiment = 'Experimento3'
+test = str(2)
 Results.results(algorithm,experiment,test,clases,params)
 
 algorithm.plot_fitness()
