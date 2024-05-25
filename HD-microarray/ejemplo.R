@@ -11,6 +11,7 @@ file.exists(metadata_file)
 file.exists(grade_file)
 
 #LIBRARIES
+library(dplyr)
 library(limma)
 library(magrittr)
 library(ggplot2)
@@ -66,10 +67,10 @@ ebays = eBayes(lmfit)
 stats_df <- topTable(ebays, number = nrow(expression_df)) %>%
   tibble::rownames_to_column("Gene")
 
-#ENSG00000114948 primero de la lista
+#ENSG00000114948 primero de la lista (menor p-value -> más significativo?)
 #ENSG00000170961 último de la lista
 top_gene_df <- expression_df %>%
-  dplyr::filter(rownames(.) == "ENSG00000056736") %>%
+  dplyr::filter(rownames(.) == "ENSG00000170961") %>%
   t() %>%
   data.frame() %>%
   tibble::rownames_to_column("refinebio_accession_code") %>%
@@ -79,7 +80,7 @@ top_gene_df <- expression_df %>%
     Grade
   ))
 
-ggplot(top_gene_df, aes(x = Grade, y = ENSG00000056736, color = Grade)) +
+ggplot(top_gene_df, aes(x = Grade, y = ENSG00000170961, color = Grade)) +
   geom_jitter(width = 0.2, height = 0) +
   theme_classic()
 
@@ -96,3 +97,10 @@ volcano_plot <- EnhancedVolcano::EnhancedVolcano(stats_df,
                                                  y = "adj.P.Val",
                                                  pCutoff = 0.01)
 volcano_plot
+
+#FILTER p-value<0.01 GENES
+genes_significativos <- stats_df %>%
+  filter(P.Value <= 0.01) %>%
+  select(Gene)
+class(genes_significativos)
+write.csv(genes_significativos,"genes_seleccionados_ebays.csv",row.names=FALSE)
