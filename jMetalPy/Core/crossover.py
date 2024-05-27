@@ -32,3 +32,23 @@ class SPXCrossover():
 
     def get_name(self) -> str:
         return "Single point crossover"
+    
+class TwoPointCrossover:
+    def __init__(self, probability):
+        self.probability = probability
+
+    def execute(self, parents):
+        if random.random() < self.probability:
+            point1, point2 = sorted(random.sample(range(len(parents[0].variables)), 2))
+            for i in range(point1, point2):
+                parents[0].variables[i], parents[1].variables[i] = parents[1].variables[i], parents[0].variables[i]
+        return parents
+    
+    def get_number_of_parents(self) -> int:
+        return 2
+
+    def get_number_of_children(self) -> int:
+        return 2
+
+    def get_name(self) -> str:
+        return "Single point crossover"

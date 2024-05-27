@@ -13,7 +13,7 @@ class BitFlipMutation():
         for i in range(solution.number_of_variables):
             rand = random.random()
             if rand <= self.probability:
-                solution.variables[i] = 1 if solution.variables[i] is 0 else 0
+                solution.variables[i] = True if solution.variables[i] is False else False
         return solution
 
     def get_name(self):
