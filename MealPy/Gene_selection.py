@@ -6,7 +6,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 
-from mealpy import ALO, BinaryVar
+from mealpy import ALO, BinaryVar, HHO, GWO, GA
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import LabelEncoder
@@ -50,13 +50,14 @@ print("Baseline Random Forest Score\n")
 print(f"Train score: {model.score(xtrain, ytrain)}")
 print(f"Test score: {model.score(xtest, ytest)}")
 
+
 #OBJECTIVE
 def fitness_function(solution):
   selected_indices = np.flatnonzero(solution)
   if len(selected_indices)!=0:
     X_new = X[:, selected_indices]
 
-    model = models('rf')
+    model = models('svm')
     xtrain,xtest,ytrain,ytest = train_test_split(X_new, y, test_size=0.3, random_state=42, stratify=y)
     model.fit(xtrain,ytrain)
     ypred = model.predict(xtest)
@@ -64,7 +65,7 @@ def fitness_function(solution):
     #Función agregativa: esta función pondera cada termino en la función fitness 
     num_variables = len(selected_indices)
     acc = accuracy_score(ytest, ypred)
-    alfa = 0.7
+    alfa = 0.9
     beta = 1 - alfa
     fitness = 1.0 - (num_variables/X.shape[1]) # Primera parte de la función agregativa
     fitness = (alfa * fitness) + (beta * acc)
@@ -72,26 +73,28 @@ def fitness_function(solution):
   else:
     fitness=0
 
-  return fitness
+  return -fitness
 
 #PROBLEM
 problem_dict = {
   "bounds": BinaryVar(n_vars=X.shape[1]),
   "obj_func": fitness_function,
-  "minmax": "max",
+  "minmax": "min",
   "log_file":"rf_result.log"
 }
 
 #OPTIMIZER
 # optimizer = ALO.OriginalALO(epoch=100, pop_size=50)
-# optimizer = GA.SingleGA(epoch=1000, pop_size=150, pc=0.9, pm=0.1, selection = "roulette", crossover = "uniform", mutation = "swap")
-#optimizer = GeneticAlgorithm.BaseGA(epoch=10, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
-optimizer = CellularGeneticAlgorithm.CellularGA(epoch=10, 
-                                                pop_size=8, 
-                                                pc=0.9, 
-                                                pm=0.01,
-                                                grid_shape = (2, 4), 
-                                                selection = "tournament", crossover = "one_point", mutation = "flip")
+# optimizer = HHO.OriginalHHO(epoch=100, pop_size=50)
+# optimizer = GWO.OriginalGWO(epoch=100, pop_size=50)
+optimizer = GA.BaseGA(epoch=100, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
+# optimizer = GeneticAlgorithm.BaseGA(epoch=100, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
+# optimizer = CellularGeneticAlgorithm.CellularGA(epoch=100, 
+#                                                 pop_size=100, 
+#                                                 pc=0.9, 
+#                                                 pm=0.01,
+#                                                 grid_shape = (10, 10), 
+#                                                 selection = "tournament", crossover = "uniform", mutation = "flip")
 g_best = optimizer.solve(problem_dict)
 
 
@@ -103,5 +106,9 @@ print(f"Cantidad de variables seleccionadas: {len(selected_variables)}")
 print(f"Mejor valor de aptitud: {g_best.target.fitness}")
 
 #GRAPHS
-prueba = 'CGA'
-# graph_result(optimizer,prueba)
+prueba = 'BaseGA'
+graph_result(optimizer,prueba)
+
+
+#ALO: ['ENSG00000198265', 'ENSG00000187730']
+#HHO:  ['ENSG00000152413', 'ENSG00000075415']

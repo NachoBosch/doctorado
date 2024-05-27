@@ -42,7 +42,7 @@ class CellularGA(Optimizer):
         k_way = max(2, k_way)  # Asegurarse de que k_way sea al menos 2
         list_id = np.random.choice(range(len(pop)), k_way, replace=False)
         list_parents = [[idx, list_fitness[pop[idx]]] for idx in list_id]
-        print("List parents",len(list_parents))
+        # print("List parents",len(list_parents))
         if self.problem.minmax == "min":
             list_parents = sorted(list_parents, key=lambda agent: agent[1])
         else:
@@ -53,7 +53,7 @@ class CellularGA(Optimizer):
 
     def selection_process__(self, idx, list_fitness):
         neighbors = self.get_neighbors(idx)
-        print(f"Neighbors: {len(neighbors)}")
+        # print(f"Neighbors: {len(neighbors)}")
         print(f"Pop size: {self.pop_size}")
         if len(neighbors) < 2:
             print("Not enough neighbors for selection. Instead random selection.")
@@ -62,8 +62,8 @@ class CellularGA(Optimizer):
         else:
             id_c1, id_c2 = self.get_index_kway_tournament_selection(neighbors, list_fitness, k_way=self.k_way, output=2)
             print("TOURNAMENT SELECTION")
-        print(f"Selection in index {idx}: Parents {id_c1} and {id_c2}")
-        print("Return: ",len(self.pop[id_c1].solution))
+        # print(f"Selection in index {idx}: Parents {id_c1} and {id_c2}")
+        # print("Return: ",len(self.pop[id_c1].solution))
         return self.pop[id_c1].solution, self.pop[id_c2].solution
 
     def crossover_process__(self, dad, mom):
@@ -71,14 +71,14 @@ class CellularGA(Optimizer):
         cut = np.random.randint(1, self.pop_size-1)
         w1 = np.concatenate([dad[:cut], mom[cut:]])
         w2 = np.concatenate([mom[:cut], dad[cut:]])
-        print(f"Crossover: cut at {cut}, child1 {len(w1)}, child2 {len(w2)}")
+        # print(f"Crossover: cut at {cut}, child1 {len(w1)}, child2 {len(w2)}")
         return w1, w2
 
     def mutation_process__(self, child):
         idx = np.random.randint(0, self.pop_size)
         old_value = child[idx] 
         child[idx] = 1 - child[idx]
-        print(f"Mutation: index {idx}, from {old_value} to {child[idx]}")
+        # print(f"Mutation: index {idx}, from {old_value} to {child[idx]}")
         return child
 
     def survivor_process__(self, pop, pop_child, list_fitness):
@@ -92,17 +92,17 @@ class CellularGA(Optimizer):
                 id_child = self.get_index_kway_tournament_selection(neighbors, list_fitness, k_way=0.1, output=1, reverse=True)[0]
             better_agent = self.get_better_agent(pop_child[idx], pop[id_child], self.problem.minmax)
             pop_new.append(better_agent)
-            print(f"Survivor selection at index {idx}: Selected {id_child}, New agent fitness: {better_agent.target.fitness}")
+            # print(f"Survivor selection at index {idx}: Selected {id_child}, New agent fitness: {better_agent.target.fitness}")
         return pop_new
     
     def evolve(self, epoch):
         list_fitness = np.array([agent.target.fitness for agent in self.pop])
-        print("List fitness", len(list_fitness))
+        # print("List fitness", len(list_fitness))
         pop_new = []
         for i in range(self.pop_size):
-            print(f"Evolving individual {i}")
+            # print(f"Evolving individual {i}")
             child1, child2 = self.selection_process__(i, list_fitness)
-            print(f"SELECTED CHILD1: {len(child1)}")
+            # print(f"SELECTED CHILD1: {len(child1)}")
             if np.random.random() < self.pc:
                 child1, child2 = self.crossover_process__(child1, child2)
 

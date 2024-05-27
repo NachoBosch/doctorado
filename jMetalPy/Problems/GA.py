@@ -1,5 +1,6 @@
 from Solutions.solutions import BinarySolution
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
@@ -22,9 +23,9 @@ class FeatureSelectionGA():
     selected_features = np.flatnonzero(solution.variables)
     X_selected = self.X[:, selected_features]
 
-    Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y, stratify=self.y)
+    Xtrain,Xtest,ytrain,ytest = train_test_split(X_selected,self.y,test_size=0.3,random_state=42, stratify=self.y)
 
-    model = RandomForestClassifier()
+    model = SVC()
     model.fit(Xtrain, ytrain)
     y_pred = model.predict(Xtest)
     acc = accuracy_score(ytest, y_pred)

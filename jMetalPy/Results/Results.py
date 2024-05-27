@@ -10,7 +10,7 @@ def results(algorithm,experiment,test,clases,params):
     var_squeezed = np.squeeze(variables)
     genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var==1]
 
-    with open(f'Results/Resultados_CGA/Resultados_func_agregativa/{experiment}/Resultados_FS_{test}.txt','w') as f:
+    with open(f'Results/Resultados_GA/Resultados_func_agregativa/{experiment}/Resultados_FS_{test}.txt','w') as f:
         f.write(f"Name: {algorithm.get_name()}\n")
         f.write(f"Solucion objectives: {objectives}\n")
         f.write(f"Solucion variables: {variables}\n")
