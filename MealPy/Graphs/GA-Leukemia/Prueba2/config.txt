@@ -1,0 +1,35 @@
+def fitness_function(solution):
+  selected_indices = np.flatnonzero(solution)
+  if len(selected_indices)!=0:
+    X_new = X[:, selected_indices]
+
+    model = models('rf')
+    xtrain,xtest,ytrain,ytest = train_test_split(X_new, y, test_size=0.3, random_state=42, stratify=y)
+    model.fit(xtrain,ytrain)
+    ypred = model.predict(xtest)
+
+    #Función agregativa: esta función pondera cada termino en la función fitness 
+    num_variables = len(selected_indices)
+    acc = accuracy_score(ytest, ypred)
+    alfa = 0.7
+    beta = 1 - alfa
+    fitness = 1.0 - (num_variables/X.shape[1]) # Primera parte de la función agregativa
+    fitness = (alfa * fitness) + (beta * acc)
+    
+  else:
+    fitness=0
+
+  return -fitness
+
+#PROBLEM
+problem_dict = {
+  "bounds": BinaryVar(n_vars=X.shape[1]),
+  "obj_func": fitness_function,
+  "minmax": "min",
+  "log_file":"rf_result.log"
+}
+
+#OPTIMIZER
+optimizer = GeneticAlgorithm.BaseGA(epoch=10, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
+
+Genes = 10748

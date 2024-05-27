@@ -34,17 +34,24 @@ def results(algorithm,experiment,test,clases,params):
 df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
 
 #PRE-SETS
+# encoder = LabelEncoder()
+# scaler = MinMaxScaler()
+# X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+# X = scaler.fit_transform(X)
+# y = encoder.fit_transform(df_hd.Grade.to_numpy())
+# clases = list(df_hd.columns[:-2])
+df_hd = pd.read_csv('../Data/Leukemia_GSE9476.csv')
+print(df_hd.info())
 encoder = LabelEncoder()
-scaler = MinMaxScaler()
-X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
-X = scaler.fit_transform(X)
-y = encoder.fit_transform(df_hd.Grade.to_numpy())
-clases = list(df_hd.columns[:-2])
+X = df_hd.drop(columns=['samples','type']).to_numpy()
+y = encoder.fit_transform(df_hd.type.to_numpy())
+clases = list(df_hd.columns[2:])
+print(X.shape)
 
 #PARAMETERS
-params = {'evals' : 10000,
-        'mut_p' :0.1,
-        'alfa':0.7,
+params = {'evals' : 10,
+        'mut_p' :0.01,
+        'alfa':0.1,
         'encoder':encoder
         }
 
@@ -64,8 +71,8 @@ algorithm = LocalSearch(problem,
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento2'
-test = str(4)
+experiment = 'Experimento3'
+test = str(3)
 results(algorithm,experiment,test,clases,params)
 
 # algorithm.plot_fitness()

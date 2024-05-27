@@ -35,12 +35,21 @@ def models(name:str='dt'):
   return models_dic[name]
 
 #PRE-SETS
-df_hd = pd.read_csv('../Data/HD_filtered.csv')
+# df_hd = pd.read_csv('../Data/HD_filtered.csv')
+# encoder = LabelEncoder()
+# X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+# y = encoder.fit_transform(df_hd.Grade.to_numpy())
+# clases = list(df_hd.columns[:-2])
+# print(X.shape)
+
+df_hd = pd.read_csv('../Data/Leukemia_GSE9476.csv')
+print(df_hd.info())
 encoder = LabelEncoder()
-X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
-y = encoder.fit_transform(df_hd.Grade.to_numpy())
-clases = list(df_hd.columns[:-2])
+X = df_hd.drop(columns=['samples','type']).to_numpy()
+y = encoder.fit_transform(df_hd.type.to_numpy())
+clases = list(df_hd.columns[2:])
 print(X.shape)
+# print(clases)
 
 #Random Forest 
 model = models('rf')
@@ -64,7 +73,7 @@ def fitness_function(solution):
     #Función agregativa: esta función pondera cada termino en la función fitness 
     num_variables = len(selected_indices)
     acc = accuracy_score(ytest, ypred)
-    alfa = 0.7
+    alfa = 0.1
     beta = 1 - alfa
     fitness = 1.0 - (num_variables/X.shape[1]) # Primera parte de la función agregativa
     fitness = (alfa * fitness) + (beta * acc)
@@ -72,36 +81,36 @@ def fitness_function(solution):
   else:
     fitness=0
 
-  return fitness
+  return -fitness
 
 #PROBLEM
 problem_dict = {
   "bounds": BinaryVar(n_vars=X.shape[1]),
   "obj_func": fitness_function,
-  "minmax": "max",
+  "minmax": "min",
   "log_file":"rf_result.log"
 }
 
 #OPTIMIZER
 # optimizer = ALO.OriginalALO(epoch=100, pop_size=50)
 # optimizer = GA.SingleGA(epoch=1000, pop_size=150, pc=0.9, pm=0.1, selection = "roulette", crossover = "uniform", mutation = "swap")
-#optimizer = GeneticAlgorithm.BaseGA(epoch=10, pop_size=100, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
-optimizer = CellularGeneticAlgorithm.CellularGA(epoch=10, 
-                                                pop_size=8, 
-                                                pc=0.9, 
-                                                pm=0.01,
-                                                grid_shape = (2, 4), 
-                                                selection = "tournament", crossover = "one_point", mutation = "flip")
+optimizer = GeneticAlgorithm.BaseGA(epoch=50, pop_size=1000, pc=0.9, pm=0.01, selection = "tournament", crossover = "one_point", mutation = "flip")
+# optimizer = CellularGeneticAlgorithm.CellularGA(epoch=10, 
+#                                                 pop_size=8, 
+#                                                 pc=0.9, 
+#                                                 pm=0.01,
+#                                                 grid_shape = (2, 4), 
+#                                                 selection = "tournament", crossover = "one_point", mutation = "flip")
 g_best = optimizer.solve(problem_dict)
 
 
 #RESULTS
 selected_indices = np.flatnonzero(g_best.solution)
 selected_variables = df_hd.columns[selected_indices]
-print(f"Variables seleccionadas: {list(selected_variables)}")
+# print(f"Variables seleccionadas: {list(selected_variables)}")
 print(f"Cantidad de variables seleccionadas: {len(selected_variables)}")
 print(f"Mejor valor de aptitud: {g_best.target.fitness}")
 
 #GRAPHS
-prueba = 'CGA'
-# graph_result(optimizer,prueba)
+prueba = 'GA-Leukemia/Prueba4'
+graph_result(optimizer,prueba)

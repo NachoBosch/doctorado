@@ -33,7 +33,7 @@ class FeatureSelectionLS():
         beta = 1 - self.alfa
         fitness = 1.0 - (num_variables/self.X.shape[1])
         fitness = (self.alfa * fitness) + (beta * acc)
-        solution.objectives[0] = 1 - fitness
+        solution.objectives[0] = -fitness
         solution.constraints = []
         self.GenesSelected.append(num_variables)
         self.FitnessValues.append(fitness)
