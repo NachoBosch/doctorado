@@ -1,5 +1,6 @@
 import random
 import matplotlib.pyplot as plt
+import pandas as pd
 
 """
 .. module:: genetic_algorithm
@@ -29,6 +30,7 @@ class GeneticAlgorithm():
         self.max_evaluations = max_evaluations
         self.evaluations = 0
         self.best_fitness_per_epoch = []
+        self.min_variables_per_epoch = []
         self.epochs = self.max_evaluations//self.population_size
 
         self.mating_pool_size = (
@@ -85,6 +87,7 @@ class GeneticAlgorithm():
         self.evaluate(self.population)
         best_fitness = min(solution.objectives[0] for solution in self.population)
         self.best_fitness_per_epoch.append(best_fitness)
+        self.min_variables_per_epoch.append(min(sum(solution.variables) for solution in self.population))
         print(f"Epochs: {self.evaluations}/{self.epochs}, Fitness: {self.get_result().objectives[0]}\n")
         while not self.stopping_condition_is_met():
             mating_population = self.selection(self.population)
@@ -93,6 +96,7 @@ class GeneticAlgorithm():
             self.population = self.replacement(self.population,offspring_population)
             best_fitness = min([solution.objectives[0] for solution in self.population])
             self.best_fitness_per_epoch.append(best_fitness)
+            self.min_variables_per_epoch.append(min(sum(solution.variables) for solution in self.population))
             print(f"Epochs: {self.evaluations}/{self.epochs}, Fitness: {self.get_result().objectives[0]}\n")
 
     def get_result(self):
@@ -106,6 +110,20 @@ class GeneticAlgorithm():
         plt.ylabel("Fitness")
         plt.title("Fitness progress")
         plt.show()
+
+    def plot_min_variables(self):
+        plt.figure()
+        plt.plot(self.min_variables_per_epoch)
+        plt.xlabel("Epoch")
+        plt.ylabel("Min Variables Selected")
+        plt.title("Minimum Variables Selected per Epoch")
+        plt.show()
+
+    def save_csv(self,filename:str):
+        data = {'Best Fitness':self.best_fitness_per_epoch,
+                'Min Variables':self.min_variables_per_epoch}
+        pd.DataFrame(data).to_csv(filename,index=False)
+        print(f"Data saved in {filename}!")
 
     def get_name(self) -> str:
         return "Genetic algorithm"

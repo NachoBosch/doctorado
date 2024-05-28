@@ -1,6 +1,10 @@
 from Solutions.solutions import BinarySolution
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from Algorithms import NeuralNet
+
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split,KFold
 
@@ -23,18 +27,19 @@ class FeatureSelectionGA():
     selected_features = np.flatnonzero(solution.variables)
     X_selected = self.X[:, selected_features]
 
-    kf = KFold(n_splits=4, shuffle=True, random_state=42)
-    scores = []
-    model = SVC()
-    for trainI, testI in kf.split(X_selected):
-      X_train, X_test = X_selected[trainI], X_selected[testI]
-      y_train, y_test = self.y[trainI], self.y[testI]
-      model.fit(X_train, y_train)
-      y_pred = model.predict(X_test)
-      acc = accuracy_score(y_test, y_pred)
-      scores.append(acc)
+    # kf = KFold(n_splits=4, shuffle=True, random_state=42)
+    # scores = []
+    model = MLPClassifier(max_iter=200)
+    X_train,X_test,y_train,y_test = train_test_split(X_selected,self.y,test_size=0.3,random_state=42)
+    # for trainI, testI in kf.split(X_selected):
+    #   X_train, X_test = X_selected[trainI], X_selected[testI]
+    #   y_train, y_test = self.y[trainI], self.y[testI]
+    model.fit(X_train,y_train)
+    y_pred = model.predict(X_test)
+    acc_avg = accuracy_score(y_test, y_pred)
+      # scores.append(acc)
 
-    acc_avg = np.mean(scores)
+    # acc_avg = np.mean(scores)
     num_variables = len(selected_features)
     beta = 1 - self.alfa
     fitness = 1.0 - (num_variables/self.X.shape[1]) # Primera parte de la función agregativa
