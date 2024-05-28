@@ -24,7 +24,7 @@ clases = list(df_hd.columns[:-2])
 params = {'pobl': 100,
         'off_pobl': 100,
         'evals' : 10000,
-        'mut_p' :0.1,
+        'mut_p' :0.01,
         'cross_p': 0.8,
         'alfa':0.9,
         'encoder':encoder
@@ -52,8 +52,8 @@ algorithm = CellularGeneticAlgorithm(
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento3'
-test = str(2)
+experiment = 'Experimento4'
+test = str(1)
 Results.results(algorithm,experiment,test,clases,params)
 
 algorithm.plot_fitness()

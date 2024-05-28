@@ -23,9 +23,9 @@ class BinarySolution():
         total = 0
         print("Variable",type(self.variables))
         #print(self.variables)
-        # total = len(self.variables)
-        for var in self.variables:
-            total += len(var)
+        total = len(self.variables)
+        # for var in self.variables:
+        #     total += len(var)
         return total
 
     def get_binary_string(self) -> str:

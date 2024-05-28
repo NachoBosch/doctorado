@@ -26,7 +26,7 @@ clases = list(df_hd.columns[:-2])
 #PARAMETERS
 params = {'pobl': 100,
         'off_pobl': 100,
-        'evals' : 1000,
+        'evals' : 10000,
         'mut_p' :0.005,
         'cross_p': 0.9,
         'alfa':0.9,
@@ -69,8 +69,8 @@ algorithm = GeneticAlgorithm(
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento6'
-test = str(6)
+experiment = 'Experimento7'
+test = str(1)
 Results.results(algorithm,experiment,test,clases,params)
 
 algorithm.plot_fitness()

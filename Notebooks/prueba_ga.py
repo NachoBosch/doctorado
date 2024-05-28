@@ -1,15 +1,18 @@
-from Solutions.solutions import BinarySolution
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split,KFold
-
+from sklearn.preprocessing import LabelEncoder
+from jmetal.core.solution import BinarySolution
+from jmetal.algorithm.singleobjective import GeneticAlgorithm
+from jmetal.operator import BinaryTournamentSelection, SBXCrossover, BitFlipMutation, DifferentialEvolutionCrossover, PolynomialMutation, CXCrossover, SPXCrossover
+from jmetal.util.termination_criterion import StoppingByEvaluations
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 import numpy as np
 
 
-
-#PROBLEM
 class FeatureSelectionGA():
   def __init__(self,X,y,alfa):
     self.X = X
@@ -48,21 +51,47 @@ class FeatureSelectionGA():
           number_of_objectives = self.number_of_objectives,
           number_of_constraints = self.number_of_constraints
       )
-      # Genera un número aleatorio de características seleccionadas entre 10% y 90% del total
-      # num_selected_features = np.random.randint(
-      #     int(0.1 * self.number_of_variables), int(0.9 * self.number_of_variables) + 1
-      # )
-      # # Inicializa todas las variables a 0
-      # new_solution.variables = [0] * self.number_of_variables
-      # # Selecciona al azar las características que estarán activadas (1)
-      # selected_indices = np.random.choice(range(self.number_of_variables), num_selected_features, replace=False)
-      # for index in selected_indices:
-      #   new_solution.variables[index] = 1
       new_solution.variables = [True if np.random.rand() > 0.5 else False for _ in range(self.number_of_variables)]
       new_solution.objectives = [0 for _ in range(self.number_of_objectives)]
       new_solution.constraints = [0 for _ in range(self.number_of_constraints)]
-      # print(new_solution.variables)
       return new_solution
 
   def get_name(self):
     return "FeatureSelectionGA"
+  
+#DATA
+df_hd = pd.read_csv('../Data/HD_filtered.csv')
+encoder = LabelEncoder()
+X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
+y = encoder.fit_transform(df_hd.Grade.to_numpy())
+clases = list(df_hd.columns[:-2])
+
+problem = FeatureSelectionGA(X,y,0.9)
+
+algorithm = GeneticAlgorithm(
+    problem=problem,
+    population_size=100,
+    offspring_population_size=100,
+    mutation=BitFlipMutation(0.01),
+    crossover=SPXCrossover(0.9),
+    selection=BinaryTournamentSelection(),
+    termination_criterion=StoppingByEvaluations(max_evaluations=10000)
+)
+
+algorithm.run()
+test=3
+soluciones_ls = algorithm.get_result()
+objectives = soluciones_ls.objectives
+variables = soluciones_ls.variables
+
+var_squeezed = np.squeeze(variables)
+genes_selected = [gen for gen,var in zip(clases,var_squeezed) if var]#==1]
+
+with open(f'Resultados_FS_{test}.txt','w') as f:
+    f.write(f"Name: {algorithm.get_name()}\n")
+    f.write(f"Solucion objectives: {objectives}\n")
+    f.write(f"Solucion variables: {variables}\n")
+    f.write(f"Solucion variables type: {type(variables)}\n")
+    f.write(f"Solucion variables amount: {len(variables)}\n")
+    f.write(f"Selected genes: {genes_selected}\n")
+    f.write(f"Selected genes amount: {len(genes_selected)}\n")
