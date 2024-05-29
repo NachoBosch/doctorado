@@ -19,8 +19,6 @@ class FeatureSelectionCGA():
         self.number_of_variables = X.shape[1]
         self.number_of_objectives = 1
         self.number_of_constraints = 0
-        self.GenesSelected = []
-        self.FitnessValues = []
 
     def evaluate(self, solution):
         selected_features = np.flatnonzero(solution.variables)
@@ -43,25 +41,21 @@ class FeatureSelectionCGA():
 
         num_variables = len(selected_features)
         beta = 1 - self.alfa
-        fitness = 1.0 - (num_variables/self.X.shape[1]) # Primera parte de la función agregativa
+        fitness = 1.0 - (num_variables/self.X.shape[1])
         fitness = (self.alfa * fitness) + (beta * acc_avg)
 
         solution.objectives[0] = -fitness
-        solution.constraints = []
-        self.GenesSelected.append(num_variables)
-        self.FitnessValues.append(fitness)
+        
         return solution
 
     def create_solution(self):
         new_solution = BinarySolution(
             number_of_variables = self.number_of_variables,
-            number_of_objectives = self.number_of_objectives,
-            number_of_constraints = self.number_of_constraints
-        )
+            number_of_objectives = self.number_of_objectives)
+        
         new_solution.variables = [np.random.randint(0, 2) for _ in range(self.number_of_variables)]
-        new_solution.objectives = [0 for _ in range(self.number_of_objectives)]
-        new_solution.constraints = [0 for _ in range(self.number_of_constraints)]
-        # print(new_solution.variables)
+        new_solution.objectives = [0]
+
         return new_solution
 
     def get_name(self):
