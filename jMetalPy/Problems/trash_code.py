@@ -14,6 +14,7 @@
 # df_hd = df_hd[degs+['Samples','Grade']]
 
 # new_variables = [list(np.random.randint(0, 2, size=1).tolist()[0] for _ in range(self.number_of_variables))]
+# new_solution.variables = [np.random.randint(0, 2) for _ in range(self.number_of_variables)]
 # new_solution.objectives = [0 for _ in range(self.number_of_objectives)]
 
 
