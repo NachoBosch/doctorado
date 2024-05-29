@@ -25,7 +25,7 @@ params = {'pobl': 100,
         'off_pobl': 100,
         'evals' : 10000,
         'mut_p' :0.01,
-        'cross_p': 0.8,
+        'cross_p': 0.9,
         'alfa':0.9,
         'encoder':encoder
         }
@@ -52,8 +52,9 @@ algorithm = CellularGeneticAlgorithm(
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento4'
-test = str(1)
-Results.results(algorithm,experiment,test,clases,params)
+test = 'KNN'
+Results.results(algorithm,test,clases,params)
 
 algorithm.plot_fitness()
+algorithm.plot_min_variables()
+algorithm.save_csv(f'Results/Resultados_CGA/Resultados_nuevos/{test}.csv')
