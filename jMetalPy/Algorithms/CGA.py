@@ -69,8 +69,9 @@ class CellularGeneticAlgorithm():
         x,y = i//self.neighborhood_size, i%self.neighborhood_size
         neighbor_index = [(x-1,y),(x+1,y),(x,y-1),(x,y+1)]
         for nx, ny in neighbor_index:
-            if 0<=nx<self.neighborhood_size and 0<=ny<self.neighborhood_size:
-                neighbors.append(nx*self.neighborhood_size+ny)
+            #Probar de ver si se rompe
+            # if 0<=nx<self.neighborhood_size and 0<=ny<self.neighborhood_size:
+            neighbors.append(nx*self.neighborhood_size+ny)
         return neighbors
 
     def tournament_selection(self, neighborhood):
