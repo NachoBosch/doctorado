@@ -10,19 +10,27 @@ class SPXCrossover():
 
     def execute(self, parents: [BinarySolution]) -> [BinarySolution]:
         # print(f"Parents: {parents}\nLen: {len(parents)}")
+        offspring = copy.deepcopy(parents)
         rand = random.random()
-        parent1, parent2 = parents
-        offspring1 = parent1
-        offspring2 = parent2
 
         if rand <= self.probability:
-            crossover_point = random.randint(0, len(parent1.variables))
-            offspring1.variables[:crossover_point] = parent1.variables[:crossover_point]
-            offspring1.variables[crossover_point:] = parent2.variables[crossover_point:]
-            offspring2.variables[:crossover_point] = parent2.variables[:crossover_point]
-            offspring2.variables[crossover_point:] = parent1.variables[crossover_point:]
+            # 1. Get the total number of bits
+            total_number_of_bits = len(parents[0].variables)
 
-        return [offspring1, offspring2]
+            # 2. Calculate the point to make the crossover
+            crossover_point = random.randrange(0, total_number_of_bits)
+
+            # 3. Apply the crossover
+            bitset1 = parents[0].variables[:]
+            bitset2 = parents[1].variables[:]
+
+            for i in range(crossover_point, total_number_of_bits):
+                bitset1[i], bitset2[i] = bitset2[i], bitset1[i]
+
+            offspring[0].variables = bitset1
+            offspring[1].variables = bitset2
+
+        return offspring
 
     def get_number_of_parents(self) -> int:
         return 2

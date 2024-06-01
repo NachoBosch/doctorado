@@ -1,5 +1,6 @@
 import random
 import matplotlib.pyplot as plt
+import pandas as pd
 
 class CellularGeneticAlgorithm():
     def __init__(
@@ -23,13 +24,15 @@ class CellularGeneticAlgorithm():
         self.evaluations = 0
         self.neighborhood_size = neighborhood_size
         self.best_fitness_per_epoch = []
+        self.min_variables_per_epoch = []
         self.epochs = self.max_evaluations//self.population_size 
 
     def run(self):
-        print("EVOLVE")
         self.population = self.create_initial_solutions()
         self.fitness_values = self.evaluate(self.population)
         self.best_fitness_per_epoch.append(self.get_result().objectives[0])
+        self.min_variables_per_epoch.append(sum(self.get_result().variables))
+        print(f"Epochs: {self.evaluations}/{self.epochs}, Fitness: {self.get_result().objectives[0]}\n")
 
         while not self.stopping_condition_is_met():
 
@@ -44,7 +47,7 @@ class CellularGeneticAlgorithm():
                     self.fitness_values[i] = fitness_offspring
             self.evaluations += 1
             self.best_fitness_per_epoch.append(self.get_result().objectives[0])
-            
+            self.min_variables_per_epoch.append(sum(self.get_result().variables))
             print(f"Epochs: {self.evaluations}/{self.epochs}, Fitness: {self.get_result().objectives[0]}\n")
 
     def create_initial_solutions(self) -> []:
@@ -81,8 +84,9 @@ class CellularGeneticAlgorithm():
 
     def reproduction(self, parent1, parent2):
         offspring = self.crossover_operator.execute([parent1, parent2])
-        self.mutation_operator.execute(offspring[0])
-        return offspring[0]
+        index_rand = random.randint(0, 1)
+        self.mutation_operator.execute(offspring[index_rand])
+        return offspring[index_rand]
     
     def get_result(self):
         self.population.sort(key=lambda s: s.objectives[0])
@@ -95,6 +99,20 @@ class CellularGeneticAlgorithm():
         plt.ylabel("Fitness")
         plt.title("Fitness progress")
         plt.show()
+    
+    def plot_min_variables(self):
+        plt.figure()
+        plt.plot(self.min_variables_per_epoch)
+        plt.xlabel("Epoch")
+        plt.ylabel("Min Variables Selected")
+        plt.title("Minimum Variables Selected per Epoch")
+        plt.show()
+
+    def save_csv(self,filename:str):
+        data = {'Best Fitness':self.best_fitness_per_epoch,
+                'Min Variables':self.min_variables_per_epoch}
+        pd.DataFrame(data).to_csv(filename,index=False)
+        print(f"Data saved in {filename}!")
 
     def get_name(self) -> str:
         return "Cellular Genetic Algorithm"

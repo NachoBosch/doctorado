@@ -10,6 +10,8 @@ from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.neural_network import MLPClassifier
+from Algorithms import NeuralNet
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split,KFold
 
@@ -26,8 +28,8 @@ clases = list(df_hd.columns[:-2])
 #PARAMETERS
 params = {'pobl': 100,
         'off_pobl': 100,
-        'evals' : 1000,
-        'mut_p' :0.005,
+        'evals' : 10000,
+        'mut_p' :0.01,
         'cross_p': 0.9,
         'alfa':0.9,
         'encoder':encoder
@@ -37,12 +39,15 @@ params = {'pobl': 100,
 # Xtrain,Xtest,ytrain,ytest = train_test_split(X,y,test_size=0.3,random_state=42)
 kf = KFold(n_splits=4, shuffle=True, random_state=42)
 score = []
-model = SVC()
+model = MLPClassifier(max_iter=500)
 for trainIndex, testIndex in kf.split(X):
     X_train, X_test = X[trainIndex], X[testIndex]
     y_train, y_test = y[trainIndex], y[testIndex]
-    model.fit(X_train, y_train)
-    sc= model.score(X_test, y_test)
+    model.fit(X_train,y_train)
+    y_pred = model.predict(X_test)
+    # model = NeuralNet.train_nn(X_train, y_train)
+    # y_pred = np.argmax(np.squeeze(model.predict(X_test,verbose=0)),axis=1)
+    sc= accuracy_score(y_test,y_pred)
     score.append(sc)
 
 print(f"Score avg: {np.mean(score)}")
@@ -69,8 +74,9 @@ algorithm = GeneticAlgorithm(
 algorithm.run()
 
 # RESULTS
-experiment = 'Experimento6'
-test = str(6)
-Results.results(algorithm,experiment,test,clases,params)
+test = 'MLP'
+Results.results(algorithm,test,clases,params)
 
 algorithm.plot_fitness()
+algorithm.plot_min_variables()
+algorithm.save_csv(f'Results/Resultados_GA/Resultados_nuevos/{test}.csv')
