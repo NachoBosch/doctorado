@@ -47,6 +47,27 @@ class FitnessValue(QualityIndicator):
     def get_short_name(self) -> str:
         return "Fitness"
 
+class SelectedVariables(QualityIndicator):
+    def __init__(self, is_minimization: bool = True):
+        super(SelectedVariables, self).__init__(is_minimization=is_minimization)
+
+    def compute(self, solutions: np.array):
+        selected_counts = []
+        for solution in solutions:
+            if hasattr(solution, 'variables'):
+                selected_count = sum(solution.variables)
+                selected_counts.append(selected_count)
+            else:
+                raise ValueError("Solution does not has 'variables' attribute")
+
+        mean_selected = np.mean(selected_counts)
+        return mean_selected
+
+    def get_name(self) -> str:
+        return "Selected Variables"
+
+    def get_short_name(self) -> str:
+        return "Vars"
 
 class GenerationalDistance(QualityIndicator):
     def __init__(self, reference_front: np.array = None):

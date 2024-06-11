@@ -46,7 +46,7 @@ def configure_experiment(problems: dict,
                         neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
-                algorithm_tag="CGA",
+                algorithm_tag="CX_09",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -62,7 +62,7 @@ def configure_experiment(problems: dict,
                         neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
-                algorithm_tag="CGA",
+                algorithm_tag="CX_08",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -78,7 +78,7 @@ def configure_experiment(problems: dict,
                         neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
-                algorithm_tag="CGA",
+                algorithm_tag="CX_07",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -105,7 +105,8 @@ if __name__ == "__main__":
 
             generate_summary_from_experiment(
                 input_dir=output_directory,
-                quality_indicators=[FitnessValue()])
+                quality_indicators=[FitnessValue(),
+                                    SelectedVariables()])
             
             file_name = f"{output_directory}/QualityIndicatorSummary.csv"
             generate_latex_tables(filename=file_name,

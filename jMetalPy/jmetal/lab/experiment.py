@@ -141,7 +141,7 @@ def generate_summary_from_experiment(
                             indicator.reference_front = reference_front
                         else:
                             logger.warning("Reference front not found at", reference_front_file)
-
+                    #chequear de pasar solo solutions[i]
                     result = indicator.compute([solutions[i].objectives for i in range(len(solutions))])
 
                     # Save quality indicator value to file
