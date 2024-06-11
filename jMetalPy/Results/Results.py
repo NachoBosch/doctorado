@@ -3,7 +3,7 @@ import numpy as np
 
 
 def results(algorithm,test,clases,params):
-    soluciones_ls = algorithm.get_result()
+    soluciones_ls = algorithm.result()
     objectives = soluciones_ls.objectives
     variables = soluciones_ls.variables
 
