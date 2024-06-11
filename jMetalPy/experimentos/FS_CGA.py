@@ -20,7 +20,7 @@ from jmetal.util.update_policy import LineSweep
 
 def make_dir(path,model,alfa):
     model_name = str(model).replace('()','')
-    path = path+model_name+'/alfa_'+alfa
+    path = path+model_name+'/alfa_'+str(alfa)
     try:
         os.makedirs(path)
         return path
