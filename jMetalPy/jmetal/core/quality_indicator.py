@@ -33,7 +33,9 @@ class FitnessValue(QualityIndicator):
 
     def compute(self, solutions: np.array):
         if self.is_minimization:
-            mean = np.mean([s.objectives for s in solutions])
+            print(solutions)
+            mean = np.mean([s for s in solutions[0]])
+            # mean = np.mean([s.objectives for s in solutions[0]])
         else:
             mean = -np.mean([s.objectives for s in solutions])
 

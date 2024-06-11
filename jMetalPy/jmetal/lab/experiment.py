@@ -77,8 +77,7 @@ class Experiment:
 
 
 def generate_summary_from_experiment(
-        input_dir: str, quality_indicators: List[QualityIndicator], reference_fronts: str = ""
-):
+        input_dir: str, quality_indicators: List[QualityIndicator], reference_fronts: str = ""):
     """Compute a list of quality indicators. The input data directory *must* met the following structure (this is generated
     automatically by the Experiment class):
 
@@ -103,14 +102,14 @@ def generate_summary_from_experiment(
     if not quality_indicators:
         quality_indicators = []
 
-    with open("QualityIndicatorSummary.csv", "w+") as of:
+    with open(f"{input_dir}/QualityIndicatorSummary.csv", "w+") as of:
         of.write("Algorithm,Problem,ExecutionId,IndicatorName,IndicatorValue\n")
 
     for dirname, _, filenames in os.walk(input_dir):
         for filename in filenames:
             try:
                 # Linux filesystem
-                algorithm, problem = dirname.split("/")[-2:]
+                algorithm, problem = dirname.split("\\")[-2:]
             except ValueError:
                 # Windows filesystem
                 algorithm, problem = dirname.split("\\")[-2:]
@@ -121,7 +120,7 @@ def generate_summary_from_experiment(
                 with open(os.path.join(dirname, filename), "r") as content_file:
                     content = content_file.read()
 
-                with open("QualityIndicatorSummary.csv", "a+") as of:
+                with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
                     of.write(",".join([algorithm, problem, run_tag, "Time", str(content)]))
                     of.write("\n")
 
@@ -146,7 +145,7 @@ def generate_summary_from_experiment(
                     result = indicator.compute([solutions[i].objectives for i in range(len(solutions))])
 
                     # Save quality indicator value to file
-                    with open("QualityIndicatorSummary.csv", "a+") as of:
+                    with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
                         of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
                         of.write("\n")
 
@@ -628,9 +627,9 @@ def __averages_to_latex(
         )
 
         if minimization:
-            second_best, best = sorted_values[0][2], sorted_values[1][2]
+            second_best, best = sorted_values[1][2], sorted_values[0][2]
         else:
-            second_best, best = sorted_values[-1][2], sorted_values[-2][2]
+            second_best, best = sorted_values[-2][2], sorted_values[-1][2]
 
         # Compose cell
         values = [

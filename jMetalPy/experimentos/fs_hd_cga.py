@@ -1,24 +1,26 @@
 import pandas as pd
 import numpy as np
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+module_dir = os.path.join(current_dir.replace('experimentos', ''))
+sys.path.append(module_dir)
 
-from doctorado.jMetalPy.Problems import FeatureSelectionHutington
-from Algorithms.CGA import CellularGeneticAlgorithm
-from Core import crossover, mutation, selection
-
+from jmetal.problems import FeatureSelectionHutington
+from jmetal.algorithms.cga import CellularGeneticAlgorithm
+from jmetal.core import crossover, mutation, selection
+from jmetal.util.termination_criterion import StoppingByEvaluations
+from jmetal.util.neighborhood import L5
+from jmetal.util.update_policy import LineSweep
+from results import Results
+from jmetal.util.observer import PrintObjectivesObserver
+from jmetal.util import load
 from sklearn.preprocessing import LabelEncoder,MinMaxScaler
 
-from Results import Results
 
-#DATA
-df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
 
-#PRE-SETS
-encoder = LabelEncoder()
-scaler = MinMaxScaler()
-X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
-X = scaler.fit_transform(X)
-y = encoder.fit_transform(df_hd.Grade.to_numpy())
-clases = list(df_hd.columns[:-2])
+data = load.huntington()
+models = load.models()
 
 #PARAMETERS
 params = {'pobl': 100,
@@ -26,35 +28,38 @@ params = {'pobl': 100,
         'evals' : 10000,
         'mut_p' :0.01,
         'cross_p': 0.9,
-        'alfa':0.9,
-        'encoder':encoder
+        'alfa':0.8,
+        'encoder':data[3]
         }
 
 #PROBLEM
-problem = FeatureSelectionHutington.FeatureSelectionHD(X, y, params['alfa'])
+problem = FeatureSelectionHutington.FeatureSelectionHD(data,params['alfa'],models[1])
 
 #OPERATORS
 mut = mutation.BitFlipMutation(params['mut_p'])
 cross = crossover.SPXCrossover(params['cross_p'])
 selection = selection.BinaryTournamentSelection()
+criterion = StoppingByEvaluations(params['evals'])
 
 # # ALGORITHM
 algorithm = CellularGeneticAlgorithm(
     problem = problem,
-    population_size = params['pobl'],
-    offspring_population_size = params['off_pobl'],
-    max_evaluations = params['evals'],
+    pop_size = params['pobl'],
     mutation = mut,
     crossover = cross,
     selection = selection,
-    neighborhood_size = 10
+    termination_criterion = criterion,
+    neighborhood=L5(rows=10,columns=10),
+    cell_update_policy=LineSweep()
 )
+
+algorithm.observable.register(observer=PrintObjectivesObserver(100))
 algorithm.run()
 
 # RESULTS
 test = 'KNN'
-Results.results(algorithm,test,clases,params)
+Results.results(algorithm,test,data[2],params)
 
-algorithm.plot_fitness()
-algorithm.plot_min_variables()
-algorithm.save_csv(f'Results/Resultados_CGA/Resultados_nuevos/{test}.csv')
+# algorithm.plot_fitness()
+# algorithm.plot_min_variables()
+# algorithm.save_csv(f'Results/Resultados_CGA/Resultados_nuevos/{test}.csv')

@@ -4,9 +4,11 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
+import os
 
 def huntington():
-    df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
+    path = os.getcwd().replace('jMetalPy','')
+    df_hd = pd.read_csv(path+'/Data/HD_filtered.csv')
     encoder = LabelEncoder()
     scaler = MinMaxScaler()
     X = df_hd.drop(columns=['Samples','Grade']).to_numpy()

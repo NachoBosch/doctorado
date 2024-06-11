@@ -72,8 +72,6 @@ class CellularGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
 
     def selection(self, population: List[S]) -> List[S]:
         parents = []
-        print(f"Current ind : {self.current_individual}")
-        print(f"Population : {len(population)}")
         self.current_neighbors = self.neighborhood.get_neighbors(self.current_individual, population)
         parents.append(self.selection_operator.execute(self.current_neighbors))
         parents.append(self.selection_operator.execute(self.current_neighbors))
