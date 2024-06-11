@@ -18,30 +18,69 @@ from jmetal.util.neighborhood import L5
 from jmetal.util.update_policy import LineSweep
 
 
+def make_dir(path,model,alfa):
+    model_name = str(model).replace('()','')
+    path = path+model_name+'/alfa_'+alfa
+    try:
+        os.makedirs(path)
+        return path
+    except OSError:
+        print("Error creating directory!")
+    
+
+
 def configure_experiment(problems: dict,
-                         cxp: list,
-                         cmp: float, 
                          n_run: int):
     jobs = []
-    for cx in cxp:
-        for run in range(n_run):
-            for problem_tag, problem in problems.items():
-                jobs.append(
-                    Job(
-                    algorithm=CellularGeneticAlgorithm(
-                            problem = problem,
-                            pop_size = 25,
-                            mutation = mutation.BitFlipMutation(cmp),
-                            crossover = crossover.SPXCrossover(cx),
-                            selection = selection.BinaryTournamentSelection(),
-                            termination_criterion=StoppingByEvaluations(50),
-                            neighborhood=L5(rows=5,columns=5),
-                            cell_update_policy=LineSweep()
-                        ),
-                    algorithm_tag="CGA",
-                    problem_tag=problem_tag,
-                    run=run,
-                )
+    for run in range(n_run):
+        for problem_tag, problem in problems.items():
+            jobs.append(
+                Job(
+                algorithm=CellularGeneticAlgorithm(
+                        problem = problem,
+                        pop_size = 25,
+                        mutation = mutation.BitFlipMutation(0.01),
+                        crossover = crossover.SPXCrossover(0.9),
+                        selection = selection.BinaryTournamentSelection(),
+                        termination_criterion=StoppingByEvaluations(50),
+                        neighborhood=L5(rows=5,columns=5),
+                        cell_update_policy=LineSweep()
+                    ),
+                algorithm_tag="CGA",
+                problem_tag=problem_tag,
+                run=run)
+            )
+            jobs.append(
+                Job(
+                algorithm=CellularGeneticAlgorithm(
+                        problem = problem,
+                        pop_size = 25,
+                        mutation = mutation.BitFlipMutation(0.01),
+                        crossover = crossover.SPXCrossover(0.8),
+                        selection = selection.BinaryTournamentSelection(),
+                        termination_criterion=StoppingByEvaluations(50),
+                        neighborhood=L5(rows=5,columns=5),
+                        cell_update_policy=LineSweep()
+                    ),
+                algorithm_tag="CGA",
+                problem_tag=problem_tag,
+                run=run)
+            )
+            jobs.append(
+                Job(
+                algorithm=CellularGeneticAlgorithm(
+                        problem = problem,
+                        pop_size = 25,
+                        mutation = mutation.BitFlipMutation(0.01),
+                        crossover = crossover.SPXCrossover(0.7),
+                        selection = selection.BinaryTournamentSelection(),
+                        termination_criterion=StoppingByEvaluations(50),
+                        neighborhood=L5(rows=5,columns=5),
+                        cell_update_policy=LineSweep()
+                    ),
+                algorithm_tag="CGA",
+                problem_tag=problem_tag,
+                run=run)
             )
 
     return jobs
@@ -50,18 +89,16 @@ def configure_experiment(problems: dict,
 if __name__ == "__main__":
     
     data = load.huntington()
-    alfa = [0.9]
+    alfa = [0.9,0.7]
     models = load.models()
-    cxp = [0.9]
-    cmp = 0.01
-    for model in models[:1]:
+
+    for model in models[:2]:
         for a in alfa:
             print(f"Model: {model} | Alfa {a}")
-            jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,a,model)}, 
-                                        cxp = cxp,
-                                        cmp = cmp,
+            jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,a,model)},
                                         n_run=2)
-            output_directory = f"{os.getcwd()}/results/Resultados_CGA/experimentos"
+            
+            output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model,a)
             experiment = Experiment(output_dir=output_directory, jobs=jobs)
 
             experiment.run()
@@ -72,5 +109,5 @@ if __name__ == "__main__":
             
             file_name = f"{output_directory}/QualityIndicatorSummary.csv"
             generate_latex_tables(filename=file_name,
-                                  output_dir=output_directory+"/latex/statistical")
+                                    output_dir=output_directory+"/latex/statistical")
 

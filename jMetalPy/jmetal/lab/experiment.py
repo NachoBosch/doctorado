@@ -627,9 +627,11 @@ def __averages_to_latex(
         )
 
         if minimization:
-            second_best, best = sorted_values[1][2], sorted_values[0][2]
+            best = sorted_values[0][2]
+            second_best = sorted_values[1][2] if len(sorted_values) > 1 else best
         else:
-            second_best, best = sorted_values[-2][2], sorted_values[-1][2]
+            best = sorted_values[-1][2]
+            second_best = sorted_values[-2][2] if len(sorted_values) > 1 else best
 
         # Compose cell
         values = [
