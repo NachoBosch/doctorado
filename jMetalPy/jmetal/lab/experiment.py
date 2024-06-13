@@ -17,6 +17,7 @@ from jmetal.util.solution import (
     print_function_values_to_file,
     print_variables_to_file,
     read_solutions,
+    read_binary_solutions,
 )
 
 logger = get_logger(__name__)
@@ -128,26 +129,36 @@ def generate_summary_from_experiment(
                 solutions = read_solutions(os.path.join(dirname, filename))
                 run_tag = [s for s in filename.split(".") if s.isdigit()].pop()
                 for indicator in quality_indicators:
-                    reference_front_file = os.path.join(reference_fronts, problem + ".pf")
+                    if indicator.get_short_name() == "Fitness":
+                        reference_front_file = os.path.join(reference_fronts, problem + ".pf")
+                        # Add reference front if any
+                        if hasattr(indicator, "reference_front"):
+                            if Path(reference_front_file).is_file():
+                                reference_front = []
+                                with open(reference_front_file) as file:
+                                    for line in file:
+                                        reference_front.append([float(x) for x in line.split()])
 
-                    # Add reference front if any
-                    if hasattr(indicator, "reference_front"):
-                        if Path(reference_front_file).is_file():
-                            reference_front = []
-                            with open(reference_front_file) as file:
-                                for line in file:
-                                    reference_front.append([float(x) for x in line.split()])
+                                indicator.reference_front = reference_front
+                            else:
+                                logger.warning("Reference front not found at", reference_front_file)
+                        #chequear de pasar solo solutions[i]
+                        result = indicator.compute([solutions[i] for i in range(len(solutions))])
+                        # Save quality indicator value to file
+                        with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
+                            of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
+                            of.write("\n")
 
-                            indicator.reference_front = reference_front
-                        else:
-                            logger.warning("Reference front not found at", reference_front_file)
-                    #chequear de pasar solo solutions[i]
-                    result = indicator.compute([solutions[i].objectives for i in range(len(solutions))])
-
-                    # Save quality indicator value to file
-                    with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
-                        of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
-                        of.write("\n")
+            if "VAR" in filename:
+                solutions = read_binary_solutions(os.path.join(dirname, filename))
+                # print("Solutions",solutions[0].variables)
+                run_tag = [s for s in filename.split(".") if s.isdigit()].pop()
+                for indicator in quality_indicators:
+                    if indicator.get_short_name() == "Vars":
+                        result = indicator.compute(solutions)
+                        with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
+                            of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
+                            of.write("\n")
 
 
 def generate_boxplot(filename: str, output_dir: str = "boxplot"):

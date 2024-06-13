@@ -1,0 +1,24 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage[table*]{xcolor}
+\xdefinecolor{gray95}{gray}{0.65}
+\xdefinecolor{gray25}{gray}{0.8}
+\title{Median and IQR}
+\author{}
+\begin{document}
+\maketitle
+\section{Table}
+\begin{table}[!htp]
+  \caption{Mean and Standard Deviation of the Vars quality indicator.}
+  \label{table:Vars}
+  \centering
+  \begin{scriptsize}
+  \begin{tabular}{c|ccc}
+      & \textbf{CX\_07} & \textbf{CX\_08} & \textbf{CX\_09} \\\hline
+      \textbf{FS_CGA} & $\cellcolor{gray25} 2.61e+02_{7.07e+00} $ & $ \cellcolor{gray95} 2.63e+02_{2.83e+00} $ & $ 2.65e+02_{7.07e+00}$ \\
+  \end{tabular}
+  \end{scriptsize}
+\end{table}
+\end{document}

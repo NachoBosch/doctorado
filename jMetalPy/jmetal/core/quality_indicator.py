@@ -33,9 +33,11 @@ class FitnessValue(QualityIndicator):
 
     def compute(self, solutions: np.array):
         if self.is_minimization:
-            print(solutions)
-            mean = np.mean([s for s in solutions[0]])
-            # mean = np.mean([s.objectives for s in solutions[0]])
+            # print(solutions)
+            if len(solutions)==1:
+                mean = np.mean([solutions[0].objectives])
+            else:
+                mean = np.mean([s.objectives for s in solutions[0]])
         else:
             mean = -np.mean([s.objectives for s in solutions])
 
@@ -53,12 +55,10 @@ class SelectedVariables(QualityIndicator):
 
     def compute(self, solutions: np.array):
         selected_counts = []
+        print("SelectedVariables",solutions[0].variables)
         for solution in solutions:
-            if hasattr(solution, 'variables'):
-                selected_count = sum(solution.variables)
-                selected_counts.append(selected_count)
-            else:
-                raise ValueError("Solution does not has 'variables' attribute")
+            selected_count = sum(solution.variables)
+            selected_counts.append(selected_count)
 
         mean_selected = np.mean(selected_counts)
         return mean_selected

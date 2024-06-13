@@ -21,11 +21,13 @@ from jmetal.util.update_policy import LineSweep
 def make_dir(path,model,alfa):
     model_name = str(model).replace('()','')
     path = path+model_name+'/alfa_'+str(alfa)
-    try:
+    if not os.path.exists(path):
         os.makedirs(path)
+        print("Creating dir: {path}")
         return path
-    except OSError:
-        print("Error creating directory!")
+    else:
+        print("Directory is already exists!")
+        return path
     
 
 
@@ -92,7 +94,7 @@ if __name__ == "__main__":
     alfa = [0.9,0.7]
     models = load.models()
 
-    for model in models[:2]:
+    for model in models:
         for a in alfa:
             print(f"Model: {model} | Alfa {a}")
             jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,a,model)},

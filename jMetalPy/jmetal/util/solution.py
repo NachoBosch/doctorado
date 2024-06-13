@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 from typing import List
 
-from jmetal.core.solution import FloatSolution, Solution
+from jmetal.core.solution import FloatSolution, Solution, BinarySolution
 from jmetal.util.archive import Archive, NonDominatedSolutionsArchive
 
 logger = logging.getLogger(__name__)
@@ -47,6 +47,26 @@ def read_solutions(filename: str) -> List[FloatSolution]:
         logger.warning("Reference front file was not found at {}".format(filename))
 
     return front
+
+def read_binary_solutions(filename: str) -> List[BinarySolution]:
+    """Reads binary solutions from a file.
+
+    :param filename: File path where the solutions are located.
+    """
+    solutions = []
+
+    if Path(filename).is_file():
+        with open(filename) as file:
+            for line in file:
+                vector = [eval(x) for x in line.split()]
+                solution = BinarySolution(len(vector), 0)
+                solution.variables = vector
+
+                solutions.append(solution)
+    else:
+        logger.warning("Solution file was not found at {}".format(filename))
+
+    return solutions
 
 
 def print_variables_to_file(solutions, filename: str):
