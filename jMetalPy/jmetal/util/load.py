@@ -8,7 +8,7 @@ import os
 
 def huntington():
     path = os.getcwd().replace('jMetalPy','')
-    df_hd = pd.read_csv(path+'/Data/HD_filtered.csv')
+    df_hd = pd.read_csv(path+'Data/HD_filtered.csv')
     encoder = LabelEncoder()
     scaler = MinMaxScaler()
     X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
