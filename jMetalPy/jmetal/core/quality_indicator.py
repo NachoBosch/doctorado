@@ -55,7 +55,7 @@ class SelectedVariables(QualityIndicator):
 
     def compute(self, solutions: np.array):
         selected_counts = []
-        print("SelectedVariables",solutions[0].variables)
+
         for solution in solutions:
             selected_count = sum(solution.variables)
             selected_counts.append(selected_count)
