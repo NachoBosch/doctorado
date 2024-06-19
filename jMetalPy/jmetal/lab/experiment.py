@@ -65,7 +65,7 @@ class Experiment:
         :param m_workers: Maximum number of workers to execute the Jobs in parallel.
         """
         self.jobs = jobs
-        self.m_workers = m_workers
+        self.m_workers = m_workers if m_workers is not None else os.cpu_count()
         self.output_dir = output_dir
         self.job_data = []
 

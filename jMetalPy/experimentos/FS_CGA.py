@@ -31,8 +31,7 @@ def make_dir(path,model,alfa):
     
 
 
-def configure_experiment(problems: dict,
-                         n_run: int):
+def configure_experiment(problems: dict,n_run: int):
     jobs = []
     for run in range(n_run):
         for problem_tag, problem in problems.items():
