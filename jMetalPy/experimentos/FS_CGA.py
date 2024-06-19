@@ -99,7 +99,9 @@ if __name__ == "__main__":
                                         n_run=20)
             
             output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model,a)
-            experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
+            experiment = Experiment(output_dir=output_directory, 
+                                    jobs=jobs, 
+                                    m_workers = os.cpu_count()//2)
 
             experiment.run()
 
