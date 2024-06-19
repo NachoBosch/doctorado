@@ -57,7 +57,7 @@ class Job:
 
 
 class Experiment:
-    def __init__(self, output_dir: str, jobs: List[Job], m_workers: int = 6):
+    def __init__(self, output_dir: str, jobs: List[Job], m_workers: int = None):
         """Run an experiment to execute a list of jobs.
 
         :param output_dir: Base directory where each job will save its results.
