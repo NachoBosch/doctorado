@@ -16,6 +16,10 @@ from jmetal.core import crossover, mutation, selection
 from jmetal.util.observer import PrintObjectivesObserver
 from jmetal.util.neighborhood import L5
 from jmetal.util.update_policy import LineSweep
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def make_dir(path,model,alfa):
@@ -99,8 +103,8 @@ if __name__ == "__main__":
                                         n_run=20)
             
             output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model,a)
-            experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
-
+            experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count()//4)
+            logger.info(f"Running experiment with {len(jobs)} jobs")
             experiment.run()
 
             generate_summary_from_experiment(

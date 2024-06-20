@@ -18,7 +18,7 @@ def huntington():
     return X,y,clases,encoder
 
 def models():
-    return [RandomForestClassifier(),
+    return [RandomForestClassifier(n_jobs=os.cpu_count()//4),
             SVC(),
             KNeighborsClassifier(),
             AdaBoostClassifier()]

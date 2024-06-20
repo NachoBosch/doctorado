@@ -19,6 +19,10 @@ from jmetal.util.solution import (
     read_solutions,
     read_binary_solutions,
 )
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 logger = get_logger(__name__)
 
@@ -39,7 +43,9 @@ class Job:
         self.run_tag = run
 
     def execute(self, output_path: str = ""):
+        logger.info(f"Starting job: {self.algorithm_tag} - {self.problem_tag} - Run {self.run_tag}")
         self.algorithm.run()
+        logger.info(f"Completed job: {self.algorithm_tag} - {self.problem_tag} - Run {self.run_tag}")
 
         if output_path:
             file_name = os.path.join(output_path, "FUN.{}.tsv".format(self.run_tag))
