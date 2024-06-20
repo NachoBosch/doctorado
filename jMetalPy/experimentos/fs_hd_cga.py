@@ -12,7 +12,7 @@ from jmetal.core import crossover, mutation, selection
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util.neighborhood import L5
 from jmetal.util.update_policy import LineSweep
-from results import Results
+from results.results_local import Results
 from jmetal.util.observer import PrintObjectivesObserver
 from jmetal.util import load
 from sklearn.preprocessing import LabelEncoder,MinMaxScaler

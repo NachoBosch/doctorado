@@ -105,6 +105,10 @@ if __name__ == "__main__":
             output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model,a)
             experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count()//4)
             logger.info(f"Running experiment with {len(jobs)} jobs")
+            experiment = Experiment(output_dir=output_directory, 
+                                    jobs=jobs, 
+                                    m_workers = os.cpu_count()//4)
+
             experiment.run()
 
             generate_summary_from_experiment(
