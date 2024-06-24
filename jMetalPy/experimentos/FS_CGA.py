@@ -15,8 +15,8 @@ from jmetal.core import crossover, mutation, selection
 from jmetal.util.neighborhood import L5
 from jmetal.util.update_policy import LineSweep
 import logging
-import cProfile
-import pstats
+# import cProfile
+# import pstats
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
