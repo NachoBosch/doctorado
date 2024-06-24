@@ -1,7 +1,8 @@
 from sklearn.preprocessing import LabelEncoder,MinMaxScaler
 import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+# from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from snapml import RandomForestClassifier 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
 import os
@@ -18,7 +19,7 @@ def huntington():
     return X,y,clases,encoder
 
 def models():
-    return [RandomForestClassifier(n_jobs=os.cpu_count()//4),
+    return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
             SVC(),
             KNeighborsClassifier(),
             AdaBoostClassifier()]

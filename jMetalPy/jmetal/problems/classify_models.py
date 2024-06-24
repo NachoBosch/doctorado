@@ -5,6 +5,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
+from snapml import RandomForestClassifier as snapRF
 import os
 
 from sklearn import metrics as ms
@@ -17,6 +18,7 @@ def main(X,y,alfa):
         return {'dt':DecisionTreeClassifier(),
                 'ab':AdaBoostClassifier(),
                 'rf':RandomForestClassifier(max_depth=12,n_jobs=os.cpu_count()//2),
+                'snaprf':snapRF(),
                 'svm':SVC(),
                 'knn':KNeighborsClassifier(),
                 'xgb':xgb.XGBClassifier(eta=0.01)}

@@ -77,6 +77,7 @@ class Experiment:
 
     def run(self) -> None:
         with ProcessPoolExecutor(max_workers=self.m_workers) as executor:
+            print("Self jobs",len(self.jobs))
             for job in self.jobs:
                 output_path = os.path.join(self.output_dir, job.algorithm_tag, job.problem_tag)
                 executor.submit(job.execute(output_path))
