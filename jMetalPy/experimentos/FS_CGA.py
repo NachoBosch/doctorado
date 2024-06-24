@@ -43,12 +43,12 @@ def configure_experiment(problems: dict,n_run: int):
                 Job(
                 algorithm=CellularGeneticAlgorithm(
                         problem = problem,
-                        pop_size = 100,
+                        pop_size = 25,
                         mutation = mutation.BitFlipMutation(0.01),
                         crossover = crossover.SPXCrossover(0.9),
                         selection = selection.BinaryTournamentSelection(),
-                        termination_criterion=StoppingByEvaluations(10000),
-                        neighborhood=L5(rows=10,columns=10),
+                        termination_criterion=StoppingByEvaluations(250),
+                        neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
                 algorithm_tag="CX_09",
@@ -59,12 +59,12 @@ def configure_experiment(problems: dict,n_run: int):
                 Job(
                 algorithm=CellularGeneticAlgorithm(
                         problem = problem,
-                        pop_size = 100,
+                        pop_size = 25,
                         mutation = mutation.BitFlipMutation(0.01),
                         crossover = crossover.SPXCrossover(0.8),
                         selection = selection.BinaryTournamentSelection(),
-                        termination_criterion=StoppingByEvaluations(10000),
-                        neighborhood=L5(rows=10,columns=10),
+                        termination_criterion=StoppingByEvaluations(250),
+                        neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
                 algorithm_tag="CX_08",
@@ -75,12 +75,12 @@ def configure_experiment(problems: dict,n_run: int):
                 Job(
                 algorithm=CellularGeneticAlgorithm(
                         problem = problem,
-                        pop_size = 100,
+                        pop_size = 25,
                         mutation = mutation.BitFlipMutation(0.01),
                         crossover = crossover.SPXCrossover(0.7),
                         selection = selection.BinaryTournamentSelection(),
-                        termination_criterion=StoppingByEvaluations(10000),
-                        neighborhood=L5(rows=10,columns=10),
+                        termination_criterion=StoppingByEvaluations(250),
+                        neighborhood=L5(rows=5,columns=5),
                         cell_update_policy=LineSweep()
                     ),
                 algorithm_tag="CX_07",
@@ -92,13 +92,13 @@ def configure_experiment(problems: dict,n_run: int):
 
 
 data = load.huntington()
-alfa = [0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]
+alfa = [0.9,0.8,0.7]#,0.6,0.5,0.4,0.3,0.2,0.1]
 models = load.models()
 
 for model in models[:1]:
     for a in alfa:
         jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,a,model)},
-                                    n_run=20)
+                                    n_run=2)
         
         output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model,a)
         experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count()//2)

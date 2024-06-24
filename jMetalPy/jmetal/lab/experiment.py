@@ -117,6 +117,7 @@ def generate_summary_from_experiment(
         for filename in filenames:
             try:
                 # Linux filesystem
+                print(f"\nDIR name: {dirname}")
                 algorithm, problem = dirname.split("\\")[-2:]
             except ValueError:
                 # Windows filesystem
