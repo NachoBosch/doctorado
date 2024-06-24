@@ -1,5 +1,5 @@
 from jmetal.core.solution import BinarySolution
-import random
+import numpy as np
 import copy
 
 
@@ -11,14 +11,14 @@ class SPXCrossover():
     def execute(self, parents: [BinarySolution]) -> [BinarySolution]:
         # print(f"Parents: {parents}\nLen: {len(parents)}")
         offspring = copy.deepcopy(parents)
-        rand = random.random()
+        rand = np.random.random()
 
         if rand <= self.probability:
             # 1. Get the total number of bits
             total_number_of_bits = len(parents[0].variables)
 
             # 2. Calculate the point to make the crossover
-            crossover_point = random.randrange(0, total_number_of_bits)
+            crossover_point = np.random.randint(0, total_number_of_bits)
 
             # 3. Apply the crossover
             bitset1 = parents[0].variables[:]
@@ -46,8 +46,8 @@ class TwoPointCrossover:
         self.probability = probability
 
     def execute(self, parents):
-        if random.random() < self.probability:
-            point1, point2 = sorted(random.sample(range(len(parents[0].variables)), 2))
+        if np.random.random() < self.probability:
+            point1, point2 = sorted(np.random.choice(range(len(parents[0].variables)), 2))
             for i in range(point1, point2):
                 parents[0].variables[i], parents[1].variables[i] = parents[1].variables[i], parents[0].variables[i]
         return parents

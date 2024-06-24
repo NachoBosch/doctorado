@@ -2,10 +2,16 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import MinMaxScaler
-from Problems import classify_models
+
+import sys
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
+module_dir = os.path.join(current_dir.replace('experimentos', ''))
+sys.path.append(module_dir)
+from jmetal.problems import classify_models
 
 #DATA
-df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
+df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
 
 #PRE-SETS
 scaler = MinMaxScaler()

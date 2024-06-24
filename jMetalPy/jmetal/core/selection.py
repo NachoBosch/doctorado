@@ -1,4 +1,4 @@
-import random
+import numpy as np
 from jmetal.core.solution import BinarySolution
 
 class BinaryTournamentSelection():
@@ -15,7 +15,7 @@ class BinaryTournamentSelection():
             result = front[0]
         else:
             # Sampling without replacement
-            i, j = random.sample(range(0, len(front)), 2)
+            i, j = np.random.choice(len(front), 2, replace=False)
             solution1 = front[i]
             solution2 = front[j]
 
@@ -26,7 +26,7 @@ class BinaryTournamentSelection():
             elif flag == 1:
                 result = solution2
             else:
-                result = [solution1, solution2][random.random() < 0.5]
+                result = [solution1, solution2][np.random.random() < 0.5]
         return result
     
     def compare(self, solution1: BinarySolution, solution2: BinarySolution) -> int:

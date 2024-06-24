@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from pathlib import Path
 from typing import TypeVar, Generic, List
 
-import numpy
+import numpy as np
 
 from jmetal.core.solution import Solution
 from jmetal.util.ckecking import Check
@@ -49,7 +49,7 @@ class TwoDimensionalMesh(Neighborhood):
         |12-13-14|
         ----------
         """
-        self.mesh = numpy.zeros((self.rows, self.columns), dtype=int)
+        self.mesh = np.zeros((self.rows, self.columns), dtype=int)
         next_value = 0
         for i in range(self.rows):
             for j in range(self.columns):

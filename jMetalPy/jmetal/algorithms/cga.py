@@ -1,9 +1,4 @@
-import copy
 from typing import TypeVar, List
-
-import numpy as np
-import random
-import scipy.stats as stats
 
 from jmetal.config import store
 from jmetal.core.algorithm import EvolutionaryAlgorithm
@@ -64,11 +59,13 @@ class CellularGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
         return self.termination_criterion.is_met
 
     def create_initial_solutions(self) -> List[S]:
-        return [self.population_generator.new(self.problem)
-                for _ in range(self.population_size)]
+        # return [self.population_generator.new(self.problem) for _ in range(self.population_size)]
+        return [self.problem.create_solution() for _ in range(self.population_size)]
 
     def evaluate(self, population: List[S]):
-        return self.population_evaluator.evaluate(population, self.problem)
+        # return self.population_evaluator.evaluate(population, self.problem)
+        return [self.problem.evaluate(solution) for solution in population]
+            
 
     def selection(self, population: List[S]) -> List[S]:
         parents = []
@@ -87,7 +84,7 @@ class CellularGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
         offspring_population = self.crossover_operator.execute(mating_population)
 
         if offspring_population is None:
-            offspring_population = copy.deepcopy(mating_population)
+            offspring_population = mating_population.copy()
 
         for sol in offspring_population:
             self.mutation_operator.execute(sol)
@@ -102,6 +99,7 @@ class CellularGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
 
     def update_progress(self) -> None:
         self.evaluations += self.offspring_population_size
+        print(f"Evaluations: {self.evaluations}")
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
         self.current_individual = (self.current_individual + 1) % self.population_size #Probar de implementar cell_update_policy
