@@ -118,7 +118,8 @@ def generate_summary_from_experiment(
             try:
                 # Linux filesystem
                 print(f"\nDIR name: {dirname}")
-                algorithm, problem = dirname.split("\\")[-2:]
+                algorithm, problem = dirname.split("/")[-2:]
+                print(f"Algorithm: {algorithm} | Problem: {problem}")
             except ValueError:
                 # Windows filesystem
                 algorithm, problem = dirname.split("\\")[-2:]
