@@ -6,8 +6,8 @@ from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from snapml import RandomForestClassifier as snapRF
+from snapml import DecisionTreeClassifier as snapdt
 import os
-
 from sklearn import metrics as ms
 import numpy as np 
 import time
@@ -16,7 +16,10 @@ def main(X,y,alfa):
 
     def models_to_train():
         return {'dt':DecisionTreeClassifier(),
-                'ab':AdaBoostClassifier(),
+                'snapdt':snapdt(max_depth=1),
+                'ab25':AdaBoostClassifier(n_estimators=10),
+                'ab50':AdaBoostClassifier(n_estimators=50),
+                'snapab':AdaBoostClassifier(base_estimator=snapdt(max_depth=1)),
                 'rf':RandomForestClassifier(max_depth=12,n_jobs=os.cpu_count()//2),
                 'snaprf':snapRF(),
                 'svm':SVC(),

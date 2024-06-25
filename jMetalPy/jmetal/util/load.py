@@ -22,4 +22,4 @@ def models():
     return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
             SVC(),
             KNeighborsClassifier(),
-            AdaBoostClassifier()]
+            AdaBoostClassifier(n_estimators=10)]

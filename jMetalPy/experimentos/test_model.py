@@ -11,7 +11,7 @@ sys.path.append(module_dir)
 from jmetal.problems import classify_models
 
 #DATA
-df_hd = pd.read_csv('D:/Doctorado/doctorado/Data/HD_filtered.csv')
+df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
 
 #PRE-SETS
 scaler = MinMaxScaler()
