@@ -102,7 +102,7 @@ for model in models[2:3]:
                                     n_run=20)
         
         output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model_name,a)
-        experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count()//2)
+        experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
         logger.info(f"Running experiment with {len(jobs)} jobs")
         
         experiment.run()
