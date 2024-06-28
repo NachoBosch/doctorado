@@ -2,10 +2,14 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import AdaBoostClassifier, RandomForestClassifier
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
+# from thundersvm import SVC as tSVC
+from sklearn.ensemble import BaggingClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
 from snapml import RandomForestClassifier as snapRF
+# from snapml import SupportVectorMachine as snapsvm
+from sklearn.svm import NuSVC
 from snapml import DecisionTreeClassifier as snapdt
 import os
 from sklearn import metrics as ms
@@ -22,7 +26,9 @@ def main(X,y,alfa):
                 'snapab':AdaBoostClassifier(base_estimator=snapdt(max_depth=1)),
                 'rf':RandomForestClassifier(max_depth=12,n_jobs=os.cpu_count()//2),
                 'snaprf':snapRF(),
-                'svm':SVC(),
+                'svmNuSVC':NuSVC(kernel='rbf',nu=0.01),
+                'svm':SVC(cache_size=100),
+                'svmBag1':BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
                 'knn':KNeighborsClassifier(),
                 'xgb':xgb.XGBClassifier(eta=0.01)}
         

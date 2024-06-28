@@ -20,7 +20,7 @@ class FeatureSelectionHD():
             solution.objectives[0] = 0
             return solution
         X_selected = self.X[:, selected_features]
-        kf = KFold(n_splits=3, shuffle=True, random_state=42)
+        kf = KFold(n_splits=2, shuffle=True, random_state=42)
         scores = []
         for trainI, testI in kf.split(X_selected):
             X_train, X_test = X_selected[trainI], X_selected[testI]

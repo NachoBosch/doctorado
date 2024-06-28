@@ -2,6 +2,8 @@ from sklearn.preprocessing import LabelEncoder,MinMaxScaler
 import pandas as pd
 # from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
+from sklearn.svm import NuSVC
+from sklearn.ensemble import BaggingClassifier
 from snapml import RandomForestClassifier 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
@@ -20,6 +22,6 @@ def huntington():
 
 def models():
     return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
-            SVC(),
+            BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
             KNeighborsClassifier(),
-            AdaBoostClassifier(n_estimators=10)]
+            AdaBoostClassifier(n_estimators=5)]
