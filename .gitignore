@@ -6,3 +6,11 @@ Bioinformatica-curso/data
 .Rhistory
 Bioinformatica-curso/
 jMetalPy/results/*
+jMetalPy/jmetal/__pycache__/*
+jMetalPy/jmetal/algorithms/__pycache__
+jMetalPy/jmetal/core/__pycache__
+jMetalPy/jmetal/lab/__pycache__
+jMetalPy/jmetal/operator/__pycache__
+jMetalPy/jmetal/problems/__pycache__
+jMetalPy/jmetal/util/__pycache__
+__pycache__/
