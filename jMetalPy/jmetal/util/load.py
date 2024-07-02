@@ -23,5 +23,5 @@ def huntington():
 def models():
     return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
             BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
-            KNeighborsClassifier(),
+            KNeighborsClassifier(n_jobs=os.cpu_count()//2),
             AdaBoostClassifier(n_estimators=5)]
