@@ -13,6 +13,7 @@ from sklearn.svm import NuSVC
 from snapml import DecisionTreeClassifier as snapdt
 import os
 from sklearn import metrics as ms
+from sklearn.model_selection import KFold
 import numpy as np 
 import time
 
@@ -30,7 +31,9 @@ def main(X,y,alfa):
                 'svm':SVC(cache_size=100),
                 'svmBag1':BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
                 'knn':KNeighborsClassifier(),
-                'xgb':xgb.XGBClassifier(eta=0.01)}
+                'knnDist':KNeighborsClassifier(n_neighbors=5,weights='distance'),
+                # 'xgb':xgb.XGBClassifier(eta=0.01)
+                }
         
     def train_test(X, y):
         Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.25, stratify=y)
@@ -41,25 +44,32 @@ def main(X,y,alfa):
             end_time = time.time()
             y_pred = model.predict(Xtest)
             acc = ms.accuracy_score(ytest, y_pred)
-            print(f"Accuracy of {model_name}: {acc:.3f} | Training time: {end_time - start_time:.2f} seconds")
+            print(f"Accuracy of {model_name}: {acc:.3f} | Training time: {end_time - start_time:.6f} seconds")
 
     def evaluate(X, y, alfa):
         random_variables = np.random.randint(0, 2, X.shape[1])
         X_selected = X[:, random_variables == 1]
-        Xtrain, Xtest, ytrain, ytest = train_test_split(X_selected, y, test_size=0.25, stratify=y)
-        print(Xtrain.shape)
+        # Xtrain, Xtest, ytrain, ytest = train_test_split(X_selected, y, test_size=0.25, stratify=y)
+        print(X_selected.shape)
         models = models_to_train()
         for model_name, model in models.items():
             start_time = time.time()
-            model.fit(Xtrain, ytrain)
+            kf = KFold(n_splits=4, shuffle=True, random_state=42)
+            scores = []
+            for trainI, testI in kf.split(X_selected):
+                X_train, X_test = X_selected[trainI], X_selected[testI]
+                y_train, y_test = y[trainI], y[testI]
+                model.fit(X_train, y_train)
+                y_pred = model.predict(X_test)
+                acc = ms.accuracy_score(y_test, y_pred)
+                scores.append(acc)
             end_time = time.time()
-            y_pred = model.predict(Xtest)
-            acc = ms.accuracy_score(ytest, y_pred)
+            acc = np.mean(scores)
             num_variables = X_selected.shape[1]
             beta = 1 - alfa
             fitness = 1.0 - (num_variables / X.shape[1])
             fitness = (alfa * fitness) + (beta * acc)
-            print(f"Fitness of {model_name}: {fitness:.3f} | Variables: {num_variables} | Training time: {end_time - start_time:.2f} seconds")
+            print(f"Fitness of {model_name}: {fitness:.3f} | Variables: {num_variables} | Training time: {end_time - start_time:.6f} seconds")
 
 
     train_test(X,y)
