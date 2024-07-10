@@ -20,6 +20,8 @@ from jmetal.util.solution import (
     read_binary_solutions,
 )
 import logging
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

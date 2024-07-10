@@ -17,6 +17,9 @@ from jmetal.util.update_policy import LineSweep
 import logging
 # import cProfile
 # import pstats
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
+
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)

@@ -2,6 +2,8 @@ from jmetal.core.solution import BinarySolution
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 import numpy as np
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
 
 
 class FeatureSelectionHD():

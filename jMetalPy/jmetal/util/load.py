@@ -8,6 +8,8 @@ from snapml import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
 import os
+import warnings
+warnings.filterwarnings('ignore', category=UserWarning)
 
 def huntington():
     path = os.getcwd().replace('jMetalPy','')
@@ -21,7 +23,10 @@ def huntington():
     return X,y,clases,encoder
 
 def models():
-    return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
-            BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
-            KNeighborsClassifier(n_neighbors=3,weights='distance'),
-            AdaBoostClassifier(n_estimators=5)]
+    with warnings.catch_warnings():
+        warnings.filterwarnings('ignore', category=UserWarning)
+        
+        return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
+                BaggingClassifier(SVC(), max_samples=1.0/2, n_estimators=2),
+                KNeighborsClassifier(n_neighbors=3, weights='distance'),
+                AdaBoostClassifier(n_estimators=5)]
