@@ -60,8 +60,8 @@ class BinaryPSOAlgorithm(ParticleSwarmOptimization):
     def update_velocity(self, swarm: List[BinarySolution]):
         for i, particle in enumerate(swarm):
             r1, r2 = np.random.random(), np.random.random()
-            cognitive_velocity = self.cognitive_coefficient * r1 * (self.pbests[i].variables - particle.variables)
-            social_velocity = self.social_coefficient * r2 * (self.gbest.variables - particle.variables)
+            cognitive_velocity = self.cognitive_coefficient * r1 * (np.sum(self.pbests[i].variables) - np.sum(particle.variables))
+            social_velocity = self.social_coefficient * r2 * (np.sum(self.gbest.variables) - np.sum(particle.variables))
             self.velocities[i] = self.inertia_weight * self.velocities[i] + cognitive_velocity + social_velocity
 
     def sigmoid(self, x):
@@ -88,6 +88,7 @@ class BinaryPSOAlgorithm(ParticleSwarmOptimization):
 
     def update_progress(self):
         self.evaluations += self.swarm_size
+        print(f"Evaluations: {self.evaluations}")
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
 

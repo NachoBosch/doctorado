@@ -1,9 +1,9 @@
-from Solutions.solutions import BinarySolution
-from sklearn.ensemble import RandomForestClassifier
+from jmetal.core.solution import BinarySolution
+# from sklearn.ensemble import RandomForestClassifier
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
-from sklearn.neural_network import MLPClassifier
-from Algorithms import NeuralNet
+# from sklearn.neural_network import MLPClassifier
+# from Algorithms import NeuralNet
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split,KFold
 

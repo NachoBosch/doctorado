@@ -5,15 +5,15 @@ import sys
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 print(current_dir)
-module_dir = os.path.join(current_dir.replace('jmetal\problems', ''))
+module_dir = os.path.join(current_dir.replace('experimentos', ''))
 print(module_dir)
 sys.path.append(module_dir)
 
-from jmetal.algorithms.PSO import PSOAlgorithm
+from jmetal.algorithms.BPSO import BinaryPSOAlgorithm
 from jmetal.problems import GA 
-from results import Results
-from util.termination_criterion import StoppingByEvaluations
-from util.observer import PrintObjectivesObserver
+from results.results_local import Results
+from jmetal.util.termination_criterion import StoppingByEvaluations
+from jmetal.util.observer import PrintObjectivesObserver
 
 from sklearn.preprocessing import LabelEncoder
 from sklearn.svm import SVC
@@ -59,19 +59,13 @@ print(f"Score avg: {np.mean(score)}")
 #PROBLEM
 problem = GA.FeatureSelectionGA(X, y, params['alfa'])
 
-#OPERATORS
-mut = mutation.BitFlipMutation(params['mut_p'])
-cross = crossover.SPXCrossover(params['cross_p'])
-selection = selection.BinaryTournamentSelection()
-
 # # ALGORITHM
-algorithm = PSOAlgorithm(
+algorithm = BinaryPSOAlgorithm(
     problem=problem,
-    population_size=params['pobl'],
+    swarm_size=params['pobl'],
     inertia_weight=params['inertia_weight'],
     cognitive_coefficient=params['cognitive_coefficient'],
     social_coefficient=params['social_coefficient'],
-    reinicio=params['reinicio'],
     termination_criterion=StoppingByEvaluations(params['evals'])
 )
 algorithm.observable.register(observer=PrintObjectivesObserver(10))
