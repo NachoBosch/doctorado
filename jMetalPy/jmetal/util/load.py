@@ -25,8 +25,11 @@ def huntington():
 def models():
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)
-        
-        return [RandomForestClassifier(n_jobs=os.cpu_count()//2),
+
+        models = [RandomForestClassifier(n_jobs=os.cpu_count()//2),
                 BaggingClassifier(SVC(), max_samples=1.0/2, n_estimators=2),
                 KNeighborsClassifier(n_neighbors=3, weights='distance'),
                 AdaBoostClassifier(n_estimators=5)]
+        models_names = ['RF','SVM','KNN','AB']
+        
+        return models_names, models

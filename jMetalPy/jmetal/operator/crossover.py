@@ -98,3 +98,96 @@ class SPXCrossover(Crossover[BinarySolution, BinarySolution]):
 
     def get_name(self) -> str:
         return "Single point crossover"
+    
+class DifferentialEvolutionCrossover(Crossover[BinarySolution, BinarySolution]):
+    """This operator receives two parameters: the current individual and an array of three parent individuals. The
+    best and rand variants depends on the third parent, according whether it represents the current of the "best"
+    individual or a random_search one. The implementation of both variants are the same, due to that the parent selection is
+    external to the crossover operator.
+    """
+
+    def __init__(self, CR: float, F: float, K: float = 0.5):
+        super(DifferentialEvolutionCrossover, self).__init__(probability=1.0)
+        self.CR = CR
+        self.F = F
+        self.K = K
+
+        self.current_individual: BinarySolution = None
+
+    def execute(self, parents: List[BinarySolution]) -> List[BinarySolution]:
+        """Execute the differential evolution crossover ('best/1/bin' variant in jMetal)."""
+        if len(parents) != self.get_number_of_parents():
+            raise Exception("The number of parents is not {}: {}".format(self.get_number_of_parents(), len(parents)))
+
+        child = self.current_individual# volver a usar el deepcopy 
+
+        number_of_variables = len(parents[0].variables)
+        rand = np.random.randint(0, number_of_variables - 1)
+
+        for i in range(number_of_variables):
+            if np.random.random() < self.CR or i == rand:
+                value = parents[2].variables[i] + self.F * (parents[0].variables[i] - parents[1].variables[i])
+
+                if value < child.lower_bound[i]:
+                    value = child.lower_bound[i]
+                if value > child.upper_bound[i]:
+                    value = child.upper_bound[i]
+            else:
+                value = child.variables[i]
+
+            child.variables[i] = value
+
+        return [child]
+
+    def get_number_of_parents(self) -> int:
+        return 3
+
+    def get_number_of_children(self) -> int:
+        return 1
+
+    def get_name(self) -> str:
+        return "Differential Evolution crossover"
+
+class DifferentialBinaryEvolutionCrossover(Crossover[BinarySolution, BinarySolution]):
+    """This operator receives two parameters: the current individual and an array of three parent individuals. The
+    best and rand variants depends on the third parent, according whether it represents the current of the "best"
+    individual or a random_search one. The implementation of both variants are the same, due to that the parent selection is
+    external to the crossover operator.
+    """
+
+    def __init__(self, CR: float, F: float, K: float = 0.5):
+        super(DifferentialBinaryEvolutionCrossover, self).__init__(probability=1.0)
+        self.CR = CR
+        self.F = F
+        self.K = K
+        self.current_individual = None
+
+    def execute(self, parents: List[BinarySolution]) -> List[BinarySolution]:
+        if len(parents) != self.get_number_of_parents():
+            raise Exception(f"The number of parents is not {self.get_number_of_parents()}: {len(parents)}")
+
+        p1, p2, p3 = parents[0], parents[1], parents[2]
+        number_of_variables = len(p1.variables)
+
+        target = self.current_individual
+        
+        for i in range(number_of_variables):
+            if np.random.rand() < self.CR:
+                if p2.variables[i] != p3.variables[i]:
+                    if np.random.rand() < self.F:
+                        target.variables[i] = not p1.variables[i]
+                    else:
+                        target.variables[i] = p1.variables[i]
+                else:
+                    target.variables[i] = p2.variables[i]
+
+        return [target]
+
+    def get_number_of_parents(self) -> int:
+        return 3
+
+    def get_number_of_children(self) -> int:
+        return 1
+
+    def get_name(self) -> str:
+        return "Differential Binary Evolution crossover"

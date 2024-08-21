@@ -79,3 +79,27 @@ class BinaryTournamentSelection(Selection[List[S], S]):
     def get_name(self) -> str:
         return "Binary tournament selection"
 
+class DifferentialEvolutionSelection(Selection[List[S], List[S]]):
+    def __init__(self):
+        super(DifferentialEvolutionSelection, self).__init__()
+        self.index_to_exclude = None
+
+    def execute(self, front: List[S]) -> List[S]:
+        if front is None:
+            raise Exception("The front is null")
+        elif len(front) == 0:
+            raise Exception("The front is empty")
+        elif len(front) < 4:
+            raise Exception("The front has less than four solutions: " + str(len(front)))
+
+        selected_indexes = np.random.choice(range(len(front)), 3, replace=False)
+        while self.index_to_exclude in selected_indexes:
+            selected_indexes = np.random.choice(range(len(front)), 3, replace=False)
+
+        return [front[i] for i in selected_indexes]
+
+    def set_index_to_exclude(self, index: int):
+        self.index_to_exclude = index
+
+    def get_name(self) -> str:
+        return "Differential evolution selection"
