@@ -33,7 +33,7 @@ y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
 
 #PARAMETERS
-params = {'pobl': 5,
+params = {'pobl': 100,
         'evals' : 1000,
         'inertia_weight' :0.7,
         'cognitive_coefficient': 1.4,

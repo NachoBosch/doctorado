@@ -5,7 +5,7 @@ import numpy as np
 from jmetal.config import store
 from jmetal.core.algorithm import ParticleSwarmOptimization
 from jmetal.core.problem import Problem
-from jmetal.util.comparator import DominanceComparator
+from jmetal.util.comparator import Comparator
 from jmetal.util.evaluator import Evaluator
 from jmetal.util.generator import Generator
 from jmetal.util.termination_criterion import TerminationCriterion
@@ -20,7 +20,8 @@ class BinaryPSOAlgorithm(ParticleSwarmOptimization):
                  social_coefficient: float,
                  termination_criterion: TerminationCriterion = store.default_termination_criteria,
                  population_generator: Generator = store.default_generator,
-                 population_evaluator: Evaluator = store.default_evaluator):
+                 population_evaluator: Evaluator = store.default_evaluator,
+                 dominance_comparator: Comparator = store.default_comparator):
         
         super(BinaryPSOAlgorithm, self).__init__(problem=problem, swarm_size=swarm_size)
 
@@ -28,6 +29,7 @@ class BinaryPSOAlgorithm(ParticleSwarmOptimization):
         self.cognitive_coefficient = cognitive_coefficient
         self.social_coefficient = social_coefficient
 
+        self.dominance_comparator = dominance_comparator
         self.population_generator = population_generator
         self.population_evaluator = population_evaluator
         self.termination_criterion = termination_criterion
@@ -70,17 +72,17 @@ class BinaryPSOAlgorithm(ParticleSwarmOptimization):
     def update_position(self, swarm: List[BinarySolution]):
         for i, particle in enumerate(swarm):
             s = self.sigmoid(self.velocities[i])
-            particle.variables = [1 if np.random.random() < s[j] else 0 for j in range(len(s))]
+            particle.variables = [True if np.random.random() < s[j] else False for j in range(len(s))]
 
     def update_particle_best(self, swarm: List[BinarySolution]):
         for i, particle in enumerate(swarm):
-            if self.problem.compare_solutions(particle, self.pbests[i]) < 0:
-                self.pbests[i] = particle.copy()
+            if self.dominance_comparator.compare(particle, self.pbests[i]) < 0:
+                self.pbests[i] = particle
 
     def update_global_best(self, swarm: List[BinarySolution]):
         for particle in swarm:
-            if self.problem.compare_solutions(particle, self.gbest) < 0:
-                self.gbest = particle.copy()
+            if self.dominance_comparator.compare(particle, self.gbest) < 0:
+                self.gbest = particle
                 self.gbest_fitness = particle.objectives[0]
 
     def perturbation(self, swarm: List[BinarySolution]):
