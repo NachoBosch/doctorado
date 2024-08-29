@@ -75,7 +75,6 @@ class DE(EvolutionaryAlgorithm[S,R]):
                 new_population.append(solution2)
             else:
                 new_population.append(solution1)
-                new_population.append(solution2)
         
         return new_population[:self.population_size]
 
@@ -89,7 +88,7 @@ class DE(EvolutionaryAlgorithm[S,R]):
         return self.termination_criterion.is_met
 
     def result(self) -> []:
-        return self.solutions[0]
+        return min(self.solutions, key=lambda s: s.objectives[0])
 
     def get_name(self) -> str:
         return "DE"

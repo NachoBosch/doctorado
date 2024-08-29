@@ -155,12 +155,11 @@ class DifferentialBinaryEvolutionCrossover(Crossover[BinarySolution, BinarySolut
     external to the crossover operator.
     """
 
-    def __init__(self, CR: float, F: float, K: float = 0.5):
+    def __init__(self, CR: float, F: float):
         super(DifferentialBinaryEvolutionCrossover, self).__init__(probability=1.0)
         self.CR = CR
         self.F = F
-        self.K = K
-        self.current_individual = None
+        self.current_individual:BinarySolution = None
 
     def execute(self, parents: List[BinarySolution]) -> List[BinarySolution]:
         if len(parents) != self.get_number_of_parents():
@@ -169,8 +168,8 @@ class DifferentialBinaryEvolutionCrossover(Crossover[BinarySolution, BinarySolut
         p1, p2, p3 = parents[0], parents[1], parents[2]
         number_of_variables = len(p1.variables)
 
-        target = self.current_individual
-        
+        target = self.current_individual.copy()
+
         for i in range(number_of_variables):
             if np.random.rand() < self.CR:
                 if p2.variables[i] != p3.variables[i]:

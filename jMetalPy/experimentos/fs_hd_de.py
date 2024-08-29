@@ -13,14 +13,14 @@ from jmetal.util.observer import PrintObjectivesObserver
 from jmetal.util import load
 
 data = load.huntington()
-models = load.models()
+models_name,models = load.models()
 
 #PARAMETERS
 params = {
-        'population':100,
-        'evals' : 10000,
-        'CR' :0.9,
-        'F':0.5,
+        'population':20,
+        'evals' : 1000,
+        'CR' :0.5,
+        'F':0.3,
         'alfa':0.9,
         'encoder':data[3]
         }

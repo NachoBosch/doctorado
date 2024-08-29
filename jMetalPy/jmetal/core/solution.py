@@ -48,6 +48,9 @@ class BinarySolution(Solution[BitSet]):
         new_solution.bits_per_variable = self.bits_per_variable
 
         return new_solution
+    
+    def copy(self):
+        return self.__copy__()
 
     def get_total_number_of_bits(self) -> int:
         total = 0
