@@ -36,8 +36,8 @@ def configure_experiment(problems: dict,n_run: int):
                 algorithm=DE(
                         problem = problem,
                         population_size=100,
-                        CR=0.9,
-                        F=0.5,
+                        CR=0.5,
+                        F=0.3,
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
                 algorithm_tag="CX_09",
