@@ -3,73 +3,46 @@ import matplotlib.pyplot as plt
 import numpy as np
 import scipy.stats as stats
 import scikit_posthocs as sp
-import seaborn as sns
-sns.set(style='white',palette='bright')
 
-bpso = pd.read_csv('../results/Resultados_toko/Resultados_BPSO/BPSO.csv')
-sa = pd.read_csv('../results/Resultados_toko/Resultados_SA/SA.csv')
-ss = pd.read_csv('../results/Resultados_toko/Resultados_SS/SS.csv')
+ft_ab = pd.read_csv('../results/Resultados_toko/AB/fitness_values_ab.csv')
+var_ab = pd.read_csv('../results/Resultados_toko/AB/vars_selected_ab.csv')
+time_ab = pd.read_csv('../results/Resultados_toko/AB/time_ab.csv')
 
-print(bpso.head(2))
+ft_rf = pd.read_csv('../results/Resultados_toko/RF/fitness_values_rf.csv')
+var_rf = pd.read_csv('../results/Resultados_toko/RF/vars_selected_rf.csv')
+time_rf = pd.read_csv('../results/Resultados_toko/RF/time_rf.csv')
+
+ft_knn = pd.read_csv('../results/Resultados_toko/KNN/fitness_values_knn.csv')
+var_knn = pd.read_csv('../results/Resultados_toko/KNN/vars_selected_knn.csv')
+time_knn = pd.read_csv('../results/Resultados_toko/KNN/time_knn.csv')
+
+ft_svm = pd.read_csv('../results/Resultados_toko/SVM/fitness_values_svm.csv')
+var_svm = pd.read_csv('../results/Resultados_toko/SVM/vars_selected_svm.csv')
+time_svm = pd.read_csv('../results/Resultados_toko/SVM/time_svm.csv')
+
+# print(ft_ab.head())
 
 #FITNESS 
-def fitness_graph_bar(df1,df2,df3,filepath):
-    plt.figure(figsize=(10,10))
-    
-    df1['Algorithm'] = 'bpso'
-    df2['Algorithm'] = 'sa'
-    df3['Algorithm'] = 'ss'
-    
-    combined_df = pd.concat([df1, df2, df3])
-
-    # Plot the data using Seaborn
-    ax = sns.barplot(x='Model', y='Fitness', 
-                     hue='Algorithm', data=combined_df)
-    for p in ax.patches:
-        height = p.get_height()
-        ax.annotate(f'{height:.3f}', 
-                    (p.get_x() + p.get_width() / 2., height), 
-                    ha='center', va='center', 
-                    xytext=(0, 5), 
-                    textcoords='offset points')
-
+def fitness_graph(df,filepath):
+    plt.figure(figsize=(10,8))
+    plt.plot(df['Alfa'],df['CX_0.7'],"r*-",label='CX_0.7')
+    plt.plot(df['Alfa'],df['CX_0.8'],"b^-",label='CX_0.8')
+    plt.plot(df['Alfa'],df['CX_0.9'],"g+-",label='CX_0.9')
     plt.minorticks_on()
-    plt.tight_layout()
-    plt.legend(loc='upper right', ncol=1)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.xlabel('Models')
-    plt.ylim(0,1.0)
+    # for i in range(len(df)):
+        # plt.text(df['Alfa'][i], df['CX_0.9'][i], f"{df['CX_0.9'][i]:.3f}", fontsize=9, color='green', ha='right')
+    # max_value = df[df['Alfa'] == 0.9]['CX_0.9'].values[0]
+    # plt.axhline(y=max_value, color='k', linestyle='--', linewidth=1)
+    plt.legend()
+    plt.grid()
+    plt.xlabel('Alpha values')
     plt.ylabel('Fitness')
-    # plt.show()
     plt.savefig(f"{filepath}.pdf")
 
-# fitness_graph_bar(bpso,sa,ss,'../results/Resultados_toko/models-fitness')
-
-def fitness_graph_plot(df1,df2,df3,filepath):
-    plt.figure(figsize=(10,10))
-    
-    df1['Algorithm'] = 'BPSO'
-    df2['Algorithm'] = 'SA'
-    df3['Algorithm'] = 'SS'
-    
-    combined_df = pd.concat([df1, df2, df3])
-
-    # Plot the data using Seaborn
-    sns.lineplot(x='Model', y='Fitness', hue='Algorithm', data=combined_df)
-    
-
-    plt.minorticks_on()
-
-    plt.legend()
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.xlabel('Models')
-    plt.ylim(0,1.0)
-    plt.ylabel('Fitness')
-    plt.show()
-    # plt.savefig(f"{filepath}.pdf")
-
-# fitness_graph_plot(bpso,sa,ss,'../results/Resultados_toko/AB/adaboost_fitness')
-
+# fitness_graph(ft_ab,'../results/Resultados_toko/AB/adaboost_fitness')
+# fitness_graph(ft_knn,'../results/Resultados_toko/KNN/knn_fitness')
+# fitness_graph(ft_rf,'../results/Resultados_toko/RF/randomforest_fitness')
+# fitness_graph(ft_svm,'../results/Resultados_toko/SVM/svm_fitness')
 
 def vars_graph(df,filepath=None):
     plt.figure(figsize=(10,8))
@@ -91,38 +64,6 @@ def vars_graph(df,filepath=None):
 # vars_graph(var_knn,'../results/Resultados_toko/KNN/knn_vars')
 # vars_graph(var_rf,'../results/Resultados_toko/RF/randomforest_vars')
 # vars_graph(var_svm,'../results/Resultados_toko/SVM/svm_vars')
-
-def vars_graph_bar(df1,df2,df3,filepath):
-    plt.figure(figsize=(10,10))
-    
-    df1['Algorithm'] = 'bpso'
-    df2['Algorithm'] = 'sa'
-    df3['Algorithm'] = 'ss'
-    
-    combined_df = pd.concat([df1, df2, df3])
-
-    # Plot the data using Seaborn
-    ax = sns.barplot(x='Model', y='Variables', 
-                     hue='Algorithm', data=combined_df)
-    for p in ax.patches:
-        height = p.get_height()
-        ax.annotate(f'{int(height)}', 
-                    (p.get_x() + p.get_width() / 2., height), 
-                    ha='center', va='center', 
-                    xytext=(0, 5), 
-                    textcoords='offset points')
-
-    plt.minorticks_on()
-    # plt.tight_layout()
-    plt.legend(loc='upper right', ncol=1)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
-    plt.xlabel('Models')
-    # plt.ylim(0,1.0)
-    plt.ylabel('Variables')
-    # plt.show()
-    plt.savefig(f"{filepath}.pdf")
-
-vars_graph_bar(bpso,sa,ss,'../results/Resultados_toko/models-var')
 
 def norm_time(series):
     return (series - series.min()) / (series.max() - series.min())
@@ -331,7 +272,7 @@ def test_dist_experiment(df):
 
 # Variables Statistics test
 # test_dist(var_rf,var_knn,var_svm,var_ab)
-# anova_ttest(var_rf,var_knn,var_svm,var_ab)
+anova_ttest(var_rf,var_knn,var_svm,var_ab)
 
 #Experiment test
 # test_dist_experiment(var_ab)
