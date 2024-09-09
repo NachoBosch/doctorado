@@ -49,7 +49,9 @@ def configure_experiment(problems: dict,n_run: int):
 data = load.huntington()
 alfa = 0.9
 models_names, models = load.models()
-for model_name, model in zip(models_names,models):
+for model_name, model in zip(models_names[2:],models[2:]):
+    print(model_name)
+    print(model)
     jobs = configure_experiment(problems={"FS_DE": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
     

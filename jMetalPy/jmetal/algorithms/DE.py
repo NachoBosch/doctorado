@@ -48,8 +48,8 @@ class DE(EvolutionaryAlgorithm[S,R]):
     def reproduction(self, mating_pool: []) -> []:
         offspring_population = []
         # first_parent_index = 0
-        print(f"Mating pool: {len(mating_pool)}")
-        print(f"Sel solution: {len(self.solutions)}")
+        # print(f"Mating pool: {len(mating_pool)}")
+        # print(f"Sel solution: {len(self.solutions)}")
         for i in range(self.population_size): 
             self.crossover_operator.current_individual = self.solutions[i]
             parents = mating_pool[i*3:(i+1)*3]
