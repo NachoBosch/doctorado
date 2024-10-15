@@ -20,7 +20,7 @@ import time
 def main(X,y,alfa):
 
     def models_to_train():
-        return {'dt':DecisionTreeClassifier(),
+        return {'dt':DecisionTreeClassifier(max_depth=20),
                 'snapdt':snapdt(max_depth=1),
                 'ab25':AdaBoostClassifier(n_estimators=10),
                 'ab50':AdaBoostClassifier(n_estimators=50),

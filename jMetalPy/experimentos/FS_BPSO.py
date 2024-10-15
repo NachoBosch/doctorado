@@ -49,22 +49,26 @@ def configure_experiment(problems: dict,n_run: int):
 
 data = load.huntington()
 alfa = 0.9
-models_names, models = load.models()
-for model_name, model in zip(models_names,models):
-    jobs = configure_experiment(problems={"FS_BPSO": fsh.FeatureSelectionHD(data,alfa,model)},
-                                n_run=20)
-    
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BPSO/experimentos/",model_name,alfa)
-    experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
-    logger.info(f"Running experiment with {len(jobs)} jobs")
-    
-    experiment.run()
+# models_names, models = load.models()
+# for model_name, model in zip(models_names,models):
+tupla = load.models()
+model_name = tupla[0][-1]
+model = tupla[1][-1]
 
-    generate_summary_from_experiment(
-        input_dir=output_directory,
-        quality_indicators=[FitnessValue(),
-                            SelectedVariables()])
-    
-    file_name = f"{output_directory}/QualityIndicatorSummary.csv"
-    generate_latex_tables(filename=file_name,
-                            output_dir=output_directory+"/latex/statistical")
+jobs = configure_experiment(problems={"FS_BPSO": fsh.FeatureSelectionHD(data,alfa,model)},
+                            n_run=20)
+
+output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BPSO/experimentos/",model_name,alfa)
+experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
+logger.info(f"Running experiment with {len(jobs)} jobs")
+
+experiment.run()
+
+generate_summary_from_experiment(
+    input_dir=output_directory,
+    quality_indicators=[FitnessValue(),
+                        SelectedVariables()])
+
+file_name = f"{output_directory}/QualityIndicatorSummary.csv"
+generate_latex_tables(filename=file_name,
+                        output_dir=output_directory+"/latex/statistical")

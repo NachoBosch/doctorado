@@ -10,6 +10,9 @@ bpso = pd.read_csv('../results/Resultados_toko/Resultados_BPSO/BPSO.csv')
 sa = pd.read_csv('../results/Resultados_toko/Resultados_SA/SA.csv')
 ss = pd.read_csv('../results/Resultados_toko/Resultados_SS/SS.csv')
 baco = pd.read_csv('../results/Resultados_toko/Resultados_BACO/BACO.csv')
+cga = pd.read_csv('../results/Resultados_toko/CGA.csv')
+cga.rename(columns={'Vars':'Variables'},inplace=True)
+de = pd.read_csv('../results/Resultados_toko/Resultados_DE/DE.csv')
 
 # print(bpso.head(2))
 
@@ -26,7 +29,9 @@ def fitness_graph_bar(df1,df2,df3,df4,filepath):
 
     # Plot the data using Seaborn
     ax = sns.barplot(x='Model', y='Fitness', 
-                     hue='Algorithm', data=combined_df)
+                     hue='Algorithm', 
+                     data=combined_df,
+                     fill=True)
     for p in ax.patches:
         height = p.get_height()
         ax.annotate(f'{height:.3f}', 
@@ -38,14 +43,63 @@ def fitness_graph_bar(df1,df2,df3,df4,filepath):
     plt.minorticks_on()
     plt.tight_layout()
     plt.legend(loc='upper right', ncol=1)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    # plt.grid(True, which='both', linestyle='--', linewidth=0.5)
     plt.xlabel('Models')
     plt.ylim(0,1.0)
     plt.ylabel('Fitness')
     plt.show()
     # plt.savefig(f"{filepath}.pdf")
 
-fitness_graph_bar(bpso,sa,ss,baco,'../results/Resultados_toko/models-fitness')
+# fitness_graph_bar(bpso,sa,ss,baco,'../results/Resultados_toko/models-fitness')
+
+def fitness_graph_heatmap(df1, df2, df3, df4, df5, df6, filepath):
+    plt.figure(figsize=(8, 6))
+
+    algorithms = ['BPSO', 'BACO','DE','SA', 'SS','CGA']
+    models = df1['Model'].unique()
+
+    # Combine data into one array
+    fitness_values = pd.concat([df1['Fitness'], 
+                                df2['Fitness'], 
+                                df3['Fitness'], 
+                                df4['Fitness'],
+                                df5['Fitness'],
+                                df6['Fitness']], axis=1)
+    fitness_values.columns = algorithms
+
+    sns.heatmap(fitness_values, annot=True,fmt='0.3f', cmap='BuGn', cbar=True, xticklabels=algorithms, yticklabels=models)
+
+    plt.xlabel('Algorithm')
+    plt.ylabel('Model')
+    plt.title('Fitness Value for Each Model and Algorithm')
+    plt.tight_layout()
+    plt.savefig(f"{filepath}.pdf")
+    plt.show()
+
+# fitness_graph_heatmap(bpso,baco,de,sa,ss,cga,'../results/Resultados_toko/models-fitness-heatmap')
+
+def fitness_graph_dot(df1, df2, df3, df4, filepath):
+    plt.figure(figsize=(10, 6))
+
+    df1['Algorithm'] = 'bpso'
+    df2['Algorithm'] = 'sa'
+    df3['Algorithm'] = 'ss'
+    df4['Algorithm'] = 'baco'
+
+    combined_df = pd.concat([df1, df2, df3, df4])
+
+    sns.stripplot(x='Model', y='Fitness', hue='Algorithm', data=combined_df, jitter=True, dodge=True)
+
+    plt.ylim(0, 1.0)
+    plt.xlabel('Models')
+    plt.ylabel('Fitness')
+    plt.tight_layout()
+    plt.legend(loc='upper right')
+    plt.show()
+
+# fitness_graph_dot(bpso,sa,ss,baco,'../results/Resultados_toko/models-fitness')
+
+###############################################################
 
 def fitness_graph_plot(df1,df2,df3,df4,filepath):
     plt.figure(figsize=(10,10))
@@ -119,15 +173,42 @@ def vars_graph_bar(df1,df2,df3,df4,filepath):
     plt.minorticks_on()
     # plt.tight_layout()
     plt.legend(loc='upper right', ncol=1)
-    plt.grid(True, which='both', linestyle='--', linewidth=0.5)
+    # plt.grid(True, which='both', linestyle='--', linewidth=0.5)
     plt.xlabel('Models')
     # plt.ylim(0,1.0)
     plt.ylabel('Variables')
     plt.show()
     # plt.savefig(f"{filepath}.pdf")
 
-vars_graph_bar(bpso,sa,ss,baco,'../results/Resultados_toko/models-var')
+# vars_graph_bar(bpso,sa,ss,baco,'../results/Resultados_toko/models-var')
 
+def vars_graph_heatmap(df1, df2, df3, df4,df5,df6, filepath):
+    plt.figure(figsize=(8, 6))
+
+    algorithms = ['BPSO', 'BACO','DE','SA', 'SS','CGA']
+    models = df1['Model'].unique()
+
+    # Combine data into one array
+    variables_values = pd.concat([df1['Variables'], 
+                                df2['Variables'], 
+                                df3['Variables'], 
+                                df4['Variables'],
+                                df5['Variables'],
+                                df6['Variables']], axis=1)
+    variables_values.columns = algorithms
+
+    sns.heatmap(variables_values, annot=True,fmt='d', cmap='BuGn_r', cbar=True, xticklabels=algorithms, yticklabels=models)
+
+    plt.xlabel('Algorithm')
+    plt.ylabel('Model')
+    plt.title('Amount of Genes Selected for Each Model and Algorithm')
+    plt.tight_layout()
+    plt.savefig(f"{filepath}.pdf")
+    plt.show()
+
+# vars_graph_heatmap(bpso,baco,de,sa,ss,cga,'../results/Resultados_toko/models-vars-heatmap')
+
+#################################################################
 def norm_time(series):
     return (series - series.min()) / (series.max() - series.min())
 
@@ -254,46 +335,100 @@ def cross_table(filepath):
     
 # cross_table(filepath='../results/Resultados_toko/cross_tab')
 
-def test_dist(df_rf,df_knn,df_svm,df_ab):
-    print(f"RF:{stats.shapiro(df_rf['CX_0.9'])} | Kurtosis: {stats.kurtosis(df_rf['CX_0.9'])} ")
-    print(f"KNN:{stats.shapiro(df_knn['CX_0.9'])} | Kurtosis: {stats.kurtosis(df_knn['CX_0.9'])}")
-    print(f"SVM:{stats.shapiro(df_svm['CX_0.9'])}| Kurtosis: {stats.kurtosis(df_svm['CX_0.9'])}")
-    print(f"AB:{stats.shapiro(df_ab['CX_0.9'])}| Kurtosis: {stats.kurtosis(df_ab['CX_0.9'])}")
+def test_dist_fitness(df_rf,df_knn,df_svm,df_ab,df_cga,df_de):
+    print(f"BPSO:{stats.shapiro(df_rf['Fitness'])}")
+    print(f"SA:{stats.shapiro(df_knn['Fitness'])}")
+    print(f"SS:{stats.shapiro(df_svm['Fitness'])}")
+    print(f"BACO:{stats.shapiro(df_ab['Fitness'])}")
+    print(f"CGA:{stats.shapiro(df_cga['Fitness'])}")
+    print(f"DE:{stats.shapiro(df_de['Fitness'])}")
 
     plt.figure(figsize=(10,8))
 
-    df_rf['CX_0.9'].plot(kind='kde',label='RF',color='red')
-    df_knn['CX_0.9'].plot(kind='kde',label='KNN',color='green')
-    df_svm['CX_0.9'].plot(kind='kde',label='SVM',color='blue')
-    df_ab['CX_0.9'].plot(kind='kde',label='AB',color='magenta')
+    df_rf['Fitness'].plot(kind='kde',label='BPSO',color='red')
+    df_knn['Fitness'].plot(kind='kde',label='SA',color='green')
+    df_svm['Fitness'].plot(kind='kde',label='SS',color='blue')
+    df_ab['Fitness'].plot(kind='kde',label='BACO',color='magenta')
+    df_cga['Fitness'].plot(kind='kde',label='CGA',color='purple')
+    df_de['Fitness'].plot(kind='kde',label='DE',color='yellow')
     plt.grid()
     plt.legend()
     plt.show()
 
-def levene_test(df_rf,df_knn,df_svm,df_ab):
-    results = np.array([df_rf['CX_0.9'].to_list(),
-               df_knn['CX_0.9'].to_list(),
-               df_svm['CX_0.9'].to_list(),
-               df_ab['CX_0.9'].to_list()])
+def test_dist_var(df_rf,df_knn,df_svm,df_ab,df_cga,df_de):
+    print(f"BPSO:{stats.shapiro(df_rf['Variables'])}")
+    print(f"SA:{stats.shapiro(df_knn['Variables'])}")
+    print(f"SS:{stats.shapiro(df_svm['Variables'])}")
+    print(f"BACO:{stats.shapiro(df_ab['Variables'])}")
+    print(f"CGA:{stats.shapiro(df_cga['Variables'])}")
+    print(f"DE:{stats.shapiro(df_de['Variables'])}")
+
+def levene_test_fitness(df_rf,df_knn,df_svm,df_ab,df_cga,df_de):
+    results = np.array([df_rf['Fitness'].to_list(),
+               df_knn['Fitness'].to_list(),
+               df_svm['Fitness'].to_list(),
+               df_ab['Fitness'].to_list(),
+               df_cga['Fitness'].to_list(),
+               df_de['Fitness'].to_list()])
     stat, p = stats.levene(results[0],
                             results[1],
                             results[2],
-                            results[3])
-    print(f"Levene statistic: {stat} | p-value: {p}")
+                            results[3],
+                            results[4],
+                            results[5])
+    print(f"Levene Fitness statistic: {stat} | p-value: {p}")
 
-def kruskal_wallis(df_rf,df_knn,df_svm,df_ab):
-    results = np.array([df_rf['CX_0.9'].to_list(),
-               df_knn['CX_0.9'].to_list(),
-               df_svm['CX_0.9'].to_list(),
-               df_ab['CX_0.9'].to_list()])
-    stat, p = stats.kruskal(results[0],
+def levene_test_vars(df_rf,df_knn,df_svm,df_ab,df_cga,df_de):
+    results = np.array([df_rf['Variables'].to_list(),
+               df_knn['Variables'].to_list(),
+               df_svm['Variables'].to_list(),
+               df_ab['Variables'].to_list(),
+               df_cga['Variables'].to_list(),
+               df_de['Variables'].to_list()])
+    stat, p = stats.levene(results[0],
                             results[1],
                             results[2],
-                            results[3])
-    print(f"Kruskal-Wallis statistic: {stat} | p-value: {p}")
+                            results[3],
+                            results[4],
+                            results[5])
+    print(f"Levene Variables statistic: {stat} | p-value: {p}")
+    
+def kruskal_wallis_fitness(*args,
+                           names=None):
+    results = np.array([df['Fitness'].to_list() for df in args]).T
+    print(results)
+    # stat, p = stats.kruskal(*results.T)
+    stat, p = stats.kruskal(*[results[:, i] for i in range(results.shape[1])])
+    print(f"Kruskal-Wallis Fitness statistic: {stat} | p-value: {p}")
 
     dunn = sp.posthoc_dunn(results.T, p_adjust='bonferroni')
+    dunn.index = names
+    dunn.columns = names
     print(f"Dunn Post-hoc:\n{dunn}")
+    
+    # Visualización
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(dunn, annot=True, cmap='BuGn', center=0.05)
+    plt.title("Dunn's test p-values (Bonferroni)")
+    plt.show()
+
+def kruskal_wallis_variables(*args, names=None):
+    results = np.array([df['Variables'].to_list() for df in args]).T
+    print(results)
+    # stat, p = stats.kruskal(*results.T)
+    stat, p = stats.kruskal(*[results[:, i] for i in range(results.shape[1])])
+    print(f"Kruskal-Wallis Variables statistic: {stat} | p-value: {p}")
+
+    dunn = sp.posthoc_dunn(results.T, p_adjust='bonferroni')
+    dunn.index = names
+    dunn.columns = names
+    print(f"Dunn Post-hoc:\n{dunn}")
+    
+    # Visualización
+    plt.figure(figsize=(10, 8))
+    sns.heatmap(dunn, annot=True, cmap='BuGn', center=0.05)
+    plt.title("Dunn's test p-values (Bonferroni)")
+    plt.show()
 
 def anova_ttest(df_rf,df_knn,df_svm,df_ab):
     rf_data = df_rf['CX_0.9'].to_list()
@@ -324,12 +459,21 @@ def test_dist_experiment(df):
     plt.legend()
     plt.show()
 
-# Fitness statistics test
-# test_dist(ft_rf,ft_knn,ft_svm,ft_ab)
-# test_dist(var_rf,var_knn,var_svm,var_ab)
-# levene_test(ft_rf,ft_knn,ft_svm,ft_ab)
-# levene_test(var_rf,var_knn,var_svm,var_ab)
-# kruskal_wallis(ft_rf,ft_knn,ft_svm,ft_ab)
+# -- STATS TESTS --
+
+#NORMALITY
+# test_dist_fitness(bpso,sa,ss,baco,cga,de)
+# test_dist_var(bpso,sa,ss,baco,cga,de)
+
+#HOMOSCEDASTICITY
+# levene_test_fitness(bpso,sa,ss,baco,cga,de)
+# levene_test_vars(bpso,sa,ss,baco,cga,de)
+
+#COMPARISION
+# kruskal_wallis_fitness(bpso,sa,ss,baco,cga,de,
+#                        names=['BPSO', 'SA', 'SS', 'BACO', 'CGA', 'DE'])
+# kruskal_wallis_variables(bpso,sa,ss,baco,cga,de,
+#                          names=['BPSO', 'SA', 'SS', 'BACO', 'CGA', 'DE'])
 # anova_ttest(ft_rf,ft_knn,ft_svm,ft_ab)
 # kruskal_wallis(var_rf,var_knn,var_svm,var_ab)
 
