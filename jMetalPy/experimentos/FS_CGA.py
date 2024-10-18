@@ -101,10 +101,10 @@ model = tupla[1][-1]
 # for model in models[:1]:
 #     model_name='RF'
 #     for a in alfa:
-jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,a,model)},
+jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,alfa,model)},
                             n_run=20)
 
-output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model_name,a)
+output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model_name,alfa)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
 logger.info(f"Running experiment with {len(jobs)} jobs")
 

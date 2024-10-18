@@ -12,7 +12,7 @@ from jmetal.problems import classify_models
 
 #DATA
 df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
-
+df = df_hd.copy()
 #PRE-SETS
 scaler = MinMaxScaler()
 encoder = LabelEncoder()
@@ -20,6 +20,10 @@ X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 X = scaler.fit_transform(X)
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
+
+df.drop(columns="Samples",inplace=True)
+print(df.T)
+
 
 #PARAMETERS
 params = {'pobl': 100,
@@ -32,4 +36,4 @@ params = {'pobl': 100,
         }
 
 #PROBLEM
-problem = classify_models.main(X, y, params['alfa'])
+# problem = classify_models.main(X, y, params['alfa'])
