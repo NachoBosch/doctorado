@@ -99,7 +99,7 @@ class CellularGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
 
     def update_progress(self) -> None:
         self.evaluations += self.offspring_population_size
-        # print(self.evaluations)
+        print(self.evaluations)
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
         self.current_individual = (self.current_individual + 1) % self.population_size #Probar de implementar cell_update_policy

@@ -22,6 +22,20 @@ def huntington():
     clases = list(df_hd.columns[:-2])
     return X,y,clases,encoder
 
+def huntington_bic():
+    path = os.getcwd().replace('jMetalPy','')
+    df_hd = pd.read_csv(path+'Data/HD_filtered.csv')
+    df_hd.drop(columns="Samples",inplace=True)
+    df_transp = df_hd.T
+    columnas = df_transp.iloc[-1]
+    df_transp.columns = columnas
+    df_transp.drop(df_transp.index[-1],inplace=True)
+    df_num = df_transp.copy()
+    df_num = df_num.apply(pd.to_numeric, errors='coerce')
+    scaler = MinMaxScaler()
+    df_num = scaler.fit_transform(df_num)
+    return df_num
+
 def models():
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)

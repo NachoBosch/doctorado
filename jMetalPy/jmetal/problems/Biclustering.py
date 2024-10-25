@@ -40,7 +40,7 @@ class BiclusteringProblem:
         fitness = w1 * (1 / (mean_squared_residue + 1e-6)) + w2 * volume + w3 * gene_variance
 
         # Ajuste con el factor alfa
-        fitness = self.alfa * fitness
+        # fitness = self.alfa * fitness
         solution.objectives[0] = -fitness
         return solution
 

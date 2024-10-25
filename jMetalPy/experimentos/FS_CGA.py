@@ -118,12 +118,3 @@ generate_summary_from_experiment(
 file_name = f"{output_directory}/QualityIndicatorSummary.csv"
 generate_latex_tables(filename=file_name,
                         output_dir=output_directory+"/latex/statistical")
-
-# if __name__ == "__main__":
-#     cProfile.run('main()', f'{os.getcwd()}/results/Resultados_CGA/experimentos/profile_results.prof')
-
-#     with open(f'{os.getcwd()}/results/Resultados_CGA/experimentos/profile_report.txt', 'w') as f:
-#         stats = pstats.Stats(f'{os.getcwd()}/results/Resultados_CGA/experimentos/profile_results.prof', stream=f)
-#         stats.strip_dirs()
-#         stats.sort_stats('cumulative')
-#         stats.print_stats()
