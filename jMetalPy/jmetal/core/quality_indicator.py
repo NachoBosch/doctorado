@@ -68,6 +68,36 @@ class SelectedVariables(QualityIndicator):
 
     def get_short_name(self) -> str:
         return "Vars"
+    
+class SelectedBicluster(QualityIndicator):
+    def __init__(self, is_minimization: bool = True):
+        super(SelectedBicluster, self).__init__(is_minimization=is_minimization)
+
+    def compute(self, solutions: np.array):
+        if not solutions:
+            return 0.0
+        # Tomamos la mejor solución (última en la lista)
+        solution = solutions[-1]
+        # Contamos los genes seleccionados (primeras variables hasta el número de filas)
+        n_rows = len(solution.variables) // 2  # Asumiendo que la segunda mitad son columnas
+        selected_genes = sum(solution.variables[:n_rows])
+        return float(selected_genes)
+
+        # rows = np.arange(self.data.shape[0])
+        # cols = np.arange(self.data.shape[1])
+        # selected_rows = rows[solution.variables[:self.data.shape[0]]]
+        # selected_cols = cols[solution.variables[self.data.shape[0]:]]
+        
+        # submatrix = self.data[np.ix_(selected_rows, selected_cols)]
+        # fitness_components = self._calculate_fitness_components(submatrix, selected_rows)
+        
+        # return selected_rows
+
+    def get_name(self) -> str:
+        return "Selected Biclusters"
+
+    def get_short_name(self) -> str:
+        return "Bics"
 
 class GenerationalDistance(QualityIndicator):
     def __init__(self, reference_front: np.array = None):

@@ -170,6 +170,11 @@ def generate_summary_from_experiment(
                         with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
                             of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
                             of.write("\n")
+                    elif indicator.get_short_name() == "Bics":
+                        result = indicator.compute(solutions)
+                        with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
+                            of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
+                            of.write("\n")
 
 
 def generate_boxplot(filename: str, output_dir: str = "boxplot"):

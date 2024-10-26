@@ -30,10 +30,9 @@ def huntington_bic():
     columnas = df_transp.iloc[-1]
     df_transp.columns = columnas
     df_transp.drop(df_transp.index[-1],inplace=True)
-    df_num = df_transp.copy()
-    df_num = df_num.apply(pd.to_numeric, errors='coerce')
+    df_num = df_transp.apply(pd.to_numeric, errors='coerce')
     scaler = MinMaxScaler()
-    df_num = scaler.fit_transform(df_num)
+    df_num.loc[:, :] = scaler.fit_transform(df_num)
     return df_num
 
 def models():
