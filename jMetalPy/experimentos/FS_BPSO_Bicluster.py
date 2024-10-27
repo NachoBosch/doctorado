@@ -51,7 +51,7 @@ data = load.huntington_bic()
 model_name = "BIC"
 jobs = configure_experiment(problems={"BIC_BPSO": Bic.BiclusteringProblem(data)},
                             n_run=20)
-output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BPSO_BIC/experimentos/",model_name)
+output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BPSO/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
 logger.info(f"Running experiment with {len(jobs)} jobs")
 

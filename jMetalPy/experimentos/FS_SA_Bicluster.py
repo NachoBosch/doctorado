@@ -10,7 +10,8 @@ from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
 from jmetal.problems import Bic
-from jmetal.algorithms.BACO import BinaryACO
+from jmetal.algorithms.simulated_annealing import SimulatedAnnealing
+from jmetal.core import mutation
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -33,15 +34,12 @@ def configure_experiment(problems: dict,n_run: int):
         for problem_tag, problem in problems.items():
             jobs.append(
                 Job(
-                algorithm = BinaryACO(
+                algorithm=SimulatedAnnealing(
                         problem = problem,
-                        colony_size=50,
-                        alpha=2.0,
-                        beta=1.0,
-                        evaporation_rate=0.5,
+                        mutation = mutation.BitFlipMutation(0.01),
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
-                algorithm_tag="BACO",
+                algorithm_tag="SA",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -49,10 +47,10 @@ def configure_experiment(problems: dict,n_run: int):
 
 data = load.huntington_bic()
 model_name = "BIC"
-jobs = configure_experiment(problems={"BIC_BACO": Bic.BiclusteringProblem(data)},
+jobs = configure_experiment(problems={"BIC_SA": Bic.BiclusteringProblem(data)},
                             n_run=20)
 
-output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BACO/experimentos/",model_name)
+output_directory = make_dir(f"{os.getcwd()}/results/Resultados_SA/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
 logger.info(f"Running experiment with {len(jobs)} jobs")
 
