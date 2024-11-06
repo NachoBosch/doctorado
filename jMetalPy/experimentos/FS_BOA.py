@@ -11,7 +11,7 @@ from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.core import crossover, mutation, selection
 from jmetal.util import load
 from jmetal.problems import FeatureSelectionHutington as fsh
-from jmetal.algorithms.uGA import MicroGeneticAlgorithm
+from jmetal.algorithms.BOA import BinaryBOA
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -34,16 +34,15 @@ def configure_experiment(problems: dict,n_run: int):
         for problem_tag, problem in problems.items():
             jobs.append(
                 Job(
-                algorithm = MicroGeneticAlgorithm(
+                algorithm = BinaryBOA(
                         problem = problem,
-                        population_size= 10,
-                        mutation = mutation.BitFlipMutation(0.01),
-                        crossover = crossover.SPXCrossover(0.9),
-                        selection = selection.BinaryTournamentSelection(),
-                        reinicio = 50,
+                        population_size = 100,
+                        a = 0.01,
+                        c = 0.3,
+                        p = 0.8,
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
-                algorithm_tag="uGA",
+                algorithm_tag="BOA",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -60,10 +59,10 @@ models_names, models = load.models()
 # print(data[1].shape)
 
 for model_name, model in zip(models_names,models):
-    jobs = configure_experiment(problems={"FS_uGA": fsh.FeatureSelectionHD(data,alfa,model)},
+    jobs = configure_experiment(problems={"FS_BOA": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_uGA/experimentos/",model_name,alfa)
+    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BOA/experimentos/",model_name,alfa)
     experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
     logger.info(f"Running experiment with {len(jobs)} jobs")
 
