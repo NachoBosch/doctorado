@@ -18,6 +18,7 @@ class FeatureSelectionHD():
 
     def evaluate(self, solution):
         selected_features = np.flatnonzero(solution.variables)
+        # print(f"Selected Features: {len(selected_features)}")
         if len(selected_features) == 0:
             solution.objectives[0] = 0
             return solution
@@ -47,6 +48,7 @@ class FeatureSelectionHD():
             number_of_objectives = self.number_of_objectives)
         
         new_solution.variables = [True if np.random.rand() > 0.5 else False for _ in range(self.number_of_variables)]
+        # print(f"New solution variables: {len(new_solution.variables)}")
         new_solution.objectives = [0]
 
         return new_solution

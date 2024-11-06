@@ -82,6 +82,7 @@ def print_variables_to_file(solutions, filename: str):
 
     with open(filename, "w") as of:
         for solution in solutions:
+            print(f"Print variables: {len(solution.variables)}")
             for variables in solution.variables:
                 of.write(str(variables) + " ")
             of.write("\n")

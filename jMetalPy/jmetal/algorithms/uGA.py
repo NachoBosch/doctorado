@@ -5,16 +5,16 @@ import numpy as np
 import random
 import scipy.stats as stats
 
-from config import store
-from core.algorithm import EvolutionaryAlgorithm
-from core.problem import Problem
-from core.operator import Mutation, Crossover, Selection
-from util.comparator import DominanceComparator
-from util.evaluator import Evaluator
-from util.generator import Generator
-from util.termination_criterion import TerminationCriterion
-from util.update_policy import UpdatePolicy
-from util.neighborhood import Neighborhood
+from jmetal.config import store
+from jmetal.core.algorithm import EvolutionaryAlgorithm
+from jmetal.core.problem import Problem
+from jmetal.core.operator import Mutation, Crossover, Selection
+from jmetal.util.comparator import DominanceComparator
+from jmetal.util.evaluator import Evaluator
+from jmetal.util.generator import Generator
+from jmetal.util.termination_criterion import TerminationCriterion
+from jmetal.util.update_policy import UpdatePolicy
+from jmetal.util.neighborhood import Neighborhood
 
 """
 Module: Micro genetic algorithm 

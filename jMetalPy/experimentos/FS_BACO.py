@@ -54,9 +54,12 @@ tupla = load.models()
 model_name = tupla[0][-1]
 model = tupla[1][-1]
 
+print(data[0].shape)
+print(data[1].shape)
+
 # for model_name, model in zip(models_names,models):
 jobs = configure_experiment(problems={"FS_BACO": fsh.FeatureSelectionHD(data,alfa,model)},
-                            n_run=20)
+                            n_run=1)
 
 output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BACO/experimentos/",model_name,alfa)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())

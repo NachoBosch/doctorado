@@ -126,6 +126,7 @@ class BinaryACO(Algorithm[S, R], threading.Thread):
         }
 
     def result(self) -> List[BinarySolution]:
+        print(f"Results: {len(self.best_solution.variables)}")
         return self.best_solution
 
     def get_name(self) -> str:

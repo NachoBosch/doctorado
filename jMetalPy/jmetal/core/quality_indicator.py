@@ -57,7 +57,9 @@ class SelectedVariables(QualityIndicator):
         selected_counts = []
 
         for solution in solutions:
+            print(f"Longitud de la solución: {len(solution.variables)}")
             selected_count = sum(solution.variables)
+            print(f"Número de variables seleccionadas: {selected_count}")
             selected_counts.append(selected_count)
 
         mean_selected = np.mean(selected_counts)
