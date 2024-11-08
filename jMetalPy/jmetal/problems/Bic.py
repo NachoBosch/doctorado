@@ -69,7 +69,7 @@ class BiclusteringProblem:
             self.weights['overlap'] * fitness_components['overlap']
         )
         
-        solution.objectives[0] = -fitness  # Negativo porque jMetal minimiza por defecto
+        solution.objectives[0] = fitness  # Negativo porque jMetal minimiza por defecto
         self.previous_biclusters.append(set(selected_rows))
         return solution
     
