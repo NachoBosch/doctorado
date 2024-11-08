@@ -10,7 +10,7 @@ from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
 from jmetal.problems import FeatureSelectionHutington as fsh
-from jmetal.algorithms.BOA import BinaryBOA
+from jmetal.algorithms.GWO import BinaryGWOAlgorithm
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -33,16 +33,13 @@ def configure_experiment(problems: dict,n_run: int):
         for problem_tag, problem in problems.items():
             jobs.append(
                 Job(
-                algorithm = BinaryBOA(
+                algorithm = BinaryGWOAlgorithm(
                         problem = problem,
                         population_size = 100,
-                        a = 0.3,
-                        c = 0.01,
-                        p = 0.8,
-                        max_evaluations=10000,
+                        max_evaluations = 10000,
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
-                algorithm_tag="BOA",
+                algorithm_tag="GWO",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -59,10 +56,10 @@ models_names, models = load.models()
 # print(data[1].shape)
 
 for model_name, model in zip(models_names,models):
-    jobs = configure_experiment(problems={"FS_BOA": fsh.FeatureSelectionHD(data,alfa,model)},
+    jobs = configure_experiment(problems={"FS_GWO": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BOA/experimentos/",model_name,alfa)
+    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_GWO/experimentos/",model_name,alfa)
     experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
     logger.info(f"Running experiment with {len(jobs)} jobs")
 
