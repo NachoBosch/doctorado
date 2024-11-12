@@ -10,6 +10,7 @@ from jmetal.util.generator import Generator
 from typing import List
 import random
 import time
+import copy
 
 class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
     def __init__(self, 
@@ -46,8 +47,6 @@ class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
         return self.evaluations >= self.max_evaluations
 
     def calculate_fragrance(self, fitness: float) -> float:
-        """Calcula la intensidad de la fragancia con normalización adaptativa"""
-        # Normalización del fitness
         max_fitness = max([s.objectives[0] for s in self.population])
         min_fitness = min([s.objectives[0] for s in self.population])
         
@@ -62,30 +61,25 @@ class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
         return max(fragrance, 1e-6)  # Asegura un valor mínimo positivo
 
     def sigmoid(self, x: float) -> float:
-        """Función sigmoide mejorada con factor de escala adaptativo"""
         scale = 1.0 + (self.evaluations / self.max_evaluations)  # Factor de escala adaptativo
-        return 1 / (1 + np.exp(-scale * x))
+        # return 1 / (1 + np.exp(-scale * x))
+        return 1 / (1 + np.exp(-x))
 
     def v_shape(self, x: float) -> float:
-        """Función de transferencia V-shape complementaria"""
         return abs(np.tanh(x))
 
     def update_position(self, butterfly: BinarySolution, reference: BinarySolution, fragrance: float):
-        """Actualización de posición con mecanismo adaptativo"""
         # Probabilidad base usando sigmoide
         prob_s = self.sigmoid(fragrance)
         # Probabilidad complementaria usando v-shape
         prob_v = self.v_shape(fragrance)
-        
         # Factor de diversificación
         diversity_factor = 1.0 - (self.evaluations / self.max_evaluations)
-        
         for i in range(len(butterfly.variables)):
             if random.random() < 0.5:  # Alternar entre S-shape y V-shape
                 prob = prob_s
             else:
                 prob = prob_v
-            
             if random.random() < prob:
                 # Seguir la solución de referencia
                 butterfly.variables[i] = reference.variables[i]
@@ -122,10 +116,8 @@ class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
         self.population = new_population
 
     def calculate_population_diversity(self) -> float:
-        """Calcula la diversidad de la población"""
         if not self.best_solution:
-            return 1.0
-            
+            return 1.0   
         distances = []
         for butterfly in self.population:
             distance = sum(1 for i in range(len(butterfly.variables))
@@ -154,9 +146,10 @@ class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
     def update_best_solution(self):
         current_best = min(self.population, key=lambda sol: sol.objectives[0])
         if current_best.objectives[0] < self.best_solution.objectives[0]:
-            self.best_solution = self.problem.create_solution()
-            self.best_solution.variables = current_best.variables.copy()
-            self.best_solution.objectives = current_best.objectives.copy()
+            self.best_solution = copy.deepcopy(current_best)
+            # self.best_solution = self.problem.create_solution()
+            # self.best_solution.variables = current_best.variables.copy()
+            # self.best_solution.objectives = current_best.objectives.copy()
 
     def update_progress(self) -> None:
         self.evaluations += self.population_size
@@ -172,6 +165,7 @@ class BinaryBOA(Algorithm[BinarySolution, BinarySolution]):
         }
     
     def result(self) -> BinarySolution:
+        # print(self.best_solution.objectives[0])
         return self.best_solution
     
     def evaluate(self, solution_list: List[BinarySolution]) -> List[BinarySolution]:

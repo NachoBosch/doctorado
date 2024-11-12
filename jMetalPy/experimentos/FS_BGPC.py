@@ -10,7 +10,7 @@ from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
 from jmetal.problems import FeatureSelectionHutington as fsh
-from jmetal.algorithms.GWO import BinaryGWOAlgorithm
+from jmetal.algorithms.GPC_2 import BinaryGPC
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -33,13 +33,12 @@ def configure_experiment(problems: dict,n_run: int):
         for problem_tag, problem in problems.items():
             jobs.append(
                 Job(
-                algorithm = BinaryGWOAlgorithm(
+                algorithm = BinaryGPC(
                         problem = problem,
                         population_size = 100,
-                        max_evaluations = 10000,
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
-                algorithm_tag="GWO",
+                algorithm_tag="BGPC",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -55,11 +54,11 @@ models_names, models = load.models()
 # print(data[0].shape)
 # print(data[1].shape)
 
-for model_name, model in zip(models_names[2:],models[2:]):
-    jobs = configure_experiment(problems={"FS_GWO": fsh.FeatureSelectionHD(data,alfa,model)},
+for model_name, model in zip(models_names,models):
+    jobs = configure_experiment(problems={"FS_BGPC": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_GWO/experimentos/",model_name,alfa)
+    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BGPC/experimentos/",model_name,alfa)
     experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
     logger.info(f"Running experiment with {len(jobs)} jobs")
 

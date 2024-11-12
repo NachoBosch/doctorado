@@ -58,7 +58,7 @@ models_names, models = load.models()
 # print(data[0].shape)
 # print(data[1].shape)
 
-for model_name, model in zip(models_names,models):
+for model_name, model in zip(models_names[2:],models[2:]):
     jobs = configure_experiment(problems={"FS_BOA": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
