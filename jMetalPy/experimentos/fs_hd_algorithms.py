@@ -9,6 +9,7 @@ from jmetal.algorithms.GWO import BinaryGWOAlgorithm
 from jmetal.algorithms.BOA import BinaryBOA
 from jmetal.algorithms.uGA import MicroGeneticAlgorithm
 from jmetal.algorithms.GPC_2 import BinaryGPC
+from jmetal.algorithms.BHHO import BinaryHHO
 from jmetal.core import crossover, mutation, selection
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from results.results_local import Results
@@ -37,15 +38,15 @@ criterion = StoppingByEvaluations(params['evals'])
 #                 max_evaluations = params['evals'],   
 #                 termination_criterion = criterion)
 
-algorithm = BinaryBOA(
-    problem = problem,
-    population_size = 100,
-    a = 0.1,
-    c = 0.3,
-    p = 0.8,
-    max_evaluations=params['evals'],
-    termination_criterion=criterion
-)
+# algorithm = BinaryBOA(
+#     problem = problem,
+#     population_size = 100,
+#     a = 0.1,
+#     c = 0.3,
+#     p = 0.8,
+#     max_evaluations=params['evals'],
+#     termination_criterion=criterion
+# )
 
 # algorithm = MicroGeneticAlgorithm(
 #                         problem = problem,
@@ -62,6 +63,10 @@ algorithm = BinaryBOA(
 #                 #friction_coefficient= 0.1,     # Factor de fricción, simula resistencia
 #                 #gravity= 9.8,      # Factor de gravedad
 #                 termination_criterion=criterion)
+
+algorithm = BinaryHHO(problem = problem,
+                      population_size = 100,
+                      termination_criterion = criterion)
 
 algorithm.observable.register(observer=PrintObjectivesObserver(10))
 algorithm.run()
