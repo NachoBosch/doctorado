@@ -11,6 +11,7 @@ from jmetal.algorithms.uGA import MicroGeneticAlgorithm
 from jmetal.algorithms.GPC_2 import BinaryGPC
 from jmetal.algorithms.BHHO import BinaryHHO
 from jmetal.algorithms.BEO import BinaryEO
+from jmetal.algorithms.BALO import BinaryALO
 from jmetal.core import crossover, mutation, selection
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from results.results_local import Results
@@ -68,15 +69,16 @@ criterion = StoppingByEvaluations(params['evals'])
 # algorithm = BinaryHHO(problem = problem,
 #                       population_size = 100,
 #                       termination_criterion = criterion)
-algorithm = BinaryEO(problem = problem,
-                      population_size = 100,
+algorithm = BinaryALO(problem = problem,
+                        n_ants=50,
+                        n_antlions=50,
                       termination_criterion = criterion)
 
 algorithm.observable.register(observer=PrintObjectivesObserver(10))
 algorithm.run()
 
 # RESULTS
-test = 'BEO'
+test = 'BALO'
 Results.results(algorithm,test,data[2],params)
 
 # algorithm.plot_fitness()
