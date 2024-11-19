@@ -10,8 +10,7 @@ from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
 from jmetal.problems import Bic
-from jmetal.algorithms.SS_LS import ScatterSearch
-from jmetal.core import mutation, crossover
+from jmetal.algorithms.GPC_2 import BinaryGPC
 import logging
 
 logging.basicConfig(level=logging.INFO)
@@ -34,15 +33,12 @@ def configure_experiment(problems: dict,n_run: int):
         for problem_tag, problem in problems.items():
             jobs.append(
                 Job(
-                algorithm = ScatterSearch(
+                algorithm=BinaryGPC(
                         problem = problem,
-                        population_size=100,
-                        reference_set_size=10,
-                        mutation=mutation.BitFlipMutation(0.01),
-                        crossover=crossover.SPXCrossover(0.9),
+                        population_size = 100,
                         termination_criterion=StoppingByEvaluations(10000)
                     ),
-                algorithm_tag="SS",
+                algorithm_tag="BGPC",
                 problem_tag=problem_tag,
                 run=run)
             )
@@ -50,10 +46,10 @@ def configure_experiment(problems: dict,n_run: int):
 
 data = load.huntington_bic()
 model_name = "BIC"
-jobs = configure_experiment(problems={"BIC_SS": Bic.BiclusteringProblem(data)},
+jobs = configure_experiment(problems={"BIC_BGPC": Bic.BiclusteringProblem(data)},
                             n_run=10)
 
-output_directory = make_dir(f"{os.getcwd()}/results/Resultados_SS/experimentos/",model_name)
+output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BGPC/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
 logger.info(f"Running experiment with {len(jobs)} jobs")
 
