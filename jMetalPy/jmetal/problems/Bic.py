@@ -25,9 +25,9 @@ class BiclusteringProblem:
         # Valores por defecto para los pesos
         self.weights = weights or {
             'msr': 0.4,      # Mean Squared Residue
-            'volume': 0.3,   # Tamaño del bicluster
-            'variance': 0.2, # Varianza de los genes
-            'overlap': 0.1   # Penalización por solapamiento
+            'volume': 0.25,   # Tamaño del bicluster
+            'variance': 5.0, # Varianza de los genes
+            'overlap': 5.0   # Penalización por solapamiento
         }
         
         self.min_rows = min_rows
@@ -62,14 +62,20 @@ class BiclusteringProblem:
         fitness_components = self._calculate_fitness_components(submatrix, selected_rows)
         
         # Calcular fitness final
+        # fitness = (
+        #     self.weights['msr'] * (1 / (fitness_components['msr'] + 1e-6)) +
+        #     self.weights['volume'] * fitness_components['volume'] +
+        #     self.weights['variance'] * fitness_components['variance'] -
+        #     self.weights['overlap'] * fitness_components['overlap']
+        # )
         fitness = (
-            self.weights['msr'] * (1 / (fitness_components['msr'] + 1e-6)) +
+            1*(1 / (fitness_components['msr'] + 1e-6)) +
             self.weights['volume'] * fitness_components['volume'] +
-            self.weights['variance'] * fitness_components['variance'] -
+            self.weights['variance'] * fitness_components['variance'] +
             self.weights['overlap'] * fitness_components['overlap']
         )
-        
-        solution.objectives[0] = fitness  # Negativo porque jMetal minimiza por defecto
+        # print(fitness)
+        solution.objectives[0] = -fitness  # Negativo porque jMetal minimiza por defecto
         self.previous_biclusters.append(set(selected_rows))
         return solution
     

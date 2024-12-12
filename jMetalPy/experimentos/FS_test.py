@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from collections import Counter
 from itertools import chain
-'''
+
 results = {}
 
-alg_ls = ['BACO','BPSO']
+alg_ls = ['BACO','BPSO','DE','BHHO']
 
 for alg in alg_ls:
     dir_name = f'results/Resultados_toko/Resultados_{alg}/experimentos'
@@ -166,6 +166,7 @@ def analyze_all_algorithms(df):
 # Uso:
 analyze_all_algorithms(result)
 '''
+
 #-------------------------------------------------------------------------#
 #-------------------------------------------------------------------------#
 from sklearn.feature_selection import SelectKBest, f_classif, mutual_info_classif, VarianceThreshold
@@ -191,7 +192,7 @@ i=-1
 print(clases[0])
 print(clases[2])
 print(clases[6])
-'''
+
 # Inicializar KNN
 knn = KNeighborsClassifier()
 
@@ -338,3 +339,4 @@ print("Resultados de precisión por modelo y método de selección:")
 for method, accs in metrics_results.items():
     print(f"{method}: {dict(zip(models_names, accs))}")
 '''
+

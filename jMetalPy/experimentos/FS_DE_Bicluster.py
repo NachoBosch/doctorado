@@ -38,7 +38,7 @@ def configure_experiment(problems: dict,n_run: int):
                         population_size=100,
                         CR=0.5,
                         F=0.3,
-                        termination_criterion=StoppingByEvaluations(10000)
+                        termination_criterion=StoppingByEvaluations(5000)
                     ),
                 algorithm_tag="DE",
                 problem_tag=problem_tag,
@@ -49,7 +49,7 @@ def configure_experiment(problems: dict,n_run: int):
 data = load.huntington_bic()
 model_name = "BIC"
 jobs = configure_experiment(problems={"BIC_DE": Bic.BiclusteringProblem(data)},
-                            n_run=10)
+                            n_run=1)
 
 output_directory = make_dir(f"{os.getcwd()}/results/Resultados_DE/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())

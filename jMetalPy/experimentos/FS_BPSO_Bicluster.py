@@ -39,7 +39,7 @@ def configure_experiment(problems: dict,n_run: int):
                         inertia_weight=0.7,
                         cognitive_coefficient=1.4,
                         social_coefficient=1.4,
-                        termination_criterion=StoppingByEvaluations(10000)
+                        termination_criterion=StoppingByEvaluations(5000)
                     ),
                 algorithm_tag="BPSO",
                 problem_tag=problem_tag,
@@ -50,7 +50,7 @@ def configure_experiment(problems: dict,n_run: int):
 data = load.huntington_bic()
 model_name = "BIC"
 jobs = configure_experiment(problems={"BIC_BPSO": Bic.BiclusteringProblem(data)},
-                            n_run=2)
+                            n_run=1)
 output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BPSO/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
 logger.info(f"Running experiment with {len(jobs)} jobs")

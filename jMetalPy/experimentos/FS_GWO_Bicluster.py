@@ -36,8 +36,8 @@ def configure_experiment(problems: dict,n_run: int):
                 algorithm=BinaryGWOAlgorithm(
                         problem = problem,
                         population_size = 100,
-                        max_evaluations = 10000,
-                        termination_criterion=StoppingByEvaluations(10000)
+                        max_evaluations = 5000,
+                        termination_criterion=StoppingByEvaluations(5000)
                     ),
                 algorithm_tag="GWO",
                 problem_tag=problem_tag,
@@ -48,7 +48,7 @@ def configure_experiment(problems: dict,n_run: int):
 data = load.huntington_bic()
 model_name = "BIC"
 jobs = configure_experiment(problems={"BIC_GWO": Bic.BiclusteringProblem(data)},
-                            n_run=10)
+                            n_run=1)
 
 output_directory = make_dir(f"{os.getcwd()}/results/Resultados_GWO/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())

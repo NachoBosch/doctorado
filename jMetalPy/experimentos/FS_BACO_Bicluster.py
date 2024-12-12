@@ -39,7 +39,7 @@ def configure_experiment(problems: dict,n_run: int):
                         alpha=2.0,
                         beta=1.0,
                         evaporation_rate=0.5,
-                        termination_criterion=StoppingByEvaluations(10000)
+                        termination_criterion=StoppingByEvaluations(5000)
                     ),
                 algorithm_tag="BACO",
                 problem_tag=problem_tag,
@@ -50,7 +50,7 @@ def configure_experiment(problems: dict,n_run: int):
 data = load.huntington_bic()
 model_name = "BIC"
 jobs = configure_experiment(problems={"BIC_BACO": Bic.BiclusteringProblem(data)},
-                            n_run=20)
+                            n_run=1)
 
 output_directory = make_dir(f"{os.getcwd()}/results/Resultados_BACO/experimentos/",model_name)
 experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
