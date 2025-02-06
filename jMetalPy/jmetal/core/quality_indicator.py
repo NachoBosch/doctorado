@@ -70,7 +70,30 @@ class SelectedVariables(QualityIndicator):
 
     def get_short_name(self) -> str:
         return "Vars"
-    
+
+class AccuracyValue(QualityIndicator):
+    def __init__(self, is_minimization: bool = True):
+        super(AccuracyValue, self).__init__(is_minimization=is_minimization)
+
+    def compute(self, solutions: np.array):
+        """
+        Calcula el promedio del accuracy obtenido en el conjunto de soluciones.
+        """
+        if not solutions:
+            return 0  # Si no hay soluciones, retorna 0
+
+        accuracies = [s.objectives for s in solutions]  # Extraer los valores de accuracy
+        print(accuracies)
+        mean_accuracy = np.mean(accuracies)  # Calcular el promedio
+
+        return mean_accuracy
+
+    def get_name(self) -> str:
+        return "Accuracy"
+
+    def get_short_name(self) -> str:
+        return "Acc"
+
 class SelectedBicluster(QualityIndicator):
     def __init__(self, is_minimization: bool = True):
         super(SelectedBicluster, self).__init__(is_minimization=is_minimization)

@@ -113,7 +113,7 @@ class BinaryACO(Algorithm[S, R], threading.Thread):
 
     def update_progress(self) -> None:
         self.evaluations += self.colony_size
-        print(f"Evaluations: {self.evaluations}")
+        # print(f"Evaluations: {self.evaluations}")
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
 
@@ -126,7 +126,7 @@ class BinaryACO(Algorithm[S, R], threading.Thread):
         }
 
     def result(self) -> List[BinarySolution]:
-        print(f"Results: {len(self.best_solution.variables)}")
+        # print(f"Results: {len(self.best_solution.variables)}")
         return self.best_solution
 
     def get_name(self) -> str:

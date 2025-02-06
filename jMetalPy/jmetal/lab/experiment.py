@@ -18,6 +18,7 @@ from jmetal.util.solution import (
     print_variables_to_file,
     read_solutions,
     read_binary_solutions,
+    read_accuracy_values,
 )
 import logging
 import warnings
@@ -51,6 +52,9 @@ class Job:
 
         if output_path:
             file_name = os.path.join(output_path, "FUN.{}.tsv".format(self.run_tag))
+            print_function_values_to_file(self.algorithm.result(), filename=file_name)
+
+            file_name = os.path.join(output_path, "ACC.{}.tsv".format(self.run_tag))
             print_function_values_to_file(self.algorithm.result(), filename=file_name)
 
             file_name = os.path.join(output_path, "VAR.{}.tsv".format(self.run_tag))
@@ -119,9 +123,9 @@ def generate_summary_from_experiment(
         for filename in filenames:
             try:
                 # Linux filesystem
-                print(f"\nDIR name: {dirname}")
+                # print(f"\nDIR name: {dirname}")
                 algorithm, problem = dirname.split("/")[-2:]
-                print(f"Algorithm: {algorithm} | Problem: {problem}")
+                # print(f"Algorithm: {algorithm} | Problem: {problem}")
             except ValueError:
                 # Windows filesystem
                 algorithm, problem = dirname.split("\\")[-2:]
@@ -171,6 +175,15 @@ def generate_summary_from_experiment(
                             of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
                             of.write("\n")
                     elif indicator.get_short_name() == "Bics":
+                        result = indicator.compute(solutions)
+                        with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
+                            of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))
+                            of.write("\n")
+            if "ACC" in filename:
+                solutions = read_accuracy_values(os.path.join(dirname, filename))  # Usar una función específica si es necesario
+                run_tag = [s for s in filename.split(".") if s.isdigit()].pop()
+                for indicator in quality_indicators:
+                    if indicator.get_short_name() == "Acc":
                         result = indicator.compute(solutions)
                         with open(f"{input_dir}/QualityIndicatorSummary.csv", "a+") as of:
                             of.write(",".join([algorithm, problem, run_tag, indicator.get_short_name(), str(result)]))

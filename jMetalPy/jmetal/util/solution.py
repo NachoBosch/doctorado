@@ -37,7 +37,8 @@ def read_solutions(filename: str) -> List[FloatSolution]:
     if Path(filename).is_file():
         with open(filename) as file:
             for line in file:
-                vector = [float(x) for x in line.split()]
+                print(f"\n FITNESS --->: {line}\n")
+                vector = [float(line.split()[0])]
 
                 solution = FloatSolution([], [], len(vector))
                 solution.objectives = vector
@@ -68,6 +69,16 @@ def read_binary_solutions(filename: str) -> List[BinarySolution]:
 
     return solutions
 
+def read_accuracy_values(filename: str) -> List[Solution]:
+    solutions = []
+    with open(filename, "r") as file:
+        for line in file:
+            print(f"\n {line.split()[1]}")
+            vector = [float(line.split()[1])]
+            solution = FloatSolution([], [], len(vector))
+            solution.objectives = vector
+            solutions.append(solution)
+    return solutions
 
 def print_variables_to_file(solutions, filename: str):
     logger.info("Output file (variables): " + filename)

@@ -9,9 +9,11 @@ import seaborn as sns
 from collections import Counter
 from itertools import chain
 
+'''
+
 results = {}
 
-alg_ls = ['BACO','BPSO','DE','BHHO']
+alg_ls = ['BACO','BALO','BEO','BGPC','BOA','GWO','SA','SS','uGA','BPSO','DE','BHHO']
 
 for alg in alg_ls:
     dir_name = f'results/Resultados_toko/Resultados_{alg}/experimentos'
@@ -19,8 +21,11 @@ for alg in alg_ls:
     print(f"ALgorithm : {alg}")
     results[alg] = {}
     for model in models_names:
-        files = os.path.join(dir_name,model)+f"/alfa_0.9/{alg}/FS_{alg}"
         print(model)
+        if model != 'BIC':
+            files = os.path.join(dir_name,model)+f"/alfa_0.9/{alg}/FS_{alg}"
+        else:
+            files = os.path.join(dir_name,model)+f"/{alg}/BIC_{alg}" 
         results[alg][model] = []
         for file in os.listdir(files):
             if file[:3]=='VAR':
@@ -29,9 +34,10 @@ for alg in alg_ls:
                 ls_var.pop(-1)
                 # print(len(ls_var))
                 ls_genes = [i == 'True' for i in ls_var]
+                if len(ls_genes)>578:
+                    ls_genes = ls_genes[:578]
+                # print(len(ls_genes))
                 idx_genes = [i for i, x in enumerate(ls_genes) if x]
-                # print(ls_genes)
-                print(idx_genes)
                 results[alg][model].append(idx_genes)
 
 result = pd.DataFrame()
@@ -157,7 +163,7 @@ def analyze_all_algorithms(df):
     """
     Realiza el análisis completo para ambos algoritmos.
     """
-    for algorithm in ['BACO', 'BPSO']:
+    for algorithm in ['BACO','BALO','BEO','BGPC','BOA','GWO','SA','SS','uGA','BPSO','DE','BHHO']:
         stats, fig = analyze_algorithm_genes(df, algorithm)
         print_algorithm_stats(stats, algorithm)
         plt.figure(fig.number)
@@ -165,7 +171,9 @@ def analyze_all_algorithms(df):
 
 # Uso:
 analyze_all_algorithms(result)
+
 '''
+
 
 #-------------------------------------------------------------------------#
 #-------------------------------------------------------------------------#
@@ -338,5 +346,5 @@ metrics_results = compute_metrics(
 print("Resultados de precisión por modelo y método de selección:")
 for method, accs in metrics_results.items():
     print(f"{method}: {dict(zip(models_names, accs))}")
-'''
+
 
