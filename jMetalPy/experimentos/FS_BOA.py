@@ -9,7 +9,8 @@ from jmetal.lab.experiment import Experiment, Job, generate_summary_from_experim
 from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
-from jmetal.problems import FeatureSelectionHutington as fsh
+# from jmetal.problems import FeatureSelectionHutington as fsh
+from jmetal.problems import FSHuntington as fsh
 from jmetal.algorithms.BOA import BinaryBOA
 import logging
 
@@ -58,7 +59,7 @@ models_names, models = load.models()
 # print(data[0].shape)
 # print(data[1].shape)
 
-for model_name, model in zip(models_names[2:],models[2:]):
+for model_name, model in zip(models_names,models):
     jobs = configure_experiment(problems={"FS_BOA": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
@@ -71,7 +72,8 @@ for model_name, model in zip(models_names[2:],models[2:]):
     generate_summary_from_experiment(
         input_dir=output_directory,
         quality_indicators=[FitnessValue(),
-                            SelectedVariables()])
+                            SelectedVariables(),
+                            AccuracyValue()])
 
     file_name = f"{output_directory}/QualityIndicatorSummary.csv"
     generate_latex_tables(filename=file_name,

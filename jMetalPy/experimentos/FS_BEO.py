@@ -9,7 +9,8 @@ from jmetal.lab.experiment import Experiment, Job, generate_summary_from_experim
 from jmetal.core.quality_indicator import *
 from jmetal.util.termination_criterion import StoppingByEvaluations
 from jmetal.util import load
-from jmetal.problems import FeatureSelectionHutington as fsh
+# from jmetal.problems import FeatureSelectionHutington as fsh
+from jmetal.problems import FSHuntington as fsh
 from jmetal.algorithms.BEO import BinaryEO
 import logging
 
@@ -67,7 +68,8 @@ for model_name, model in zip(models_names,models):
     generate_summary_from_experiment(
         input_dir=output_directory,
         quality_indicators=[FitnessValue(),
-                            SelectedVariables()])
+                            SelectedVariables(),
+                            AccuracyValue()])
 
     file_name = f"{output_directory}/QualityIndicatorSummary.csv"
     generate_latex_tables(filename=file_name,
