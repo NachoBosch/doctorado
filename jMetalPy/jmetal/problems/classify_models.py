@@ -4,6 +4,7 @@ from sklearn.naive_bayes import MultinomialNB
 from sklearn.neighbors import KNeighborsClassifier
 # from thundersvm import SVC as tSVC
 from sklearn.ensemble import BaggingClassifier
+from sklearn.neural_network import MLPClassifier
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 import xgboost as xgb
@@ -20,7 +21,8 @@ import time
 def main(X,y,alfa):
 
     def models_to_train():
-        return {'dt':DecisionTreeClassifier(max_depth=20),
+        return {'MLP':MLPClassifier(random_state=1, max_iter=300,alpha=0.001),
+                'dt':DecisionTreeClassifier(max_depth=20),
                 'snapdt':snapdt(max_depth=1),
                 'ab25':AdaBoostClassifier(n_estimators=10),
                 'ab50':AdaBoostClassifier(n_estimators=50),
@@ -44,7 +46,9 @@ def main(X,y,alfa):
             end_time = time.time()
             y_pred = model.predict(Xtest)
             acc = ms.accuracy_score(ytest, y_pred)
-            print(f"Accuracy of {model_name}: {acc:.3f} | Training time: {end_time - start_time:.6f} seconds")
+            prec = ms.precision_score(ytest, y_pred,average='weighted',zero_division=0)
+            recall = ms.recall_score(ytest, y_pred,average='weighted',zero_division=0)
+            print(f"Accuracy of {model_name}: {acc:.3f} | Precision: {prec:.3f} | Recall: {recall:.3f} | Training time: {end_time - start_time:.6f} seconds")
 
     def evaluate(X, y, alfa):
         random_variables = np.random.randint(0, 2, X.shape[1])

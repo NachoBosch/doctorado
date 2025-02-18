@@ -19,14 +19,16 @@ from jmetal.problems import classify_models
 #DATA
 df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
 df = df_hd.copy()
+# print(df.describe())
 #PRE-SETS
 scaler = MinMaxScaler()
 encoder = LabelEncoder()
 X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
 X = scaler.fit_transform(X)
+# print(X)
 y = encoder.fit_transform(df_hd.Grade.to_numpy())
 clases = list(df_hd.columns[:-2])
-
+'''
 df.drop(columns="Samples",inplace=True)
 
 df_transp = df.T
@@ -109,15 +111,19 @@ repeated_genes = [gene for gene, count in gene_counter.items() if count >= 2]
 print("Genes que se repiten en al menos 2 biclusters:")
 print(repeated_genes)
 
-#PARAMETERS
-# params = {'pobl': 100,
-#         'off_pobl': 100,
-#         'evals' : 10000,
-#         'mut_p' :0.1,
-#         'cross_p': 0.8,
-#         'alfa':0.6,
-#         'encoder':encoder
-#         }
+'''
 
-#PROBLEM
-# problem = classify_models.main(X, y, params['alfa'])
+#PARAMETERS
+params = {'pobl': 100,
+        'off_pobl': 100,
+        'evals' : 10000,
+        'mut_p' :0.1,
+        'cross_p': 0.8,
+        'alfa':0.1,
+        'encoder':encoder
+        }
+
+# PROBLEM
+problem = classify_models.main(X, y, params['alfa'])
+
+
