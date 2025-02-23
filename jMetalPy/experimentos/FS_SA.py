@@ -47,7 +47,7 @@ def configure_experiment(problems: dict,n_run: int):
     return jobs
 
 data = load.huntington()
-alfa = 0.9
+alfa = 0.1
 models_names, models = load.models()
 for model_name, model in zip(models_names,models):
 # tupla = load.models()

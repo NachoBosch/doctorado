@@ -17,7 +17,6 @@ import logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-
 def make_dir(path,model_name,alfa):
     path = path+model_name+'/alfa_'+str(alfa)
     if not os.path.exists(path):
@@ -49,7 +48,7 @@ def configure_experiment(problems: dict,n_run: int):
     return jobs
 
 data = load.huntington()
-alfa = 0.9
+alfa = 0.1
 models_names, models = load.models()
 for model_name, model in zip(models_names,models):
 # tupla = load.models()

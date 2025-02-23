@@ -44,9 +44,9 @@ def models():
                 BaggingClassifier(SVC(), max_samples=1.0/2, n_estimators=2),
                 KNeighborsClassifier(n_neighbors=3, weights='distance'),
                 AdaBoostClassifier(n_estimators=5),
-                DecisionTreeClassifier(max_depth=20),
-                MLPClassifier(random_state=1, max_iter=300,alpha=0.001)
-                ]
-        models_names = ['RF','SVM','KNN','AB','DT','MLP']
+                DecisionTreeClassifier(max_depth=20)]
+                #MLPClassifier(random_state=1, max_iter=300,alpha=0.001)
+                
+        models_names = ['RF','SVM','KNN','AB','DT']#,'MLP']
         
         return models_names, models
