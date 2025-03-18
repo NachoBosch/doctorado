@@ -1,9 +1,9 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import MinMaxScaler
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from sklearn.cluster import SpectralBiclustering
 from collections import Counter
+from sklearn.feature_selection import mutual_info_classif, VarianceThreshold
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -16,18 +16,52 @@ module_dir = os.path.join(current_dir.replace('experimentos', ''))
 sys.path.append(module_dir)
 from jmetal.problems import classify_models
 
+def stats(X):
+    mean = np.mean(X).round(2)
+    std = np.std(X).round(2)
+    max = np.max(X).round(2)
+    min = np.min(X).round(2)
+    return {'mean':mean,
+            'std':std,
+            'max':max,
+            'min':min
+            }
 #DATA
 df_hd = pd.read_csv('C:/Doctorado/doctorado/Data/HD_filtered.csv')
 df = df_hd.copy()
-# print(df.describe())
+
 #PRE-SETS
 scaler = MinMaxScaler()
 encoder = LabelEncoder()
-X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
-X = scaler.fit_transform(X)
-# print(X)
-y = encoder.fit_transform(df_hd.Grade.to_numpy())
-clases = list(df_hd.columns[:-2])
+X = df.drop(columns=['Samples','Grade'])
+
+print(len(X.columns))
+X_scaled = scaler.fit_transform(X)
+
+# var_thresh = VarianceThreshold(threshold=0.05)
+# X_var_filtered = var_thresh.fit_transform(X_scaled)
+# selected_var_indices = var_thresh.get_support(indices=True)
+# selected_var_names = X.columns[selected_var_indices]
+# print(len(selected_var_names))
+
+# y = encoder.fit_transform(df.Grade.to_numpy())
+y = df.Grade
+# mi_scores = mutual_info_classif(X_var_filtered, y, random_state=42)
+
+# feature_importance = pd.DataFrame({
+#     'Feature': selected_var_names,
+#     'Mutual_Information': mi_scores
+# }).sort_values(by='Mutual_Information', ascending=False)
+
+# top_features = feature_importance.head(50)['Feature'].tolist()
+# X_top = X[top_features]
+# print(len(X_top.columns))
+# print(f"\nSelected Top Features: {list(X_top.columns)}")
+df['Grade'] = df['Grade'].replace({'HD_0': 'HD','HD_1': 'HD','HD_2': 'HD','HD_3': 'HD', 'HD_4': 'HD'})
+y = encoder.fit_transform(df.Grade.to_numpy())
+print(y)
+clases = list(df.columns[:-2])
+
 '''
 df.drop(columns="Samples",inplace=True)
 
@@ -119,11 +153,11 @@ params = {'pobl': 100,
         'evals' : 10000,
         'mut_p' :0.1,
         'cross_p': 0.8,
-        'alfa':0.1,
+        'alfa':0.9,
         'encoder':encoder
         }
 
-# PROBLEM
-problem = classify_models.main(X, y, params['alfa'])
+# # PROBLEM
+problem = classify_models.main(X.to_numpy(), y, params['alfa'])
 
 

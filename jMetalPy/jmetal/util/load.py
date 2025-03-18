@@ -19,6 +19,7 @@ def huntington():
     scaler = MinMaxScaler()
     X = df_hd.drop(columns=['Samples','Grade']).to_numpy()
     X = scaler.fit_transform(X)
+    df_hd['Grade'] = df_hd['Grade'].replace({'HD_0': 'HD','HD_1': 'HD','HD_2': 'HD','HD_3': 'HD', 'HD_4': 'HD'})
     y = encoder.fit_transform(df_hd.Grade.to_numpy())
     clases = list(df_hd.columns[:-2])
     return X,y,clases,encoder

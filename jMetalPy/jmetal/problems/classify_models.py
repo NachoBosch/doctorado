@@ -38,7 +38,7 @@ def main(X,y,alfa):
                 }
         
     def train_test(X, y):
-        Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.25, stratify=y)
+        Xtrain, Xtest, ytrain, ytest = train_test_split(X, y, test_size=0.2)#, stratify=y)
         models = models_to_train()
         for model_name, model in models.items():
             start_time = time.time()
@@ -73,7 +73,7 @@ def main(X,y,alfa):
             beta = 1 - alfa
             fitness = 1.0 - (num_variables / X.shape[1])
             fitness = (alfa * fitness) + (beta * acc)
-            print(f"Fitness of {model_name}: {fitness:.3f} | Variables: {num_variables} | Training time: {end_time - start_time:.6f} seconds")
+            print(f"Fitness of {model_name}: {fitness:.3f} | Acc: {acc:.2f} | Variables: {num_variables} | Training time: {end_time - start_time:.6f} seconds")
 
 
     train_test(X,y)

@@ -1,8 +1,13 @@
 import pandas as pd
 import numpy as np
 
-from Algorithms.GA import GeneticAlgorithm
-from Problems import GA
+# from Algorithms.GA import GeneticAlgorithm
+import os
+import sys
+current_dir = os.path.dirname(os.path.abspath(__file__))
+module_dir = os.path.join(current_dir.replace('experimentos', ''))
+sys.path.append(module_dir)
+from Algorithms.GA_LO import GeneticAlgorithm
 from Results import Results
 from Core import crossover, mutation, selection
 
@@ -28,7 +33,7 @@ clases = list(df_hd.columns[:-2])
 #PARAMETERS
 params = {'pobl': 100,
         'off_pobl': 100,
-        'evals' : 10000,
+        'evals' : 1000,
         'mut_p' :0.01,
         'cross_p': 0.9,
         'alfa':0.9,
@@ -79,4 +84,4 @@ Results.results(algorithm,test,clases,params)
 
 algorithm.plot_fitness()
 algorithm.plot_min_variables()
-algorithm.save_csv(f'Results/Resultados_GA/Resultados_nuevos/{test}.csv')
+algorithm.save_csv(f'results/Resultados_GALO/Resultados_nuevos/{test}.csv')

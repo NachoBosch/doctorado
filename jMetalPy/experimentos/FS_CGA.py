@@ -91,7 +91,7 @@ def configure_experiment(problems: dict,n_run: int):
 
 
 data = load.huntington()
-alfa = 0.1
+alfa = 0.9
 # alfa = [0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]
 # models = load.models()
 # tupla = load.models()

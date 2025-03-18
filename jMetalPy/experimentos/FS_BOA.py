@@ -50,7 +50,7 @@ def configure_experiment(problems: dict,n_run: int):
     return jobs
 
 data = load.huntington()
-alfa = 0.1
+alfa = 0.9
 models_names, models = load.models()
 # tupla = load.models()
 # model_name = tupla[0][-1]
