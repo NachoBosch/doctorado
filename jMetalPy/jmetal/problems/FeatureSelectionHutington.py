@@ -37,8 +37,8 @@ class FeatureSelectionHD():
 
         num_variables = len(selected_features)
         beta = 1 - self.alfa
-        fitness = 1.0 - (num_variables/self.X.shape[1])
-        fitness = (self.alfa * fitness) + (beta * acc_avg)
+        gens = 1.0 - (num_variables/self.X.shape[1])
+        fitness = (self.alfa * gens) + (beta * acc_avg)
         solution.objectives[0] = -fitness
         return solution
 
@@ -47,7 +47,7 @@ class FeatureSelectionHD():
             number_of_variables = self.number_of_variables,
             number_of_objectives = self.number_of_objectives)
         
-        new_solution.variables = [True if np.random.rand() > 0.5 else False for _ in range(self.number_of_variables)]
+        new_solution.variables = [True if np.random.rand() > 0.5 else False for _ in range(self.number_of_variables)]#probar con sesgo
         # print(f"New solution variables: {len(new_solution.variables)}")
         new_solution.objectives = [0]
 

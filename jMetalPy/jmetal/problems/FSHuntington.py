@@ -50,8 +50,8 @@ class FeatureSelectionHD():
             number_of_variables=self.number_of_variables,
             number_of_objectives=self.number_of_objectives
         )
-        
-        new_solution.variables = [np.random.rand() > 0.5 for _ in range(self.number_of_variables)]
+        new_solution.variables = [True if np.random.rand() > 0.5 else False for _ in range(self.number_of_variables)]
+        # new_solution.variables = [np.random.rand() > 0.5 for _ in range(self.number_of_variables)]
         new_solution.objectives = [0, 0]  # Inicializamos fitness y accuracy
 
         return new_solution

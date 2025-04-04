@@ -102,27 +102,27 @@ class GeneticAlgorithm():
         self.population.sort(key=lambda s: s.objectives[0])
         return self.population[0]
     
-    def plot_fitness(self):
-        plt.figure()
-        plt.plot(self.best_fitness_per_epoch)
-        plt.xlabel("Epoch")
-        plt.ylabel("Fitness")
-        plt.title("Fitness progress")
-        plt.show()
+    # def plot_fitness(self):
+    #     plt.figure()
+    #     plt.plot(self.best_fitness_per_epoch)
+    #     plt.xlabel("Epoch")
+    #     plt.ylabel("Fitness")
+    #     plt.title("Fitness progress")
+    #     plt.show()
 
-    def plot_min_variables(self):
-        plt.figure()
-        plt.plot(self.min_variables_per_epoch)
-        plt.xlabel("Epoch")
-        plt.ylabel("Min Variables Selected")
-        plt.title("Minimum Variables Selected per Epoch")
-        plt.show()
+    # def plot_min_variables(self):
+    #     plt.figure()
+    #     plt.plot(self.min_variables_per_epoch)
+    #     plt.xlabel("Epoch")
+    #     plt.ylabel("Min Variables Selected")
+    #     plt.title("Minimum Variables Selected per Epoch")
+    #     plt.show()
 
-    def save_csv(self,filename:str):
-        data = {'Best Fitness':self.best_fitness_per_epoch,
-                'Min Variables':self.min_variables_per_epoch}
-        pd.DataFrame(data).to_csv(filename,index=False)
-        print(f"Data saved in {filename}!")
+    # def save_csv(self,filename:str):
+    #     data = {'Best Fitness':self.best_fitness_per_epoch,
+    #             'Min Variables':self.min_variables_per_epoch}
+    #     pd.DataFrame(data).to_csv(filename,index=False)
+    #     print(f"Data saved in {filename}!")
 
     def get_name(self) -> str:
         return "Genetic algorithm"
