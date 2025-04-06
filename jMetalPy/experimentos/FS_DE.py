@@ -48,16 +48,16 @@ def configure_experiment(problems: dict,n_run: int):
     return jobs
 
 data = load.huntington()
-alfa = 0.1
+alfa = 0.2
 models_names, models = load.models()
-for model_name, model in zip(models_names,models):
+for model_name, model in zip(models_names[:1],models[:1]):
 # tupla = load.models()
 # model_name = tupla[0][-1]
 # model = tupla[1][-1]
     jobs = configure_experiment(problems={"FS_DE": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_DE/experimentos/",model_name,alfa)
+    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_DE/cursoCE/",model_name,alfa)
     experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
     logger.info(f"Running experiment with {len(jobs)} jobs")
 

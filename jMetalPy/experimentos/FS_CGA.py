@@ -91,7 +91,7 @@ def configure_experiment(problems: dict,n_run: int):
 
 
 data = load.huntington()
-alfa = 0.1
+alfa = 0.2
 # alfa = [0.9,0.8,0.7,0.6,0.5,0.4,0.3,0.2,0.1]
 # models = load.models()
 # tupla = load.models()
@@ -105,7 +105,7 @@ for model_name, model in zip(models_names,models):
     jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/experimentos/",model_name,alfa)
+    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_CGA/cursoCE/",model_name,alfa)
     experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
     logger.info(f"Running experiment with {len(jobs)} jobs")
 
