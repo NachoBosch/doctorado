@@ -101,7 +101,7 @@ alfa = 0.2
 #     model_name='RF'
 #     for a in alfa:
 models_names, models = load.models()
-for model_name, model in zip(models_names,models):
+for model_name, model in zip(models_names[:1],models[:1]):
     jobs = configure_experiment(problems={"FS_CGA": fsh.FeatureSelectionHD(data,alfa,model)},
                                 n_run=20)
 
