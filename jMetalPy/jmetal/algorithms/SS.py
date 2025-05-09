@@ -101,7 +101,7 @@ class ScatterSearch(Algorithm[S, R]):
         # self.termination_criterion.update(self)
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
-        print(self.evaluations)
+        # print(self.evaluations)
 
     def observable_data(self) -> dict:
         ctime = time.time() - self.start_computing_time

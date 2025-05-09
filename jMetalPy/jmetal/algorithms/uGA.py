@@ -89,7 +89,7 @@ class MicroGeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
         population.sort(key = lambda s:s.objectives[0])
         population = population[: self.population_size]
         if self.evaluations % self.reinicio == 0:
-            print("Re-initialization population")
+            # print("Re-initialization population")
             self.reinition_population(population)
         return population
     

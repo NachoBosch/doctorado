@@ -51,7 +51,7 @@ def configure_experiment(problems: dict,n_run: int):
     return jobs
 
 data = load.huntington()
-alfa = 0.2
+alfa = 0.9
 models_names, models = load.models()
 # tupla = load.models()
 # model_name = tupla[0][-1]
@@ -59,23 +59,23 @@ models_names, models = load.models()
 
 # print(data[0].shape)
 # print(data[1].shape)
+for i in range(10):
+    for model_name, model in zip(models_names[:1],models[:1]):
+        jobs = configure_experiment(problems={"FS_uGA": fsh.FeatureSelectionHD(data,alfa,model)},
+                                    n_run=2)
 
-for model_name, model in zip(models_names[:1],models[:1]):
-    jobs = configure_experiment(problems={"FS_uGA": fsh.FeatureSelectionHD(data,alfa,model)},
-                                n_run=20)
+        output_directory = make_dir(f"{os.getcwd()}/results/Resultados_uGA/cursoCE_final_{i}/",model_name,alfa)
+        experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
+        logger.info(f"Running experiment with {len(jobs)} jobs")
 
-    output_directory = make_dir(f"{os.getcwd()}/results/Resultados_uGA/cursoCE/",model_name,alfa)
-    experiment = Experiment(output_dir=output_directory, jobs=jobs, m_workers=os.cpu_count())
-    logger.info(f"Running experiment with {len(jobs)} jobs")
+        experiment.run()
 
-    experiment.run()
+        generate_summary_from_experiment(
+            input_dir=output_directory,
+            quality_indicators=[FitnessValue(),
+                                SelectedVariables(),
+                                AccuracyValue()])
 
-    generate_summary_from_experiment(
-        input_dir=output_directory,
-        quality_indicators=[FitnessValue(),
-                            SelectedVariables(),
-                            AccuracyValue()])
-
-    file_name = f"{output_directory}/QualityIndicatorSummary.csv"
-    generate_latex_tables(filename=file_name,
-                            output_dir=output_directory+"/latex/statistical")
+        file_name = f"{output_directory}/QualityIndicatorSummary.csv"
+        generate_latex_tables(filename=file_name,
+                                output_dir=output_directory+"/latex/statistical")

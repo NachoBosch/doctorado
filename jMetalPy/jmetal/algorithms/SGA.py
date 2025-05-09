@@ -63,6 +63,7 @@ class GeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
 
     def reproduction(self, mating_population: List[S]) -> List[S]:
         number_of_parents_to_combine = self.crossover_operator.get_number_of_parents()
+        # print(f"Number of parents to combine: {number_of_parents_to_combine}")
 
         if len(mating_population) % number_of_parents_to_combine != 0:
             raise Exception("Wrong number of parents for crossover")
@@ -83,11 +84,12 @@ class GeneticAlgorithm(EvolutionaryAlgorithm[S, R]):
 
     def replacement(self, population: List[S], offspring_population: List[S]) -> List[S]:
         combined = population + offspring_population
-        combined.sort(key=lambda s: s.objectives[0])  # Minimization
+        combined.sort(key=lambda s: s.objectives[0])  # Minimization Problem
         return combined[:self.population_size]
 
     def update_progress(self):
         self.evaluations += self.offspring_population_size
+        print(self.evaluations)
         observable_data = self.observable_data()
         self.observable.notify_all(**observable_data)
 

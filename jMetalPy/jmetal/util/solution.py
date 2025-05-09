@@ -37,7 +37,7 @@ def read_solutions(filename: str) -> List[FloatSolution]:
     if Path(filename).is_file():
         with open(filename) as file:
             for line in file:
-                print(f"\n FITNESS --->: {line}\n")
+                # print(f"\n FITNESS --->: {line}\n")
                 vector = [float(line.split()[0])]
 
                 solution = FloatSolution([], [], len(vector))
@@ -73,7 +73,7 @@ def read_accuracy_values(filename: str) -> List[Solution]:
     solutions = []
     with open(filename, "r") as file:
         for line in file:
-            print(f"\n {line.split()[1]}")
+            # print(f"\n {line.split()[1]}")
             vector = [float(line.split()[1])]
             solution = FloatSolution([], [], len(vector))
             solution.objectives = vector
@@ -93,7 +93,7 @@ def print_variables_to_file(solutions, filename: str):
 
     with open(filename, "w") as of:
         for solution in solutions:
-            print(f"Print variables: {len(solution.variables)}")
+            # print(f"Print variables: {len(solution.variables)}")
             for variables in solution.variables:
                 of.write(str(variables) + " ")
             of.write("\n")

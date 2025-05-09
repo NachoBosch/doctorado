@@ -57,9 +57,9 @@ class SelectedVariables(QualityIndicator):
         selected_counts = []
 
         for solution in solutions:
-            print(f"Longitud de la solución: {len(solution.variables)}")
+            # print(f"Longitud de la solución: {len(solution.variables)}")
             selected_count = sum(solution.variables)
-            print(f"Número de variables seleccionadas: {selected_count}")
+            # print(f"Número de variables seleccionadas: {selected_count}")
             selected_counts.append(selected_count)
 
         mean_selected = np.mean(selected_counts)
@@ -83,7 +83,7 @@ class AccuracyValue(QualityIndicator):
             return 0  # Si no hay soluciones, retorna 0
 
         accuracies = [s.objectives for s in solutions]  # Extraer los valores de accuracy
-        print(accuracies)
+        # print(accuracies)
         mean_accuracy = np.mean(accuracies)  # Calcular el promedio
 
         return mean_accuracy

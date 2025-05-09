@@ -17,11 +17,13 @@ from sklearn import metrics as ms
 from sklearn.model_selection import KFold
 import numpy as np 
 import time
+# import tensorflow as tf
 
 def main(X,y,alfa):
 
     def models_to_train():
-        return {'MLP':MLPClassifier(random_state=1, max_iter=300,alpha=0.001),
+        return {#'ANN':ann(),
+                'MLP':MLPClassifier(random_state=1, max_iter=300,alpha=0.001),
                 'dt':DecisionTreeClassifier(max_depth=20),
                 'snapdt':snapdt(max_depth=1),
                 'ab25':AdaBoostClassifier(n_estimators=10),
@@ -34,7 +36,7 @@ def main(X,y,alfa):
                 'svmBag1':BaggingClassifier(SVC(),max_samples=1.0/2,n_estimators=2),
                 'knn':KNeighborsClassifier(),
                 'knnDist':KNeighborsClassifier(n_neighbors=5,weights='distance'),
-                # 'xgb':xgb.XGBClassifier(eta=0.01)
+                'xgb':xgb.XGBClassifier(eta=0.01)
                 }
         
     def train_test(X, y):

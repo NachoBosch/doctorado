@@ -8,6 +8,7 @@ from snapml import RandomForestClassifier
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier
+# import tensorflow as tf
 import os
 import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
@@ -37,6 +38,20 @@ def huntington_bic():
     df_num.loc[:, :] = scaler.fit_transform(df_num)
     return df_num
 
+# def ann(shape=[578]):
+#     model = tf.keras.Sequential([
+#         tf.keras.layers.Input(shape=shape),
+#         # tf.keras.layers.Dense(64, activation='relu'),
+#         tf.keras.layers.Dense(128, activation='relu'),
+#         tf.keras.layers.Dropout(0.2),
+#         tf.keras.layers.Dense(64, activation='relu'),
+#         tf.keras.layers.Dense(1, activation='sigmoid')
+#     ])
+#     model.compile(optimizer=tf.keras.optimizers.Adam(0.001),
+#             loss = tf.keras.losses.BinaryCrossentropy(),
+#             metrics=['accuracy'])
+#     return model
+
 def models():
     with warnings.catch_warnings():
         warnings.filterwarnings('ignore', category=UserWarning)
@@ -46,7 +61,7 @@ def models():
                 KNeighborsClassifier(n_neighbors=3, weights='distance'),
                 AdaBoostClassifier(n_estimators=5),
                 DecisionTreeClassifier(max_depth=20)]
-                #MLPClassifier(random_state=1, max_iter=300,alpha=0.001)
+                #ann()]
                 
         models_names = ['RF','SVM','KNN','AB','DT']#,'MLP']
         

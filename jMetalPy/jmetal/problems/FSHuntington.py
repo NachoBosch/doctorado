@@ -4,7 +4,7 @@ from sklearn.model_selection import KFold
 import numpy as np
 import warnings
 warnings.filterwarnings('ignore', category=UserWarning)
-
+from jmetal.util import load
 
 class FeatureSelectionHD():
     def __init__(self, data, alfa, model):
@@ -26,13 +26,16 @@ class FeatureSelectionHD():
         X_selected = self.X[:, selected_features]
         kf = KFold(n_splits=2, shuffle=True, random_state=42)
         scores = []
+
+        # self.model = load.ann(shape=[len(selected_features)])
         
         for trainI, testI in kf.split(X_selected):
             X_train, X_test = X_selected[trainI], X_selected[testI]
             y_train, y_test = self.y[trainI], self.y[testI]
-            self.model.fit(X_train, y_train)
+            self.model.fit(X_train, y_train)#,epochs=50,verbose=0) #se cambió esta linea para trabajar con ANN
             y_pred = self.model.predict(X_test)
             acc = accuracy_score(y_test, y_pred)
+            # acc = accuracy_score(y_test,np.round(np.squeeze(y_pred)))
             scores.append(acc)
 
         acc_avg = np.mean(scores)  # Accuracy promedio en validación cruzada
@@ -46,6 +49,7 @@ class FeatureSelectionHD():
         return solution
 
     def create_solution(self):
+        print("Creando solución")
         new_solution = BinarySolution(
             number_of_variables=self.number_of_variables,
             number_of_objectives=self.number_of_objectives
